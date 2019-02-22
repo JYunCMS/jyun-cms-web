@@ -1,3 +1,53 @@
-<p>
-  article-all works!
-</p>
+<h1>所有文章</h1>
+<nz-radio-group [(ngModel)]="scope">
+  <label nz-radio-button nzValue="all">全部
+    <nz-badge [nzCount]="109" [nzOverflowCount]="9999" [nzStyle]="{ backgroundColor: '#52c41a' }"></nz-badge>
+  </label>
+  <label nz-radio-button nzValue="release">已发布
+    <nz-badge [nzCount]="89" [nzOverflowCount]="9999" [nzStyle]="{ backgroundColor: '#52c41a' }"></nz-badge>
+  </label>
+  <label nz-radio-button nzValue="draft">草稿
+    <nz-badge [nzCount]="20" [nzOverflowCount]="9999" [nzStyle]="{ backgroundColor: '#52c41a' }"></nz-badge>
+  </label>
+  <label nz-radio-button nzValue="recycle-bin">回收站
+    <nz-badge [nzCount]="36" [nzOverflowCount]="9999"></nz-badge>
+  </label>
+</nz-radio-group>
+<div>
+  <nz-select style="width: 120px;" [(ngModel)]="date" nzAllowClear nzPlaceHolder="全部日期">
+    <nz-option nzValue="music" nzLabel="2019年一月"></nz-option>
+    <nz-option nzValue="photo" nzLabel="2019年二月"></nz-option>
+  </nz-select>
+  <nz-select style="width: 180px;" [(ngModel)]="category" nzAllowClear nzPlaceHolder="所有分类目录">
+    <nz-option nzValue="music" nzLabel="音乐"></nz-option>
+    <nz-option nzValue="photo" nzLabel="摄影"></nz-option>
+  </nz-select>
+  <nz-select style="width: 120px;" nzShowSearch nzAllowClear nzPlaceHolder="全部标签" [(ngModel)]="tag">
+    <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+    <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+    <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+  </nz-select>
+  <button nz-button nzType="primary">筛选</button>
+</div>
+<nz-table #basicTable [nzData]="dataSet">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Address</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.name}}</td>
+      <td>{{data.age}}</td>
+      <td>{{data.address}}</td>
+      <td>
+        <a>Action 一 {{data.name}}</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a>Delete</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

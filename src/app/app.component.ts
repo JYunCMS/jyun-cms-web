@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +9,6 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 export class AppComponent {
 
   isCollapsed = false;
-  triggerTemplate = null;
-  @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
   openMap = {
     sub1: false,
