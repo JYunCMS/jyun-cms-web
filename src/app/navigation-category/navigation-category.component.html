@@ -1,3 +1,60 @@
-<p>
-  navigation-category works!
-</p>
+<h1>分类目录</h1>
+<div nz-row>
+  <div nz-col nzSpan="8">
+    <h2>
+      <strong>添加新分类目录</strong>
+    </h2>
+    <h3>名称：</h3>
+    <input nz-input placeholder="新的分类" [(ngModel)]="inputNodeTitle">
+    <p>这将是它在站点导航上显示的名字。</p>
+    <h3>父级分类目录：</h3>
+    <nz-tree-select
+      style="width: 100%;"
+      [nzDropdownStyle]="{ 'max-height': '300px' }"
+      [(nzNodes)]="nodes"
+      nzShowSearch="true"
+      nzPlaceHolder="无"
+      nzDefaultExpandAll="true"
+      nzShowLine="true"
+      [(ngModel)]="inputParentNodeKey">
+    </nz-tree-select>
+    <p>分类目录和标签不同，它可以有层级关系。您可以有一个“音乐”分类目录，在这个目录下可以有叫做“流行”和“古典”的子目录。</p>
+    <button nz-button nzType="primary" (click)="addNewNode()">添加新分类目录</button>
+  </div>
+  <div nz-col nzSpan="1"></div>
+  <div nz-col nzSpan="15">
+    <nz-tree
+      [(nzData)]="nodes"
+      nzShowLine="true"
+      nzExpandAll="true">
+      <ng-template #nzTreeTemplate let-node>
+        <div class="category-item"
+             style="margin-left: 25px; margin-top: -25px; height: 30px; font-size: large; border-bottom: 1px dashed #000;">
+          <div nz-row>
+            <div nz-col nzSpan="14">
+              <strong style="color: #1890ff;">{{node.title}}</strong>
+            </div>
+            <div nz-col nzSpan="2">
+              <nz-badge [nzCount]="4" [nzStyle]="{ backgroundColor: '#fff', color: '#999', boxShadow: '0 0 0 1px #d9d9d9 inset' }"></nz-badge>
+            </div>
+            <div nz-col nzSpan="5">
+              <button nz-button nzSize="small" nzType="primary" (click)="editNode(node)">编辑</button>
+              &nbsp;
+              <button nz-button nzSize="small" nzType="danger" (click)="deleteNode(node)">删除</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <nz-button-group nzSize="small">
+                <button nz-button nzType="default" (click)="moveUpNode(node)">
+                  <i nz-icon type="up"></i>
+                </button>
+                <button nz-button nzType="default" (click)="moveDownNode(node)">
+                  <i nz-icon type="down"></i>
+                </button>
+              </nz-button-group>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </nz-tree>
+  </div>
+</div>
