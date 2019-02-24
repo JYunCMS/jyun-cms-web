@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilService } from "../util.service";
 
 @Component({
   selector: 'app-navigation-tag',
   templateUrl: './navigation-tag.component.html',
   styleUrls: ['./navigation-tag.component.css']
 })
+
 export class NavigationTagComponent implements OnInit {
 
   inputTagName: string;
@@ -31,10 +33,13 @@ export class NavigationTagComponent implements OnInit {
     }
   ];
 
-  constructor() {
+  constructor(
+    private utilService: UtilService
+  ) {
   }
 
   ngOnInit() {
+    this.utilService.initLeftSiderStatus('navigation', 'tag');
   }
 
   addNewTag(): void {

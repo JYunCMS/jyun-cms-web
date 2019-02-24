@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UtilService } from "./util.service";
 
 @Component({
   selector: 'app-root',
@@ -6,24 +7,45 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  public static self;
 
   isCollapsed = false;
 
   openMap = {
-    sub1: false,
-    sub2: false,
-    sub3: false,
-    sub4: false,
-    sub5: false
+    article: false,
+    navigation: false,
+    resource: false,
+    user: false,
+    setting: false
   };
 
-  openHandler(value: string): void {
+  selectMap = {
+    dashboard: false,
+    article_all: false,
+    article_new: false,
+    navigation_category: false,
+    navigation_tag: false,
+    resource_all: false,
+    resource_upload: false,
+    user_all: false,
+    user_create: false,
+    user_me: false,
+    setting_common: false,
+    setting_edit: false
+  };
 
-    for (const key in this.openMap) {
-      if (key !== value) {
-        this.openMap[key] = false;
-      }
-    }
+  constructor(
+    private utilService: UtilService
+  ) {
+  }
+
+  ngOnInit(): void {
+    AppComponent.self = this;
+  }
+
+  openHandler(value: string): void {
+    this.utilService.openHandler(value);
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzTreeNode } from "ng-zorro-antd";
+import { UtilService } from "../util.service";
 
 @Component({
   selector: 'app-navigation-category',
@@ -15,10 +16,13 @@ export class NavigationCategoryComponent implements OnInit {
   inputNodeUrlAlias: string;
   inputParentNodeKey: string;
 
-  constructor() {
+  constructor(
+    private utilService: UtilService
+  ) {
   }
 
   ngOnInit() {
+    this.utilService.initLeftSiderStatus('navigation', 'category');
 
     this.nodes[0] = new NzTreeNode({
       title: '0-0',
@@ -58,7 +62,6 @@ export class NavigationCategoryComponent implements OnInit {
   }
 
   addNewNode(): void {
-
     if (this.inputParentNodeKey != null) {
       // 非根节点
       const node: NzTreeNode = this.findNodeByKey(this.nodes, this.inputParentNodeKey);
@@ -70,7 +73,6 @@ export class NavigationCategoryComponent implements OnInit {
   }
 
   moveUpNode(node: NzTreeNode): void {
-
     if (node.getParentNode() !== null) {
       // 非根节点
       const currentLevelNodes: NzTreeNode[] = node.getParentNode().getChildren();
@@ -92,7 +94,6 @@ export class NavigationCategoryComponent implements OnInit {
   }
 
   moveDownNode(node: NzTreeNode): void {
-
     if (node.getParentNode() !== null) {
       // 非根节点
       const currentLevelNodes: NzTreeNode[] = node.getParentNode().getChildren();
@@ -114,12 +115,10 @@ export class NavigationCategoryComponent implements OnInit {
   }
 
   editNode(node: NzTreeNode): void {
-
     node.title = 'dddd';
   }
 
   deleteNode(node: NzTreeNode): void {
-
     if (node.getParentNode() !== null) {
       // 非根节点
       const currentLevelNodes: NzTreeNode[] = node.getParentNode().getChildren();
@@ -138,7 +137,6 @@ export class NavigationCategoryComponent implements OnInit {
    * @param key
    */
   private findNodeByKey(nodes: NzTreeNode[], key: string): NzTreeNode {
-
     // 遍历第 1 层
     nodes.forEach(function (tempNode) {
       if (tempNode.key === key) {

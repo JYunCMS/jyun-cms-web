@@ -34,18 +34,17 @@
         <div class="category-item"
              style="margin-left: 25px; margin-top: -25px; height: 30px; font-size: large; border-bottom: 1px dashed #000;">
           <div nz-row>
-            <div nz-col nzSpan="14">
+            <div nz-col nzSpan="12">
               <strong style="color: #1890ff;">{{node.title}}</strong>
             </div>
             <div nz-col nzSpan="2">
               <nz-badge [nzCount]="4" [nzStyle]="{ backgroundColor: '#fff', color: '#999', boxShadow: '0 0 0 1px #d9d9d9 inset' }"></nz-badge>
             </div>
-            <div nz-col nzSpan="5">
+            <div nz-col nzSpan="10">
               <button nz-button nzSize="small" nzType="primary" (click)="editNode(node)">编辑</button>
               &nbsp;
               <button nz-button nzSize="small" nzType="danger" (click)="deleteNode(node)">删除</button>
-            </div>
-            <div nz-col nzSpan="3">
+              &nbsp;
               <nz-button-group nzSize="small">
                 <button nz-button nzType="default" (click)="moveUpNode(node)">
                   <i nz-icon type="up"></i>

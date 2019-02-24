@@ -15,6 +15,7 @@ import { SettingEditComponent } from "./setting-edit/setting-edit.component";
 
 const routes: Routes = [
   {path: '', component: DashboardComponent},
+  {path: 'dashboard', component: DashboardComponent},
   {path: 'article/all', component: ArticleAllComponent},
   {path: 'article/new', component: ArticleNewComponent},
   {path: 'navigation/category', component: NavigationCategoryComponent},
