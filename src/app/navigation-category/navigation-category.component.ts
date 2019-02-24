@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NzTreeNode } from "ng-zorro-antd";
 import { UtilService } from "../util.service";
+import { AppComponent } from "../app.component";
 
 @Component({
   selector: 'app-navigation-category',
@@ -22,7 +23,7 @@ export class NavigationCategoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('navigation', 'category');
+    this.utilService.initLeftSiderStatus('navigation', 'category', AppComponent.self.openMap, AppComponent.self.selectMap);
 
     this.nodes[0] = new NzTreeNode({
       title: '0-0',

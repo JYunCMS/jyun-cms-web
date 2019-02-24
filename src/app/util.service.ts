@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AppComponent } from "./app.component";
 
 @Injectable({
   providedIn: 'root'
@@ -9,19 +8,19 @@ export class UtilService {
   constructor() {
   }
 
-  openHandler(menuValue: string): void {
-    for (const key in AppComponent.self.openMap) {
+  openHandler(menuValue: string, openMap): void {
+    for (const key in openMap) {
       if (key !== menuValue) {
-        AppComponent.self.openMap[key] = false;
+        openMap[key] = false;
       }
     }
   }
 
-  initLeftSiderStatus(menuValue: string, selectedValue: string): void {
+  initLeftSiderStatus(menuValue: string, selectedValue: string, openMap, selectMap): void {
     // 关闭其他菜单项
-    this.openHandler(menuValue);
+    this.openHandler(menuValue, openMap);
     // 展开指定菜单项
-    setTimeout(() => AppComponent.self.openMap[menuValue] = true, 0);
-    setTimeout(() => AppComponent.self.selectMap[menuValue + '_' + selectedValue] = true, 0);
+    setTimeout(() => openMap[menuValue] = true, 0);
+    setTimeout(() => selectMap[menuValue + '_' + selectedValue] = true, 0);
   }
 }

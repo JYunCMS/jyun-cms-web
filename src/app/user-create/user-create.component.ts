@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from "../util.service";
+import { AppComponent } from "../app.component";
 
 @Component({
   selector: 'app-user-create',
@@ -15,6 +16,6 @@ export class UserCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('user', 'create');
+    this.utilService.initLeftSiderStatus('user', 'create', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 }

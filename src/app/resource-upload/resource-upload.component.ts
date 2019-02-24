@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from "../util.service";
+import { AppComponent } from "../app.component";
 
 @Component({
   selector: 'app-resource-upload',
@@ -15,6 +16,6 @@ export class ResourceUploadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('resource', 'upload');
+    this.utilService.initLeftSiderStatus('resource', 'upload', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 }

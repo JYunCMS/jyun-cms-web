@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from "../util.service";
+import { AppComponent } from "../app.component";
 
 @Component({
   selector: 'app-user-me',
@@ -15,6 +16,6 @@ export class UserMeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('user', 'me');
+    this.utilService.initLeftSiderStatus('user', 'me', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 }

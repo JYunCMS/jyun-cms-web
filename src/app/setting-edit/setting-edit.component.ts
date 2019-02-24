@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from "../util.service";
+import { AppComponent } from "../app.component";
 
 @Component({
   selector: 'app-setting-edit',
@@ -15,6 +16,6 @@ export class SettingEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('setting', 'edit');
+    this.utilService.initLeftSiderStatus('setting', 'edit', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 }

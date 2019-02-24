@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from "../util.service";
+import { AppComponent } from "../app.component";
 
 @Component({
   selector: 'app-navigation-tag',
@@ -39,7 +40,7 @@ export class NavigationTagComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('navigation', 'tag');
+    this.utilService.initLeftSiderStatus('navigation', 'tag', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 
   addNewTag(): void {

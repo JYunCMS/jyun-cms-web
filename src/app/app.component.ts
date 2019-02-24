@@ -46,6 +46,6 @@ export class AppComponent implements OnInit {
   }
 
   openHandler(value: string): void {
-    this.utilService.openHandler(value);
+    this.utilService.openHandler(value, this.openMap);
   }
 }
