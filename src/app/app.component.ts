@@ -19,6 +19,7 @@ export class AppComponent {
   };
 
   openHandler(value: string): void {
+
     for (const key in this.openMap) {
       if (key !== value) {
         this.openMap[key] = false;

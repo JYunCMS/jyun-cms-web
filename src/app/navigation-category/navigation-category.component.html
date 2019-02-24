@@ -7,6 +7,9 @@
     <h3>名称：</h3>
     <input nz-input placeholder="新的分类" [(ngModel)]="inputNodeTitle">
     <p>这将是它在站点导航上显示的名字。</p>
+    <h3>别名：</h3>
+    <input nz-input placeholder="例如：设置音乐分类别名为 music" [(ngModel)]="inputNodeUrlAlias">
+    <p>“别名”是在 URL 中使用的别称，它可以令 URL 更美观。通常使用小写，只能包含字母，数字和连字符（-）。</p>
     <h3>父级分类目录：</h3>
     <nz-tree-select
       style="width: 100%;"
