@@ -10,6 +10,11 @@ import { AppComponent } from "../app.component";
 
 export class UserMeComponent implements OnInit {
 
+  username: string;
+  email: string;
+  password: string;
+  passwordAgain: string;
+
   constructor(
     private utilService: UtilService
   ) {
@@ -17,5 +22,9 @@ export class UserMeComponent implements OnInit {
 
   ngOnInit() {
     this.utilService.initLeftSiderStatus('user', 'me', AppComponent.self.openMap, AppComponent.self.selectMap);
+  }
+
+  updateUserMe() {
+    console.log(this.email);
   }
 }

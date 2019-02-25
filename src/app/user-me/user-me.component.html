@@ -1,3 +1,21 @@
-<p>
-  user-me works!
-</p>
+<h1>我的资料</h1>
+<p>更新我的个人资料。</p>
+<table style="line-height: 40px;">
+  <tr>
+    <td style="width: 150px;">用户名</td>
+    <td style="width: 250px;"><input nz-input placeholder="用户名" [(ngModel)]="username"></td>
+  </tr>
+  <tr>
+    <td style="width: 150px;">电子邮件</td>
+    <td style="width: 250px;"><input nz-input placeholder="电子邮件" [(ngModel)]="email"></td>
+  </tr>
+  <tr>
+    <td style="width: 150px;">密码</td>
+    <td style="width: 250px;"><input nz-input placeholder="密码" [(ngModel)]="password"></td>
+  </tr>
+  <tr>
+    <td style="width: 150px;">确认密码</td>
+    <td style="width: 250px;"><input nz-input placeholder="确认密码" [(ngModel)]="passwordAgain"></td>
+  </tr>
+</table>
+<button nz-button nzType="primary" (click)="updateUserMe()" style="margin-top: 10px;">更新我的个人资料</button>

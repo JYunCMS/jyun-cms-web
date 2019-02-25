@@ -1,3 +1,34 @@
-<p>
-  resource-all works!
-</p>
+<h1>所有资源</h1>
+<div>
+  <nz-select style="width: 120px;" [(ngModel)]="date" nzAllowClear nzPlaceHolder="全部日期">
+    <nz-option nzValue="music" nzLabel="2019年一月"></nz-option>
+    <nz-option nzValue="photo" nzLabel="2019年二月"></nz-option>
+  </nz-select>
+  <nz-select style="width: 120px;" [(ngModel)]="type" nzAllowClear nzPlaceHolder="所有资源类型">
+    <nz-option nzValue="picture" nzLabel="图片"></nz-option>
+    <nz-option nzValue="document" nzLabel="文档"></nz-option>
+  </nz-select>
+  <button nz-button nzType="primary">筛选</button>
+</div>
+<nz-table #basicTable [nzData]="dataSet">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Address</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.name}}</td>
+      <td>{{data.age}}</td>
+      <td>{{data.address}}</td>
+      <td>
+        <a>Action 一 {{data.name}}</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a>Delete</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

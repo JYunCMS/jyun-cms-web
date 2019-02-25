@@ -10,6 +10,12 @@ import { AppComponent } from "../app.component";
 
 export class UserCreateComponent implements OnInit {
 
+  username: string;
+  email: string;
+  password: string;
+  passwordAgain: string;
+  selectedValue: string;
+
   constructor(
     private utilService: UtilService
   ) {
@@ -17,5 +23,9 @@ export class UserCreateComponent implements OnInit {
 
   ngOnInit() {
     this.utilService.initLeftSiderStatus('user', 'create', AppComponent.self.openMap, AppComponent.self.selectMap);
+  }
+
+  addNewUser(): void {
+    console.log(this.username);
   }
 }

@@ -1,3 +1,31 @@
-<p>
-  user-create works!
-</p>
+<h1>添加用户</h1>
+<p>为站点添加新的用户，用以协助站点管理或文章发布等工作。</p>
+<table style="line-height: 40px;">
+  <tr>
+    <td style="width: 150px;">用户名</td>
+    <td style="width: 250px;"><input nz-input placeholder="用户名" [(ngModel)]="username"></td>
+  </tr>
+  <tr>
+    <td style="width: 150px;">电子邮件</td>
+    <td style="width: 250px;"><input nz-input placeholder="电子邮件" [(ngModel)]="email"></td>
+  </tr>
+  <tr>
+    <td style="width: 150px;">密码</td>
+    <td style="width: 250px;"><input nz-input placeholder="密码" [(ngModel)]="password"></td>
+  </tr>
+  <tr>
+    <td style="width: 150px;">确认密码</td>
+    <td style="width: 250px;"><input nz-input placeholder="确认密码" [(ngModel)]="passwordAgain"></td>
+  </tr>
+  <tr>
+    <td style="width: 150px;">角色</td>
+    <td style="width: 250px;">
+      <nz-select style="width: 100%;" [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="选择用户角色">
+        <nz-option nzValue="jack" nzLabel="管理员"></nz-option>
+        <nz-option nzValue="lucy" nzLabel="编辑"></nz-option>
+        <nz-option nzValue="mary" nzLabel="作者"></nz-option>
+      </nz-select>
+    </td>
+  </tr>
+</table>
+<button nz-button nzType="primary" (click)="addNewUser()" style="margin-top: 10px;">添加用户</button>
