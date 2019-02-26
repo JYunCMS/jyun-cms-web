@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
-import { DashboardComponent } from "./dashboard/dashboard.component";
-import { ArticleAllComponent } from "./article-all/article-all.component";
-import { ArticleNewComponent } from "./article-new/article-new.component";
-import { NavigationCategoryComponent } from "./navigation-category/navigation-category.component";
-import { NavigationTagComponent } from "./navigation-tag/navigation-tag.component";
-import { ResourceAllComponent } from "./resource-all/resource-all.component";
-import { ResourceUploadComponent } from "./resource-upload/resource-upload.component";
-import { UserAllComponent } from "./user-all/user-all.component";
-import { UserCreateComponent } from "./user-create/user-create.component";
-import { UserMeComponent } from "./user-me/user-me.component";
-import { SettingCommonComponent } from "./setting-common/setting-common.component";
-import { SettingEditComponent } from "./setting-edit/setting-edit.component";
+import { DashboardComponent } from "./component/dashboard/dashboard.component";
+import { ArticleAllComponent } from "./component/article-all/article-all.component";
+import { ArticleNewComponent } from "./component/article-new/article-new.component";
+import { NavigationCategoryComponent } from "./component/navigation-category/navigation-category.component";
+import { NavigationTagComponent } from "./component/navigation-tag/navigation-tag.component";
+import { ResourceAllComponent } from "./component/resource-all/resource-all.component";
+import { ResourceUploadComponent } from "./component/resource-upload/resource-upload.component";
+import { UserAllComponent } from "./component/user-all/user-all.component";
+import { UserCreateComponent } from "./component/user-create/user-create.component";
+import { UserMeComponent } from "./component/user-me/user-me.component";
+import { SettingCommonComponent } from "./component/setting-common/setting-common.component";
+import { SettingEditComponent } from "./component/setting-edit/setting-edit.component";
 
 const routes: Routes = [
   {path: '', component: DashboardComponent},

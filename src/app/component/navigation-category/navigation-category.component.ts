@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NzTreeNode } from "ng-zorro-antd";
-import { UtilService } from "../util.service";
+import { UtilService } from "../../service/util.service";
 import { AppComponent } from "../app.component";
+import { Category } from "../../domain/category";
 
 @Component({
   selector: 'app-navigation-category',
@@ -13,9 +14,9 @@ export class NavigationCategoryComponent implements OnInit {
 
   nodes: NzTreeNode[] = [];
 
-  inputNodeTitle: string;
-  inputNodeUrlAlias: string;
-  inputParentNodeKey: string;
+  title: string;
+  urlAlias: string;
+  parentNodeUrlAlias: string;
 
   constructor(
     private utilService: UtilService
@@ -63,14 +64,18 @@ export class NavigationCategoryComponent implements OnInit {
   }
 
   addNewNode(): void {
-    if (this.inputParentNodeKey != null) {
+    if (this.parentNodeUrlAlias != null) {
       // 非根节点
-      const node: NzTreeNode = this.findNodeByKey(this.nodes, this.inputParentNodeKey);
-      node.addChildren([new NzTreeNode({title: this.inputNodeTitle, key: 'abc'})]);
+      const node: NzTreeNode = this.findNodeByKey(this.nodes, this.parentNodeUrlAlias);
+      node.addChildren([new NzTreeNode({title: this.title, key: 'abc'})]);
     } else {
       // 根节点
-      this.nodes[this.nodes.length] = new NzTreeNode({title: this.inputNodeTitle, key: 'abc'});
+      this.nodes[this.nodes.length] = new NzTreeNode({title: this.title, key: 'abc'});
     }
+
+    const category: Category = new Category(this.urlAlias, this.title, null, null, this.parentNodeUrlAlias, null, null);
+    console.log(category);
+
   }
 
   moveUpNode(node: NzTreeNode): void {

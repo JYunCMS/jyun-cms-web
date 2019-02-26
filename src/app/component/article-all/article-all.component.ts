@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from "../util.service";
+import { UtilService } from "../../service/util.service";
 import { AppComponent } from "../app.component";
 
 @Component({
-  selector: 'app-resource-all',
-  templateUrl: './resource-all.component.html',
-  styleUrls: ['./resource-all.component.css']
+  selector: 'app-article-all',
+  templateUrl: './article-all.component.html',
+  styleUrls: ['./article-all.component.css']
 })
 
-export class ResourceAllComponent implements OnInit {
+export class ArticleAllComponent implements OnInit {
 
-  date: number; // 资源时间筛选条件
-  type: string; // 资源类型筛选条件
+  scope: string; // 文章显示范围（全部、已发布……）
+  date: number; // 文章时间筛选条件
+  category: string; // 文章分类筛选条件
+  tag: string; // 文章标签筛选条件
 
   dataSet = [
     {
@@ -94,6 +96,6 @@ export class ResourceAllComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('resource', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.utilService.initLeftSiderStatus('article', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 }
