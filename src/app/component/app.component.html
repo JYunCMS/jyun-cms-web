@@ -46,6 +46,26 @@
   <nz-layout>
     <nz-header style="background: #fff; padding: 0; position: fixed; width: 100%; z-index: 99999">
       <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'" (click)="isCollapsed=!isCollapsed"></i>
+      <nz-alert
+        *ngIf="errorMessage != null"
+        nzMessage="Error"
+        nzDescription="{{errorMessage}}"
+        nzType="error"
+        nzShowIcon
+        nzCloseable
+        (nzOnClose)="errorMessage = null"
+        style="position: fixed; top: 30px; right: 40px; width: 400px;">
+      </nz-alert>
+      <nz-alert
+        *ngIf="warningMessage != null"
+        nzMessage="Warning"
+        nzDescription="{{warningMessage}}"
+        nzType="warning"
+        nzShowIcon
+        nzCloseable
+        (nzOnClose)="warningMessage = null"
+        style="position: fixed; top: 30px; right: 40px; width: 400px;">
+      </nz-alert>
     </nz-header>
     <nz-content style="margin:0 16px;">
       <div style="margin-top: 90px; padding:24px; background: #fff;">

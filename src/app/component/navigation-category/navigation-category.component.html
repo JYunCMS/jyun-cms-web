@@ -13,7 +13,7 @@
     <h3>父级分类目录：</h3>
     <nz-tree-select
       style="width: 100%;"
-      [nzDropdownStyle]="{ 'max-height': '300px' }"
+      [nzDropdownStyle]="{ 'max-height': '150px' }"
       [(nzNodes)]="nodes"
       nzShowSearch="true"
       nzPlaceHolder="无"
@@ -38,12 +38,12 @@
               <strong style="color: #1890ff;">{{node.title}}</strong>
             </div>
             <div nz-col nzSpan="2">
-              <nz-badge [nzCount]="4" [nzStyle]="{ backgroundColor: '#fff', color: '#999', boxShadow: '0 0 0 1px #d9d9d9 inset' }"></nz-badge>
+              <nz-tag [nzColor]="'blue'">{{node.origin.articleCount}}</nz-tag>
             </div>
             <div nz-col nzSpan="10">
-              <button nz-button nzSize="small" nzType="primary" (click)="editNode(node)">编辑</button>
+              <button nz-button nzSize="small" nzType="primary">编辑</button>
               &nbsp;
-              <button nz-button nzSize="small" nzType="danger" (click)="deleteNode(node)">删除</button>
+              <button nz-button nzSize="small" nzType="danger" (click)="showDeleteConfirm(node)">删除</button>
               &nbsp;
               <nz-button-group nzSize="small">
                 <button nz-button nzType="default" (click)="moveUpNode(node)">

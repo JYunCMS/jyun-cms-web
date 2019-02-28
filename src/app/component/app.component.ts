@@ -11,6 +11,9 @@ export class AppComponent implements OnInit {
 
   public static self;
 
+  errorMessage: string;
+  warningMessage: string;
+
   isCollapsed = false;
 
   openMap = {
