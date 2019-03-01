@@ -17,8 +17,8 @@
       [nzData]="displayData">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
-          <th nzShowSort nzSortKey="name">名称</th>
-          <th nzShowSort nzSortKey="articleCount">文章总数</th>
+          <th nzShowSort nzSortKey="name" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">名称</th>
+          <th nzShowSort nzSortKey="articleCount" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">文章总数</th>
           <th>操作</th>
         </tr>
       </thead>
