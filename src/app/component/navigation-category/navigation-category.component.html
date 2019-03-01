@@ -1,6 +1,6 @@
 <h1>分类目录</h1>
 <div nz-row>
-  <div nz-col nzSpan="8">
+  <div nz-col nzSpan="7">
     <h2>
       <strong>添加新分类目录</strong>
     </h2>
@@ -25,7 +25,7 @@
     <button nz-button nzType="primary" (click)="addNewNode()">添加新分类目录</button>
   </div>
   <div nz-col nzSpan="1"></div>
-  <div nz-col nzSpan="15">
+  <div nz-col nzSpan="16">
     <nz-tree
       [(nzData)]="nodes"
       nzShowLine="true"
@@ -34,18 +34,26 @@
         <div class="category-item"
              style="margin-left: 25px; margin-top: -25px; height: 30px; font-size: large; border-bottom: 1px dashed #000;">
           <div nz-row>
-            <div nz-col nzSpan="12">
+            <div nz-col nzSpan="6">
               <strong style="color: #1890ff;">{{node.title}}</strong>
             </div>
-            <div nz-col nzSpan="2">
-              <nz-tag [nzColor]="'blue'">{{node.origin.articleCount}}</nz-tag>
+            <div nz-col nzSpan="9">
+              <span nz-tooltip nzPlacement="right" nzTitle="别名 (URL)">({{node.key}})</span>
             </div>
-            <div nz-col nzSpan="10">
-              <button nz-button nzSize="small" nzType="primary">编辑</button>
-              &nbsp;
-              <button nz-button nzSize="small" nzType="danger" (click)="showDeleteConfirm(node)">删除</button>
-              &nbsp;
-              <nz-button-group nzSize="small">
+            <div nz-col nzSpan="2">
+              <span nz-tooltip nzPlacement="right" nzTitle="文章总数">
+                <nz-tag [nzColor]="'blue'">{{node.origin.articleCount}}</nz-tag>
+              </span>
+            </div>
+            <div nz-col nzSpan="7">
+              <button nz-button nzSize="small" nzType="primary"
+                      style="margin-left: 5px; margin-right: 5px;">编辑
+              </button>
+              <button nz-button nzSize="small" nzType="danger" (click)="showDeleteConfirm(node)"
+                      style="margin-left: 5px; margin-right: 5px;">删除
+              </button>
+              <nz-button-group nzSize="small" nz-tooltip nzPlacement="right" nzTitle="排序"
+                               style="margin-left: 5px; margin-right: 5px;">
                 <button nz-button nzType="default" (click)="moveUpNode(node)">
                   <i nz-icon type="up"></i>
                 </button>

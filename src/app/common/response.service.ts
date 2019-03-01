@@ -18,7 +18,7 @@ export class ResponseService {
       console.log(error);
 
       // 应用界面为用户弹出错误提示
-      AppComponent.self.errorMessage = `${operation} failed: ${error.message}`;
+      AppComponent.self.errorMessage = `${operation} failed: ${error.error.message}`;
 
       // 通过返回空结果让应用程序继续运行
       return of(result as T);

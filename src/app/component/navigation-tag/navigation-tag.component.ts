@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from "../../service/util.service";
+import { UtilService } from "../../common/util.service";
 import { AppComponent } from "../app.component";
+import { TagService } from "../../service/tag.service";
+import { Tag } from "../../domain/tag";
 
 @Component({
   selector: 'app-navigation-tag',
@@ -10,41 +12,56 @@ import { AppComponent } from "../app.component";
 
 export class NavigationTagComponent implements OnInit {
 
-  inputTagName: string;
-  inputTagUrlAlias: string;
+  tags: Tag[] = [];
 
-  data = [
-    {
-      key: '1',
-      name: '笔记',
-      age: 32,
-      address: 'note',
-    },
-    {
-      key: '2',
-      name: 'Java技术',
-      age: 42,
-      address: 'Java',
-    },
-    {
-      key: '3',
-      name: '生活',
-      age: 32,
-      address: 'life',
-    }
-  ];
+  newTagName: string;
+
+  sortName: string = null;
+  sortValue: string = null;
+  displayData = [...this.tags];
 
   constructor(
-    private utilService: UtilService
+    private utilService: UtilService,
+    private tagService: TagService
   ) {
   }
 
   ngOnInit() {
     this.utilService.initLeftSiderStatus('navigation', 'tag', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.tagService.getTags()
+      .subscribe(result => this.initTags(result));
+  }
+
+  private initTags(tags: Tag[]) {
+    this.tags = tags;
+    this.displayData = [...this.tags];
   }
 
   addNewTag(): void {
-    console.log(this.inputTagName);
-    console.log(this.inputTagUrlAlias);
+    this.tagService.addNewTag(this.newTagName)
+      .subscribe(result => {
+        this.initTags(result);
+        this.newTagName = null;
+      });
+  }
+
+  deleteTag(name: string) {
+    this.tagService.deleteTag(name)
+      .subscribe(result => this.initTags(result));
+  }
+
+  sort(sort: { key: string; value: string }) {
+    this.sortName = sort.key;
+    this.sortValue = sort.value;
+    this.search();
+  }
+
+  private search() {
+    const tags = [...this.tags];
+    if (this.sortName && this.sortValue) {
+      this.displayData = tags.sort((a, b) => (this.sortValue === 'ascend') ? (a[this.sortName] > b[this.sortName] ? 1 : -1) : (b[this.sortName] > a[this.sortName] ? 1 : -1));
+    } else {
+      this.displayData = tags;
+    }
   }
 }

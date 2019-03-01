@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { BackEndApi } from "../back-end-api";
 import { catchError } from "rxjs/operators";
-import { ResponseService } from "./response.service";
+import { ResponseService } from "../common/response.service";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class CategoryService {
 
   getNodes(): Observable<Category[]> {
     return this.http.get<Category[]>(BackEndApi.categories)
-      .pipe(catchError(this.responseService.handleError<Category[]>('getNodes', null)));
+      .pipe(catchError(this.responseService.handleError<Category[]>('categoryService.getNodes()', null)));
   }
 
   addNode(category: Category): Observable<Category[]> {
@@ -29,7 +29,7 @@ export class CategoryService {
       })
     };
     return this.http.post<Category[]>(BackEndApi.categories, category, headers)
-      .pipe(catchError(this.responseService.handleError<Category[]>('addNode', null)));
+      .pipe(catchError(this.responseService.handleError<Category[]>('categoryService.addNode()', null)));
   }
 
   updateNode(category: Category): Observable<Category[]> {
@@ -39,21 +39,21 @@ export class CategoryService {
       })
     };
     return this.http.put<Category[]>(BackEndApi.categories, category, headers)
-      .pipe(catchError(this.responseService.handleError<Category[]>('updateNode', null)));
+      .pipe(catchError(this.responseService.handleError<Category[]>('categoryService.updateNode()', null)));
   }
 
-  deleteNode(urlAlias: string): Observable<void> {
+  deleteNode(urlAlias: string): Observable<Category[]> {
     const params = new HttpParams()
       .append('urlAlias', urlAlias);
-    return this.http.delete<void>(BackEndApi.categories + '?' + params)
-      .pipe(catchError(this.responseService.handleError<void>('deleteNode', null)));
+    return this.http.delete<Category[]>(BackEndApi.categories + '?' + params)
+      .pipe(catchError(this.responseService.handleError<Category[]>('categoryService.deleteNode()', null)));
   }
 
   getCategoryById(urlAlias: string): Observable<Category> {
     const params = new HttpParams()
       .append('urlAlias', urlAlias);
     return this.http.get<Category>(BackEndApi.categoriesCategoryById + params)
-      .pipe(catchError(this.responseService.handleError<Category>('getNodeById', null)));
+      .pipe(catchError(this.responseService.handleError<Category>('categoryService.getNodeById()', null)));
   }
 
   getCountByLevelAndParentUrlAlias(nodeLevel: number, parentUrlAlias: string): Observable<number> {
@@ -61,20 +61,20 @@ export class CategoryService {
       .append('nodeLevel', nodeLevel.toString())
       .append('parentUrlAlias', parentUrlAlias);
     return this.http.get<number>(BackEndApi.categoriesCountByLevelAndParentUrlAlias + params)
-      .pipe(catchError(this.responseService.handleError<number>('getCountByLevelAndParentUrlAlias', null)));
+      .pipe(catchError(this.responseService.handleError<number>('categoryService.getCountByLevelAndParentUrlAlias()', null)));
   }
 
   moveUpNode(urlAlias: string): Observable<Category[]> {
     const params = new HttpParams()
       .append('urlAlias', urlAlias);
     return this.http.patch<Category[]>(BackEndApi.categoriesMoveUpNode + params, null)
-      .pipe(catchError(this.responseService.handleError<Category[]>('moveUpNode', null)));
+      .pipe(catchError(this.responseService.handleError<Category[]>('categoryService.moveUpNode()', null)));
   }
 
   moveDownNode(urlAlias: string): Observable<Category[]> {
     const params = new HttpParams()
       .append('urlAlias', urlAlias);
     return this.http.patch<Category[]>(BackEndApi.categoriesMoveDownNode + params, null)
-      .pipe(catchError(this.responseService.handleError<Category[]>('moveDownNode', null)));
+      .pipe(catchError(this.responseService.handleError<Category[]>('categoryService.moveDownNode()', null)));
   }
 }

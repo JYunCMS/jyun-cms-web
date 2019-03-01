@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService, NzTreeNode } from "ng-zorro-antd";
-import { UtilService } from "../../service/util.service";
+import { UtilService } from "../../common/util.service";
 import { AppComponent } from "../app.component";
 import { Category } from "../../domain/category";
 import { CategoryService } from "../../service/category.service";
@@ -164,10 +164,7 @@ export class NavigationCategoryComponent implements OnInit {
 
   deleteNode(node: NzTreeNode): void {
     this.categoryService.deleteNode(node.key)
-      .subscribe(() => this.categoryService.getNodes()
-        .subscribe(categories => {
-          this.initNodes(this.nodes, categories);
-        }));
+      .subscribe(categories => this.initNodes(this.nodes, categories));
   }
 
   showDeleteConfirm(node: NzTreeNode): void {

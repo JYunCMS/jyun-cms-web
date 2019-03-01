@@ -1,44 +1,37 @@
 <h1>标签</h1>
 <div nz-row>
-  <div nz-col nzSpan="8">
+  <div nz-col nzSpan="7">
     <h2>
       <strong>添加新标签</strong>
     </h2>
     <h3>名称：</h3>
-    <input nz-input placeholder="新的标签" [(ngModel)]="inputTagName">
+    <input nz-input placeholder="新的标签" [(ngModel)]="newTagName">
     <p>这将是它在站点上显示的名字。</p>
-    <h3>别名：</h3>
-    <input nz-input placeholder="例如：设置笔记标签别名为 note" [(ngModel)]="inputTagUrlAlias">
-    <p>“别名”是在 URL 中使用的别称，它可以令 URL 更美观。通常使用小写，只能包含字母，数字和连字符（-）。</p>
     <button nz-button nzType="primary" (click)="addNewTag()">添加新标签</button>
   </div>
   <div nz-col nzSpan="1"></div>
-  <div nz-col nzSpan="15">
+  <div nz-col nzSpan="16">
     <nz-table
       #smallTable
       nzSize="small"
-      [nzData]="data">
-      <thead>
+      [nzData]="displayData">
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
-          <th>名称</th>
-          <th>别名(URL)</th>
-          <th>文章总数</th>
+          <th nzShowSort nzSortKey="name">名称</th>
+          <th nzShowSort nzSortKey="articleCount">文章总数</th>
           <th>操作</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of smallTable.data">
+        <tr *ngFor="let tag of smallTable.data">
           <td>
-            <strong style="color: #1890ff;">{{data.name}}</strong>
-          </td>
-          <td>{{data.address}}</td>
-          <td>
-            <nz-tag [nzColor]="'blue'">{{data.age}}</nz-tag>
+            <strong style="color: #1890ff;">{{tag.name}}</strong>
           </td>
           <td>
-            <button nz-button nzSize="small" nzType="primary">编辑</button>
-            &nbsp;
-            <button nz-button nzSize="small" nzType="danger">删除</button>
+            <nz-tag [nzColor]="'blue'">{{tag.articleCount}}</nz-tag>
+          </td>
+          <td>
+            <button nz-button nzSize="small" nzType="danger" (click)="deleteTag(tag.name)">删除</button>
           </td>
         </tr>
       </tbody>

@@ -9,4 +9,7 @@ export class BackEndApi {
   static categoriesCountByLevelAndParentUrlAlias = BackEndApi.categories + '/countByLevelAndParentUrlAlias?';
   static categoriesMoveUpNode = BackEndApi.categories + '/moveUpNode?';
   static categoriesMoveDownNode = BackEndApi.categories + '/moveDownNode?';
+
+  // RESTful API (tags/*)
+  static tags = BackEndApi.hostAddress + '/tags';
 }
