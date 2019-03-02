@@ -1,9 +1,9 @@
 <nz-layout style="height: 100%;">
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]=null>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]=null nzWidth="180">
     <div class="logo">
       <img src="../../assets/img/JYunCMS-Logo.png" style="height: 100%;">
     </div>
-    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" style="letter-spacing: 3px;">
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" style="letter-spacing: 2px;">
       <li nz-menu-item routerLink="/dashboard" [nzSelected]="selectMap.dashboard">
         <span title><i nz-icon type="dashboard"></i><span class="nav-text">仪表盘</span></span>
       </li>
