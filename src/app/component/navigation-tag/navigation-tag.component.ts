@@ -12,10 +12,9 @@ import { Tag } from "../../domain/tag";
 
 export class NavigationTagComponent implements OnInit {
 
-  tags: Tag[] = [];
-
   newTagName: string;
 
+  tags: Tag[] = [];
   sortName: string = null;
   sortValue: string = null;
   displayData = [...this.tags];

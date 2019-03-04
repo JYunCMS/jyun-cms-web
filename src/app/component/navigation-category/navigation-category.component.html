@@ -41,7 +41,7 @@
               <span nz-tooltip nzPlacement="right" nzTitle="别名 (URL)">({{node.key}})</span>
             </div>
             <div nz-col nzSpan="2">
-              <span nz-tooltip nzPlacement="right" nzTitle="文章总数">
+              <span nz-tooltip nzPlacement="right" nzTitle="文章总数" *ngIf="node.isLeaf">
                 <nz-tag [nzColor]="'blue'">{{node.origin.articleCount}}</nz-tag>
               </span>
             </div>

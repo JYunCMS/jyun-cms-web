@@ -1,7 +1,7 @@
 export class BackEndApi {
 
   // Back End Host Address
-  private static hostAddress = 'http://localhost:8080';
+  static hostAddress = 'http://localhost:8080';
 
   // RESTful API (categories/*)
   static categories = BackEndApi.hostAddress + '/categories';
@@ -15,4 +15,6 @@ export class BackEndApi {
 
   // RESTful API (resources/*)
   static resources = BackEndApi.hostAddress + '/resources';
+  static resourcesFilterConditions = BackEndApi.resources + '/filter-conditions';
+  static resourcesByConditions = BackEndApi.resources + '/by-conditions';
 }

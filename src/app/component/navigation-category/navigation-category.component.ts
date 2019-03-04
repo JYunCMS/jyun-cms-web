@@ -162,11 +162,6 @@ export class NavigationCategoryComponent implements OnInit {
     }
   }
 
-  deleteNode(node: NzTreeNode): void {
-    this.categoryService.deleteNode(node.key)
-      .subscribe(categories => this.initNodes(this.nodes, categories));
-  }
-
   showDeleteConfirm(node: NzTreeNode): void {
     if (node.isLeaf) {
       // 警告：该分类下创建的自定义页面将被删除，文章将被移动到回收站，确认继续吗？
@@ -176,13 +171,18 @@ export class NavigationCategoryComponent implements OnInit {
         nzOnOk: () => this.deleteNode(node)
       });
     } else {
-      // 警告：该分类及其所有子分类下创建的自定义页面将被删除，文章将被移动到回收站，确认继续吗？
+      // 严重警告：该分类及其所有子分类下创建的自定义页面将被删除，文章将被移动到回收站，确认继续吗？
       this.modalService.confirm({
         nzTitle: '<i><b>严重警告：</b></i>',
         nzContent: '该分类及其所有子分类下创建的自定义页面都将被删除，文章将被移动到回收站<br/><br/><b>确认继续吗？</b>',
         nzOnOk: () => this.deleteNode(node)
       });
     }
+  }
+
+  private deleteNode(node: NzTreeNode): void {
+    this.categoryService.deleteNode(node.key)
+      .subscribe(categories => this.initNodes(this.nodes, categories));
   }
 
   moveUpNode(node: NzTreeNode): void {

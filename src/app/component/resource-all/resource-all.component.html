@@ -1,34 +1,47 @@
 <h1>所有资源</h1>
-<div>
-  <nz-select style="width: 120px;" [(ngModel)]="date" nzAllowClear nzPlaceHolder="全部日期">
-    <nz-option nzValue="music" nzLabel="2019年一月"></nz-option>
-    <nz-option nzValue="photo" nzLabel="2019年二月"></nz-option>
+<div *ngIf="filterConditions != null">
+  <nz-select style="width: 120px;" nzSize="small" [(ngModel)]="selectedDate" nzAllowClear nzPlaceHolder="全部日期">
+    <nz-option nzValue="{{date}}" nzLabel="{{date}}" *ngFor="let date of filterConditions.dateList"></nz-option>
   </nz-select>
-  <nz-select style="width: 120px;" [(ngModel)]="type" nzAllowClear nzPlaceHolder="所有资源类型">
-    <nz-option nzValue="picture" nzLabel="图片"></nz-option>
-    <nz-option nzValue="document" nzLabel="文档"></nz-option>
+  &nbsp;
+  <nz-select style="width: 180px;" nzSize="small" [(ngModel)]="selectedType" nzAllowClear nzPlaceHolder="所有资源类型">
+    <nz-option nzValue="{{type}}" nzLabel="{{type}}" *ngFor="let type of filterConditions.typeList"></nz-option>
   </nz-select>
-  <button nz-button nzType="primary">筛选</button>
+  &nbsp;
+  <button nz-button nzType="primary" nzSize="small" (click)="getByConditions()">筛选</button>
 </div>
-<nz-table #basicTable [nzData]="dataSet">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Address</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{data.name}}</td>
-      <td>{{data.age}}</td>
-      <td>{{data.address}}</td>
-      <td>
-        <a>Action 一 {{data.name}}</a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <a>Delete</a>
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
+<div style="margin-top: 20px;">
+  <nz-table #basicTable [nzData]="displayData">
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
+      <tr>
+        <th>文件名</th>
+        <th>文件大小</th>
+        <th>资源类型</th>
+        <th nzShowSort nzSortKey="referenceCount" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">引用数</th>
+        <th>资源永久地址</th>
+        <th nzShowSort nzSortKey="createdAt" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">日期</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let resource of basicTable.data">
+        <td>{{resource.originalFilename}}</td>
+        <td>{{resource.fileSize}}</td>
+        <td>{{resource.fileType}}</td>
+        <td>
+          <nz-tag [nzColor]="'blue'">{{resource.referenceCount}}</nz-tag>
+        </td>
+        <td>
+          <a href="{{backEndHostAddress}}/{{resource.filePath}}" target="_blank">{{backEndHostAddress}}
+            /{{resource.filePath}}</a>
+        </td>
+        <td>{{resource.createdAt}}</td>
+        <td>
+          <button nz-button nzSize="small" nzType="danger" style="margin-left: 5px; margin-right: 5px;"
+                  (click)="showDeleteConfirm(resource)">删除
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
