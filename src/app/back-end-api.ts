@@ -12,4 +12,7 @@ export class BackEndApi {
 
   // RESTful API (tags/*)
   static tags = BackEndApi.hostAddress + '/tags';
+
+  // RESTful API (resources/*)
+  static resources = BackEndApi.hostAddress + '/resources';
 }

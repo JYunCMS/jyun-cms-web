@@ -2,12 +2,12 @@
 <nz-upload
   nzType="drag"
   [nzMultiple]="true"
-  [nzLimit]="2"
-  nzAction="https://jsonplaceholder.typicode.com/posts/"
+  [nzSize]="10240"
+  [nzAction]="uploadAddress"
   (nzChange)="handleChange($event)">
   <p class="ant-upload-drag-icon">
     <i nz-icon type="inbox"></i>
   </p>
   <p class="ant-upload-text">单击或拖动文件到此区域进行上传</p>
-  <p class="ant-upload-hint">支持单个或批量上传</p>
+  <p class="ant-upload-hint">支持单个或批量上传，按住 ctrl 可选择多个文件，文件限制大小：10MB</p>
 </nz-upload>

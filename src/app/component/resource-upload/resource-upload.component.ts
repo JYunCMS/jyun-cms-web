@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UtilService } from "../../common/util.service";
 import { AppComponent } from "../app.component";
 import { NzMessageService } from "ng-zorro-antd";
+import { BackEndApi } from "../../back-end-api";
 
 @Component({
   selector: 'app-resource-upload',
@@ -10,6 +11,8 @@ import { NzMessageService } from "ng-zorro-antd";
 })
 
 export class ResourceUploadComponent implements OnInit {
+
+  uploadAddress: string = BackEndApi.resources;
 
   constructor(
     private utilService: UtilService,
@@ -21,16 +24,15 @@ export class ResourceUploadComponent implements OnInit {
     this.utilService.initLeftSiderStatus('resource', 'upload', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 
-  // tslint:disable-next-line:typedef
-  handleChange({file, fileList}): void {
+  handleChange({file}): void {
     const status = file.status;
     if (status !== 'uploading') {
-      console.log(file, fileList);
+      this.nzMsgService.loading(`${file.name} 上传中……`);
     }
     if (status === 'done') {
-      this.nzMsgService.success(`${file.name} file uploaded successfully.`);
+      this.nzMsgService.success(`${file.name} 上传成功`);
     } else if (status === 'error') {
-      this.nzMsgService.error(`${file.name} file upload failed.`);
+      this.nzMsgService.error(`${file.name} 上传失败 \n ${file.error.error.message}`);
     }
   }
 }
