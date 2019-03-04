@@ -5,10 +5,10 @@ export class BackEndApi {
 
   // RESTful API (categories/*)
   static categories = BackEndApi.hostAddress + '/categories';
-  static categoriesCategoryById = BackEndApi.categories + '/categoryById?';
-  static categoriesCountByLevelAndParentUrlAlias = BackEndApi.categories + '/countByLevelAndParentUrlAlias?';
-  static categoriesMoveUpNode = BackEndApi.categories + '/moveUpNode?';
-  static categoriesMoveDownNode = BackEndApi.categories + '/moveDownNode?';
+  static categoriesCategory = BackEndApi.categories + '/category?';
+  static categoriesCount = BackEndApi.categories + '/count?';
+  static categoriesMoveUpNode = BackEndApi.categories + '/move-up-node?';
+  static categoriesMoveDownNode = BackEndApi.categories + '/move-down-node?';
 
   // RESTful API (tags/*)
   static tags = BackEndApi.hostAddress + '/tags';

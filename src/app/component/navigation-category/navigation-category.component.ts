@@ -96,12 +96,12 @@ export class NavigationCategoryComponent implements OnInit {
         .subscribe(result => this.handleUpdateNode(result));
 
       // 确定当前添加节点层级 nodeLevel
-      this.categoryService.getCategoryById(this.parentNodeUrlAlias)
+      this.categoryService.getCategory(this.parentNodeUrlAlias)
         .subscribe(parentCategory => {
           category.nodeLevel = parentCategory.nodeLevel + 1;
 
           // 确定当前添加节点排序 sequence
-          this.categoryService.getCountByLevelAndParentUrlAlias(parentCategory.nodeLevel + 1, parentCategory.urlAlias)
+          this.categoryService.getCount(parentCategory.nodeLevel + 1, parentCategory.urlAlias)
             .subscribe(currentLevelCount => {
               category.sequence = currentLevelCount + 1;
 
@@ -130,7 +130,7 @@ export class NavigationCategoryComponent implements OnInit {
       category.parentNodeUrlAlias = '';
 
       // 确定当前添加节点排序 sequence
-      this.categoryService.getCountByLevelAndParentUrlAlias(0, '')
+      this.categoryService.getCount(0, '')
         .subscribe(result => {
           category.sequence = result + 1;
 

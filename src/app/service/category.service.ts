@@ -49,18 +49,18 @@ export class CategoryService {
       .pipe(catchError(this.responseService.handleError<Category[]>('categoryService.deleteNode()', null)));
   }
 
-  getCategoryById(urlAlias: string): Observable<Category> {
+  getCategory(urlAlias: string): Observable<Category> {
     const params = new HttpParams()
       .append('urlAlias', urlAlias);
-    return this.http.get<Category>(BackEndApi.categoriesCategoryById + params)
+    return this.http.get<Category>(BackEndApi.categoriesCategory + params)
       .pipe(catchError(this.responseService.handleError<Category>('categoryService.getNodeById()', null)));
   }
 
-  getCountByLevelAndParentUrlAlias(nodeLevel: number, parentUrlAlias: string): Observable<number> {
+  getCount(nodeLevel: number, parentUrlAlias: string): Observable<number> {
     const params = new HttpParams()
       .append('nodeLevel', nodeLevel.toString())
       .append('parentUrlAlias', parentUrlAlias);
-    return this.http.get<number>(BackEndApi.categoriesCountByLevelAndParentUrlAlias + params)
+    return this.http.get<number>(BackEndApi.categoriesCount + params)
       .pipe(catchError(this.responseService.handleError<number>('categoryService.getCountByLevelAndParentUrlAlias()', null)));
   }
 
