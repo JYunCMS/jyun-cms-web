@@ -1,3 +1,7 @@
-<p>
-  article-new works!
-</p>
+<h1>写文章</h1>
+<editor
+  style="z-index: 100;"
+  [init]="tinyMceSettings"
+  [(ngModel)]="articleData"
+  (onChange)="onChange($event)">
+</editor>

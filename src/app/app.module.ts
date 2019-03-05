@@ -21,6 +21,7 @@ import { UserCreateComponent } from './component/user-create/user-create.compone
 import { UserMeComponent } from './component/user-me/user-me.component';
 import { SettingCommonComponent } from './component/setting-common/setting-common.component';
 import { SettingEditComponent } from './component/setting-edit/setting-edit.component';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 registerLocaleData(zh);
 
@@ -46,7 +47,8 @@ registerLocaleData(zh);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    EditorModule
   ],
   providers: [{provide: NZ_I18N, useValue: zh_CN}],
   bootstrap: [AppComponent]
