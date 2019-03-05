@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { ResponseService } from "../common/response.service";
-import { Observable } from "rxjs";
-import { Tag } from "../domain/tag";
-import { BackEndApi } from "../back-end-api";
-import { catchError } from "rxjs/operators";
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { ResponseService } from '../common/response.service';
+import { Observable } from 'rxjs';
+import { Tag } from '../domain/tag';
+import { BackEndApi } from '../back-end-api';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

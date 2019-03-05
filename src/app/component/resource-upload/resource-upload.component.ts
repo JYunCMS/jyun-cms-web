@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from "../../common/util.service";
-import { AppComponent } from "../app.component";
-import { NzMessageService } from "ng-zorro-antd";
-import { BackEndApi } from "../../back-end-api";
+import { UtilService } from '../../common/util.service';
+import { AppComponent } from '../app.component';
+import { NzMessageService } from 'ng-zorro-antd';
+import { BackEndApi } from '../../back-end-api';
 
 @Component({
   selector: 'app-resource-upload',

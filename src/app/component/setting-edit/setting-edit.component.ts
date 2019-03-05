@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from "../../common/util.service";
-import { AppComponent } from "../app.component";
+import { UtilService } from '../../common/util.service';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-setting-edit',

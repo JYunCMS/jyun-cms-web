@@ -1,4 +1,4 @@
-import { BaseEntity } from "./-base-entity";
+import { BaseEntity } from './-base-entity';
 
 export class Category extends BaseEntity {
   urlAlias: string;

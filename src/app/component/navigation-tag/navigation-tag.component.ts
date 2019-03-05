@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from "../../common/util.service";
-import { AppComponent } from "../app.component";
-import { TagService } from "../../service/tag.service";
-import { Tag } from "../../domain/tag";
+import { UtilService } from '../../common/util.service';
+import { AppComponent } from '../app.component';
+import { TagService } from '../../service/tag.service';
+import { Tag } from '../../domain/tag';
 
 @Component({
   selector: 'app-navigation-tag',

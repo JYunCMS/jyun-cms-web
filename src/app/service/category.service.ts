@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Category } from "../domain/category";
-import { Observable } from "rxjs";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { BackEndApi } from "../back-end-api";
-import { catchError } from "rxjs/operators";
-import { ResponseService } from "../common/response.service";
+import { Category } from '../domain/category';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { BackEndApi } from '../back-end-api';
+import { catchError } from 'rxjs/operators';
+import { ResponseService } from '../common/response.service';
 
 @Injectable({
   providedIn: 'root'

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from "../common/util.service";
+import { UtilService } from '../common/util.service';
 
 @Component({
   selector: 'app-root',

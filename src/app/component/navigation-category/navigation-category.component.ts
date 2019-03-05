@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NzModalService, NzTreeNode } from "ng-zorro-antd";
-import { UtilService } from "../../common/util.service";
-import { AppComponent } from "../app.component";
-import { Category } from "../../domain/category";
-import { CategoryService } from "../../service/category.service";
+import { NzModalService, NzTreeNode } from 'ng-zorro-antd';
+import { UtilService } from '../../common/util.service';
+import { AppComponent } from '../app.component';
+import { Category } from '../../domain/category';
+import { CategoryService } from '../../service/category.service';
 
 @Component({
   selector: 'app-navigation-category',
@@ -40,7 +40,7 @@ export class NavigationCategoryComponent implements OnInit {
     const nodeLevelList: NzTreeNode[][] = [];
     for (let n = 0, currentLevel = 0; n < categories.length; currentLevel++) {
       const tempNodeList: NzTreeNode[] = [];
-      categories.forEach(function (category) {
+      categories.forEach(function(category) {
         if (category.nodeLevel === currentLevel) {
           tempNodeList.push(new NzTreeNode({
             key: category.urlAlias,
@@ -68,8 +68,8 @@ export class NavigationCategoryComponent implements OnInit {
     for (let i = nodeLevelList.length - 1; i >= 0; i--) {
       if (i !== 0) {
         // 向父级节点 addChildren
-        nodeLevelList[i].forEach(function (subNode) {
-          nodeLevelList[i - 1].forEach(function (parentNode) {
+        nodeLevelList[i].forEach(function(subNode) {
+          nodeLevelList[i - 1].forEach(function(parentNode) {
             if (subNode.origin.parentNodeUrlAlias === parentNode.key) {
               parentNode.addChildren([subNode]);
             }
@@ -77,7 +77,7 @@ export class NavigationCategoryComponent implements OnInit {
         });
       } else {
         // 向视图 nodes 对象灌装
-        nodeLevelList[i].forEach(function (rootNode) {
+        nodeLevelList[i].forEach(function(rootNode) {
           nodes.push(rootNode);
         });
       }

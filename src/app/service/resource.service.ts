@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { ResponseService } from "../common/response.service";
-import { Observable } from "rxjs";
-import { Resource } from "../domain/resource";
-import { BackEndApi } from "../back-end-api";
-import { catchError } from "rxjs/operators";
-import { FilterConditions } from "../domain/response/filter-conditions";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { ResponseService } from '../common/response.service';
+import { Observable } from 'rxjs';
+import { Resource } from '../domain/resource';
+import { BackEndApi } from '../back-end-api';
+import { catchError } from 'rxjs/operators';
+import { FilterConditions } from '../domain/response/filter-conditions';
 
 @Injectable({
   providedIn: 'root'

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from "../../common/util.service";
-import { AppComponent } from "../app.component";
-import { Resource } from "../../domain/resource";
-import { ResourceService } from "../../service/resource.service";
-import { BackEndApi } from "../../back-end-api";
-import { NzModalService } from "ng-zorro-antd";
-import { FilterConditions } from "../../domain/response/filter-conditions";
+import { UtilService } from '../../common/util.service';
+import { AppComponent } from '../app.component';
+import { Resource } from '../../domain/resource';
+import { ResourceService } from '../../service/resource.service';
+import { BackEndApi } from '../../back-end-api';
+import { NzModalService } from 'ng-zorro-antd';
+import { FilterConditions } from '../../domain/response/filter-conditions';
 
 @Component({
   selector: 'app-resource-all',

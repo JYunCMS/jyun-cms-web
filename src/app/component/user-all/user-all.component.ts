@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from "../../common/util.service";
-import { AppComponent } from "../app.component";
+import { UtilService } from '../../common/util.service';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-user-all',
@@ -84,7 +84,7 @@ export class UserAllComponent implements OnInit {
       address: 'Sidney No. 1 Lake Park'
     }
   ];
-  
+
   constructor(
     private utilService: UtilService
   ) {
