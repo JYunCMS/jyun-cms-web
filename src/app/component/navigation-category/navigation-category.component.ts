@@ -40,7 +40,7 @@ export class NavigationCategoryComponent implements OnInit {
     const nodeLevelList: NzTreeNode[][] = [];
     for (let n = 0, currentLevel = 0; n < categories.length; currentLevel++) {
       const tempNodeList: NzTreeNode[] = [];
-      categories.forEach(function(category) {
+      categories.forEach((category) => {
         if (category.nodeLevel === currentLevel) {
           tempNodeList.push(new NzTreeNode({
             key: category.urlAlias,
@@ -68,8 +68,8 @@ export class NavigationCategoryComponent implements OnInit {
     for (let i = nodeLevelList.length - 1; i >= 0; i--) {
       if (i !== 0) {
         // 向父级节点 addChildren
-        nodeLevelList[i].forEach(function(subNode) {
-          nodeLevelList[i - 1].forEach(function(parentNode) {
+        nodeLevelList[i].forEach((subNode) => {
+          nodeLevelList[i - 1].forEach((parentNode) => {
             if (subNode.origin.parentNodeUrlAlias === parentNode.key) {
               parentNode.addChildren([subNode]);
             }
@@ -77,7 +77,7 @@ export class NavigationCategoryComponent implements OnInit {
         });
       } else {
         // 向视图 nodes 对象灌装
-        nodeLevelList[i].forEach(function(rootNode) {
+        nodeLevelList[i].forEach((rootNode) => {
           nodes.push(rootNode);
         });
       }
@@ -97,11 +97,11 @@ export class NavigationCategoryComponent implements OnInit {
 
       // 确定当前添加节点层级 nodeLevel
       this.categoryService.getCategory(this.parentNodeUrlAlias)
-        .subscribe(parentCategory => {
-          category.nodeLevel = parentCategory.nodeLevel + 1;
+        .subscribe(parentNode => {
+          category.nodeLevel = parentNode.nodeLevel + 1;
 
           // 确定当前添加节点排序 sequence
-          this.categoryService.getCount(parentCategory.nodeLevel + 1, parentCategory.urlAlias)
+          this.categoryService.getCount(parentNode.nodeLevel + 1, parentNode.urlAlias)
             .subscribe(currentLevelCount => {
               category.sequence = currentLevelCount + 1;
 
@@ -109,7 +109,8 @@ export class NavigationCategoryComponent implements OnInit {
               this.categoryService.addNode(category)
                 .subscribe(() => {
                   // 更新父节点的子节点计数 childrenCount++
-                  const parentCategory2: Category = new Category(parentCategory.urlAlias, null, null, null, null, null, parentCategory.childrenCount + 1, null, null);
+                  const parentCategory2: Category = new Category(parentNode.urlAlias, null, null, null, null, null,
+                    parentNode.childrenCount + 1, null, null);
                   this.categoryService.updateNode(parentCategory2)
                     .subscribe(result => this.handleAddNode(result));
                 });
@@ -117,10 +118,11 @@ export class NavigationCategoryComponent implements OnInit {
               // 欲添加的节点，是否是该层级第一个节点
               if (currentLevelCount === 0) {
                 // 是该层级第一个节点，判断其父节点分类是否有文章
-                if (parentCategory.articleCount !== 0) {
+                if (parentNode.articleCount !== 0) {
                   // 其父节点分类下有文章
                   // 提示用户将其父级节点分类的文章转移到该子节点分类下
-                  AppComponent.self.warningMessage = '父节点【' + parentCategory.title + '】分类下存在文章，它已经不是叶子节点！请到文章管理页将其分类设置为新的叶子节点分类，否则在某些模板下这些文章可能不会显示在列表中';
+                  AppComponent.self.warningMessage = '父节点【' + parentNode.title +
+                    '】分类下存在文章，它已经不是叶子节点！请到文章管理页将其分类设置为新的叶子节点分类，否则在某些模板下这些文章可能不会显示在列表中';
                 }
               }
             });
@@ -136,7 +138,7 @@ export class NavigationCategoryComponent implements OnInit {
 
           // 添加节点
           this.categoryService.addNode(category)
-            .subscribe(result => this.handleAddNode(result));
+            .subscribe(categories => this.handleAddNode(categories));
         });
     }
   }
