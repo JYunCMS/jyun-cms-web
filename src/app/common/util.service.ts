@@ -22,6 +22,7 @@ export class UtilService {
     this.openHandler(menuValue, openMap);
     // 展开指定菜单项
     setTimeout(() => openMap[menuValue] = true, 0);
+    // 选中对应子项
     setTimeout(() => selectMap[menuValue + '_' + selectedValue] = true, 0);
   }
 }

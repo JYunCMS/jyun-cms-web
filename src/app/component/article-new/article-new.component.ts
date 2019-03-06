@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UtilService } from '../../common/util.service';
 import { AppComponent } from '../app.component';
 import { EventObj } from '@tinymce/tinymce-angular/editor/Events';
+import { BackEndApi } from '../../back-end-api';
 
 @Component({
   selector: 'app-article-new',
@@ -11,14 +12,16 @@ import { EventObj } from '@tinymce/tinymce-angular/editor/Events';
 
 export class ArticleNewComponent implements OnInit {
 
-  articleData = null;
+  articleTitle = null;
+  articleContent = null;
 
   tinyMceSettings = {
     skin_url: '/assets/tinymce/skins/ui/oxide',
     content_css: '/assets/tinymce/skins/content/default/content.min.css',
-    emoticons_database_url: '/assets/tinymce/plugins/emoticons/js/emojis.min.js',
     language: 'zh_CN',
-    min_height: 500,
+    image_upload_url: BackEndApi.resources,
+    emoticons_database_url: '/assets/tinymce/plugins/emoticons/js/emojis.min.js',
+    min_height: 700,
     plugins: [
       'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
       'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
@@ -38,6 +41,6 @@ export class ArticleNewComponent implements OnInit {
   }
 
   onChange($event: EventObj<any>) {
-    console.log(this.articleData);
+    console.log(this.articleContent);
   }
 }

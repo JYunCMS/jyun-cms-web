@@ -1,7 +1,21 @@
 <h1>写文章</h1>
-<editor
-  style="z-index: 100;"
-  [init]="tinyMceSettings"
-  [(ngModel)]="articleData"
-  (onChange)="onChange($event)">
-</editor>
+<div nz-row>
+  <div nz-col nzSpan="7">
+    <h3>文章标题：</h3>
+    <input nz-input placeholder="请输入文章标题" [(ngModel)]="articleTitle">
+    <p class="explain-text">在这里输入文章标题，右侧的文本编辑器只用来编辑正文。</p>
+    <h3>添加附件：</h3>
+  </div>
+  <div nz-col nzSpan="1"></div>
+  <div nz-col nzSpan="16">
+    <h2 style="text-align: center;" *ngIf="articleTitle != null && articleTitle != ''">
+      <strong>标题：</strong>{{articleTitle}}
+    </h2>
+    <editor
+      style="z-index: 100;"
+      [init]="tinyMceSettings"
+      [(ngModel)]="articleContent"
+      (onChange)="onChange($event)">
+    </editor>
+  </div>
+</div>

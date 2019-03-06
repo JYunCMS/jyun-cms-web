@@ -36,7 +36,8 @@ export class AppComponent implements OnInit {
     user_create: false,
     user_me: false,
     setting_common: false,
-    setting_edit: false
+    setting_edit: false,
+    is_collapsed: false
   };
 
   constructor(
