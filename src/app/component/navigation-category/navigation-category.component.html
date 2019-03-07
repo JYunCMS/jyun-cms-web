@@ -46,14 +46,13 @@
               </span>
             </div>
             <div nz-col nzSpan="7">
-              <button nz-button nzSize="small" nzType="primary"
-                      style="margin-left: 5px; margin-right: 5px;">编辑
+              <button nz-button nzSize="small" nzType="primary">编辑
               </button>
-              <button nz-button nzSize="small" nzType="danger" (click)="showDeleteConfirm(node)"
-                      style="margin-left: 5px; margin-right: 5px;">删除
+              <nz-divider nzType="vertical"></nz-divider>
+              <button nz-button nzSize="small" nzType="danger" (click)="showDeleteConfirm(node)">删除
               </button>
-              <nz-button-group nzSize="small" nz-tooltip nzPlacement="right" nzTitle="排序"
-                               style="margin-left: 5px; margin-right: 5px;">
+              <nz-divider nzType="vertical"></nz-divider>
+              <nz-button-group nzSize="small" nz-tooltip nzPlacement="right" nzTitle="排序">
                 <button nz-button nzType="default" (click)="moveUpNode(node)">
                   <i nz-icon type="up"></i>
                 </button>

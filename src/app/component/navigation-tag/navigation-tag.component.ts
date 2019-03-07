@@ -37,7 +37,7 @@ export class NavigationTagComponent implements OnInit {
   }
 
   addNewTag(): void {
-    this.tagService.addNewTag(this.newTagName)
+    this.tagService.addNewTag(new Tag(this.newTagName, 0))
       .subscribe(result => {
         this.initTags(result);
         this.newTagName = null;

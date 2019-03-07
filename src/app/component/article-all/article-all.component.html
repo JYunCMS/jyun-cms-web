@@ -32,7 +32,7 @@
   </nz-select>
   <button nz-button nzType="primary">筛选</button>
 </div>
-<nz-table #basicTable [nzData]="dataSet">
+<nz-table #basicTable [nzData]="articleList">
   <thead>
     <tr>
       <th>Name</th>
@@ -42,12 +42,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{data.name}}</td>
-      <td>{{data.age}}</td>
-      <td>{{data.address}}</td>
+    <tr *ngFor="let article of basicTable.data">
+      <td>{{article.title}}</td>
+      <td>{{article.status}}</td>
+      <td>{{article.tags}}</td>
       <td>
-        <a>Action 一 {{data.name}}</a>
+        <a>Action 一 {{article.title}}</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a>Delete</a>
       </td>

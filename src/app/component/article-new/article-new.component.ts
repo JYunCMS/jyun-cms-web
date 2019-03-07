@@ -4,12 +4,15 @@ import { AppComponent } from '../app.component';
 import { EventObj } from '@tinymce/tinymce-angular/editor/Events';
 import { BackEndApi } from '../../back-end-api';
 import { CategoryService } from '../../service/category.service';
-import { NzTreeNode } from 'ng-zorro-antd';
+import { NzMessageService, NzTreeNode } from 'ng-zorro-antd';
 import { Category } from '../../domain/category';
 import { TagService } from '../../service/tag.service';
 import { Tag } from '../../domain/tag';
 import { Article } from '../../domain/article';
 import { Resource } from '../../domain/resource';
+import { ArticleService } from '../../service/article.service';
+import { Router } from '@angular/router';
+import { ArticleTag } from '../../domain/article-tag';
 
 @Component({
   selector: 'app-article-new',
@@ -19,8 +22,13 @@ import { Resource } from '../../domain/resource';
 
 export class ArticleNewComponent implements OnInit {
 
+  private localStorageKeyForCategoriesResponse = 'jyun-category-list';
+
   uploadAddress: string = BackEndApi.resources;
+
   isVisibleForSaveArticle = false;
+  isLoadingSaveArticleAsDraft = false;
+  isLoadingPushArticle = false;
 
   // 初始化数据
   categoryNodes: NzTreeNode[] = [];
@@ -32,7 +40,7 @@ export class ArticleNewComponent implements OnInit {
   articleCategory: Category = null;
   articleTags: string[] = null;
   articleAbstracts: string = null;
-  articleUploadList: any[] = null;
+  articleUploadAccessoryList: any[] = null;
   articleResources: Resource[] = null;
   articleContent: string = null;
   articleCheckRelease = false;
@@ -44,28 +52,34 @@ export class ArticleNewComponent implements OnInit {
     language: 'zh_CN',
     image_upload_url: BackEndApi.resources,
     emoticons_database_url: '/assets/tinymce/plugins/emoticons/js/emojis.min.js',
-    min_height: 700,
+    min_height: 730,
     placeholder: '在这里编辑文章正文内容……（注意：除非特殊需要，请不要在这里手动添加标题）',
     plugins: [
       'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
       'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
       'save table directionality emoticons template paste'
     ],
-    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify' +
+    toolbar: 'insertfile undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify' +
       ' | bullist numlist outdent indent | link image media | forecolor backcolor emoticons | print preview fullscreen'
   };
 
   constructor(
     private utilService: UtilService,
     private categoryService: CategoryService,
-    private tagService: TagService
+    private tagService: TagService,
+    private articleService: ArticleService,
+    private nzMsgService: NzMessageService,
+    private router: Router
   ) {
   }
 
   ngOnInit() {
     this.utilService.initLeftSiderStatus('article', 'new', AppComponent.self.openMap, AppComponent.self.selectMap);
     this.categoryService.getNodes()
-      .subscribe(result => this.initCategoryNodes(this.categoryNodes, result));
+      .subscribe(result => {
+        this.initCategoryNodes(this.categoryNodes, result);
+        localStorage.setItem(this.localStorageKeyForCategoriesResponse, JSON.stringify(result));
+      });
     this.tagService.getTags()
       .subscribe(result => this.tagList = result);
   }
@@ -123,15 +137,19 @@ export class ArticleNewComponent implements OnInit {
   }
 
   saveArticleAsDraft() {
+    this.isLoadingSaveArticleAsDraft = true;
     if (this.checkAndHandleInputFiled()) {
-      const article: Article = new Article(null, this.articleTitle, 'admin', this.articleAbstracts, this.articleContent,
+      const article: Article = new Article(null, this.articleTitle, 'testAdmin', this.articleAbstracts, this.articleContent,
         this.articleCategory, this.articleTags, this.articleResources, '草稿', false);
-      console.log(article);
-
-      // 文章保存成功后，更新：分类、标签、资源 相关表
-      ////////////////////////////////////////////
-
-
+      this.articleService.newArticle(article)
+        .subscribe(result => {
+          this.updateAfterSaveArticleOfOtherData(result);
+          setTimeout(() => {
+            this.isLoadingSaveArticleAsDraft = false;
+            this.nzMsgService.success('文章【' + this.articleTitle + '】上传成功！');
+            this.router.navigate(['article', 'all']);
+          }, 1000);
+        });
     }
 
     this.isVisibleForSaveArticle = false;
@@ -154,44 +172,88 @@ export class ArticleNewComponent implements OnInit {
     // 检查标题是否为空
     if (this.articleTitle == null || this.articleTitle === '') {
       AppComponent.self.warningMessage = '请输入文章标题！';
+      this.isLoadingSaveArticleAsDraft = false;
+      this.isLoadingPushArticle = false;
       return false;
     }
 
+    // 检查分类选项是否为空
     if (this.articleCategoryUrlAlias == null || this.articleCategoryUrlAlias === '') {
       AppComponent.self.warningMessage = '请选择文章所属分类！';
+      this.isLoadingSaveArticleAsDraft = false;
+      this.isLoadingPushArticle = false;
       return false;
     }
 
     // 检查选择的分类是否是叶子分类
-    // this.categoryService.getCategory(this.articleCategoryUrlAlias)
-    //   .subscribe(result => {
-    //     if (!result.beLeaf) {
-    //       AppComponent.self.warningMessage = '请选择叶子节点分类目录！';
-    //       return false;
-    //     } else {
-    //       // 装填所选分类数据
-    //       this.articleCategory = result;
-    //
-    //       // 装填上传资源列表字段
-    //       if (this.articleUploadList != null) {
-    //         this.articleUploadList.forEach((oneUploadResponse) => {
-    //           this.articleResources.push(oneUploadResponse.response);
-    //         });
-    //       }
-    //
-    //       return true;
-    //     }
-    //   });
+    const categories: Category[] = JSON.parse(localStorage.getItem(this.localStorageKeyForCategoriesResponse));
+    for (const category of categories) {
+      if (category.urlAlias === this.articleCategoryUrlAlias) {
+        if (!category.beLeaf) {
+          AppComponent.self.warningMessage = '请选择叶子节点分类目录！';
+          this.isLoadingSaveArticleAsDraft = false;
+          this.isLoadingPushArticle = false;
+          return false;
+        } else {
+          this.articleCategory = category;
+        }
+      }
+    }
+
+    // 装填上传附件列表字段
+    if (this.articleUploadAccessoryList != null) {
+      this.articleResources = [];
+      for (const oneUploadResponse of this.articleUploadAccessoryList) {
+        this.articleResources.push(oneUploadResponse.response);
+      }
+    }
 
     return true;
+  }
+
+  private updateAfterSaveArticleOfOtherData(article: Article) {
+    // 文章保存成功后……
+    // 1、更新 Category 表 articleCount 字段
+    this.articleCategory.articleCount = this.articleCategory.articleCount + 1;
+    this.categoryService.updateNode(this.articleCategory)
+      .subscribe(result => console.log('Category 更新完成'));
+
+    // 2、更新 Tag 表 articleCount 字段，并添加 文章-标签 绑定到 ArticleTag 表
+    if (this.articleTags !== null && this.articleTags.length !== 0) {
+      for (const tag of this.tagList) {
+        const index = this.articleTags.indexOf(tag.name);
+        if (index >= 0) {
+          // 已存在的标签，更新 articleCount
+          tag.articleCount = tag.articleCount + 1;
+          this.tagService.updateTag(tag)
+            .subscribe(result => console.log('更新了已存在的标签：' + result));
+          // 添加 文章-标签 绑定到 ArticleTag 表
+          this.tagService.addArticleBind(new ArticleTag(article.id, tag.name))
+            .subscribe(result => console.log('已添加文章-标签绑定' + result));
+          // 清掉变量 this.articleTags 中处理过的值
+          this.articleTags.splice(index, 1);
+        }
+      }
+      // 选择的标签，处理剩下的中，如果有不存在的新标签加入
+      if (this.articleTags.length !== 0) {
+        for (const tagName of this.articleTags) {
+          // 向 Tag 表添加新标签
+          this.tagService.addNewTag(new Tag(tagName, 1))
+            .subscribe(result => console.log('添加了新标签' + result));
+          // 添加 文章-标签 绑定到 ArticleTag 表
+          this.tagService.addArticleBind(new ArticleTag(article.id, tagName))
+            .subscribe(result => console.log('已添加文章-标签绑定' + result));
+        }
+      }
+    }
+
+    // 3、更新 Resource 表 referenceCount 字段
+
+
   }
 
   onCancelPushArticle() {
     this.isVisibleForSaveArticle = false;
     this.articleCheckRelease = false;
-  }
-
-  onArticleContentChange($event: EventObj<any>) {
-    console.log(this.articleContent);
   }
 }

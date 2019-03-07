@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from '../app.component';
+import { UtilService } from '../../common/util.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,10 +9,12 @@ import { AppComponent } from '../app.component';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    private utilService: UtilService
+  ) {
   }
 
   ngOnInit() {
-    setTimeout(() => AppComponent.self.selectMap.dashboard = true, 0);
+    this.utilService.initLeftSiderStatus('', 'dashboard', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 }

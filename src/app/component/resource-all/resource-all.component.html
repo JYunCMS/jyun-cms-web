@@ -10,7 +10,7 @@
   &nbsp;
   <button nz-button nzType="primary" nzSize="small" (click)="getByConditions()">筛选</button>
 </div>
-<div style="margin-top: 20px;">
+<div style="margin-top: 10px;">
   <nz-table #basicTable [nzData]="displayData">
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>

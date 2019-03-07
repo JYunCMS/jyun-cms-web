@@ -36,8 +36,7 @@ export class AppComponent implements OnInit {
     user_create: false,
     user_me: false,
     setting_common: false,
-    setting_edit: false,
-    is_collapsed: false
+    setting_edit: false
   };
 
   constructor(
@@ -50,6 +49,6 @@ export class AppComponent implements OnInit {
   }
 
   openHandler(value: string): void {
-    this.utilService.openHandler(value, this.openMap);
+    this.utilService.openSiderMenuHandler(value, this.openMap);
   }
 }
