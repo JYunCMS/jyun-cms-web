@@ -55,7 +55,8 @@ export class ResourceAllComponent implements OnInit {
   private search() {
     const resource = [...this.resources];
     if (this.sortName && this.sortValue) {
-      this.displayData = resource.sort((a, b) => (this.sortValue === 'ascend') ? (a[this.sortName] > b[this.sortName] ? 1 : -1) : (b[this.sortName] > a[this.sortName] ? 1 : -1));
+      this.displayData = resource.sort((a, b) =>
+        (this.sortValue === 'ascend') ? (a[this.sortName] > b[this.sortName] ? 1 : -1) : (b[this.sortName] > a[this.sortName] ? 1 : -1));
     } else {
       this.displayData = resource;
     }
@@ -71,14 +72,15 @@ export class ResourceAllComponent implements OnInit {
     } else {
       this.modalService.confirm({
         nzTitle: '<i><b>严重警告：</b></i>',
-        nzContent: '资源 ' + resource.originalFilename + '<br/>被 ' + resource.referenceCount + ' 篇文章引用<br/>继续删除，涉及文章将受影响<br/><br/><b>确认继续吗？</b>',
+        nzContent: '资源 ' + resource.originalFilename + '<br/>被 ' + resource.referenceCount +
+          ' 篇文章引用<br/>继续删除，涉及文章将受影响<br/><br/><b>确认继续吗？</b>',
         nzOnOk: () => this.deleteResource(resource)
       });
     }
   }
 
   private deleteResource(resource: Resource): void {
-    this.resourceService.deleteResource(resource.filePath)
+    this.resourceService.deleteResource(resource.location)
       .subscribe(result => this.initResources(result));
   }
 

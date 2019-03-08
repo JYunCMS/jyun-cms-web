@@ -58,7 +58,8 @@ export class NavigationTagComponent implements OnInit {
   private search() {
     const tags = [...this.tags];
     if (this.sortName && this.sortValue) {
-      this.displayData = tags.sort((a, b) => (this.sortValue === 'ascend') ? (a[this.sortName] > b[this.sortName] ? 1 : -1) : (b[this.sortName] > a[this.sortName] ? 1 : -1));
+      this.displayData = tags.sort((a, b) =>
+        (this.sortValue === 'ascend') ? (a[this.sortName] > b[this.sortName] ? 1 : -1) : (b[this.sortName] > a[this.sortName] ? 1 : -1));
     } else {
       this.displayData = tags;
     }

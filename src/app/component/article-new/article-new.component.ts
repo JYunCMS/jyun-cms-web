@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from '../../common/util.service';
 import { AppComponent } from '../app.component';
-import { EventObj } from '@tinymce/tinymce-angular/editor/Events';
 import { BackEndApi } from '../../back-end-api';
 import { CategoryService } from '../../service/category.service';
 import { NzMessageService, NzTreeNode } from 'ng-zorro-antd';
@@ -13,6 +12,7 @@ import { Resource } from '../../domain/resource';
 import { ArticleService } from '../../service/article.service';
 import { Router } from '@angular/router';
 import { ArticleTag } from '../../domain/article-tag';
+import { ResourceService } from '../../service/resource.service';
 
 @Component({
   selector: 'app-article-new',
@@ -38,11 +38,12 @@ export class ArticleNewComponent implements OnInit {
   articleTitle: string = null;
   articleCategoryUrlAlias: string = null;
   articleCategory: Category = null;
-  articleTags: string[] = null;
-  articleAbstracts: string = null;
-  articleUploadAccessoryList: any[] = null;
-  articleResources: Resource[] = null;
-  articleContent: string = null;
+  articleTags: string[] = [];
+  articleAbstracts = null;
+  articleUploadAccessoryList: any[] = [];
+  articleContentImageList: Resource[] = [];
+  articleResources: Resource[] = [];
+  articleContent = '';
   articleCheckRelease = false;
 
   // 配置字段
@@ -50,17 +51,44 @@ export class ArticleNewComponent implements OnInit {
     skin_url: '/assets/tinymce/skins/ui/oxide',
     content_css: '/assets/tinymce/skins/content/default/content.min.css',
     language: 'zh_CN',
-    image_upload_url: BackEndApi.resources,
-    emoticons_database_url: '/assets/tinymce/plugins/emoticons/js/emojis.min.js',
     min_height: 730,
-    placeholder: '在这里编辑文章正文内容……（注意：除非特殊需要，请不要在这里手动添加标题）',
+    // placeholder: '在这里编辑文章正文内容……（注意：除非特殊需要，请不要在这里手动添加标题）',
     plugins: [
-      'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
-      'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-      'save table directionality emoticons template paste'
+      'autolink link image paste lists charmap print preview hr anchor pagebreak searchreplace',
+      'wordcount visualblocks visualchars code codesample fullscreen insertdatetime media',
+      'nonbreaking table directionality emoticons help'
     ],
-    toolbar: 'insertfile undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify' +
-      ' | bullist numlist outdent indent | link image media | forecolor backcolor emoticons | print preview fullscreen'
+    toolbar: ['undo redo | styleselect | bold italic underline strikethrough',
+      '| alignleft aligncenter alignright alignjustify',
+      '| bullist numlist outdent indent | link image media',
+      '| forecolor backcolor emoticons | print preview fullscreen'
+    ],
+    images_upload_handler: (blobInfo, success, failure) => {
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = false;
+      xhr.open('POST', BackEndApi.resources);
+      xhr.onload = () => {
+        let json;
+        if (xhr.status !== 200) {
+          failure('HTTP Error: ' + xhr.status);
+          return;
+        }
+        json = JSON.parse(xhr.responseText);
+        if (!json || typeof json.location !== 'string') {
+          failure('Invalid JSON: ' + xhr.responseText);
+          return;
+        }
+        success(BackEndApi.hostAddress + '/' + json.location);
+        this.articleContentImageList.push(json);
+      };
+      const formData = new FormData();
+      formData.append('file', blobInfo.blob());
+      xhr.send(formData);
+    },
+    paste_data_images: true,
+    paste_enable_default_filters: false,
+    default_link_target: '_blank',
+    emoticons_database_url: '/assets/tinymce/plugins/emoticons/js/emojis.min.js'
   };
 
   constructor(
@@ -68,6 +96,7 @@ export class ArticleNewComponent implements OnInit {
     private categoryService: CategoryService,
     private tagService: TagService,
     private articleService: ArticleService,
+    private resourceService: ResourceService,
     private nzMsgService: NzMessageService,
     private router: Router
   ) {
@@ -166,10 +195,28 @@ export class ArticleNewComponent implements OnInit {
     } else {
       articleStatus = '待审核';
     }
+
+    this.isLoadingPushArticle = true;
+    if (this.checkAndHandleInputFiled()) {
+      const article: Article = new Article(null, this.articleTitle, 'testAdmin', this.articleAbstracts, this.articleContent,
+        this.articleCategory, this.articleTags, this.articleResources, articleStatus, false);
+      this.articleService.newArticle(article)
+        .subscribe(result => {
+          this.updateAfterSaveArticleOfOtherData(result);
+          setTimeout(() => {
+            this.isLoadingPushArticle = false;
+            this.nzMsgService.success('文章【' + this.articleTitle + '】上传成功！');
+            this.router.navigate(['article', 'all']);
+          }, 1000);
+        });
+    }
+
+    this.isVisibleForSaveArticle = false;
   }
 
   private checkAndHandleInputFiled(): boolean {
-    // 检查标题是否为空
+    // 想后端提交文章前
+    // 1、检查标题是否为空
     if (this.articleTitle == null || this.articleTitle === '') {
       AppComponent.self.warningMessage = '请输入文章标题！';
       this.isLoadingSaveArticleAsDraft = false;
@@ -177,7 +224,7 @@ export class ArticleNewComponent implements OnInit {
       return false;
     }
 
-    // 检查分类选项是否为空
+    // 2、检查分类选项是否为空
     if (this.articleCategoryUrlAlias == null || this.articleCategoryUrlAlias === '') {
       AppComponent.self.warningMessage = '请选择文章所属分类！';
       this.isLoadingSaveArticleAsDraft = false;
@@ -185,7 +232,7 @@ export class ArticleNewComponent implements OnInit {
       return false;
     }
 
-    // 检查选择的分类是否是叶子分类
+    // 3、检查选择的分类是否是叶子分类
     const categories: Category[] = JSON.parse(localStorage.getItem(this.localStorageKeyForCategoriesResponse));
     for (const category of categories) {
       if (category.urlAlias === this.articleCategoryUrlAlias) {
@@ -200,11 +247,15 @@ export class ArticleNewComponent implements OnInit {
       }
     }
 
-    // 装填上传附件列表字段
-    if (this.articleUploadAccessoryList != null) {
-      this.articleResources = [];
-      for (const oneUploadResponse of this.articleUploadAccessoryList) {
-        this.articleResources.push(oneUploadResponse.response);
+    // 4、装填上传附件列表字段到 this.articleResources
+    for (const oneUploadResponse of this.articleUploadAccessoryList) {
+      this.articleResources.push(oneUploadResponse.response);
+    }
+
+    // 5、装填上传图片列表字段到 this.articleResources
+    for (const oneContentImage of this.articleContentImageList) {
+      if (this.articleContent.indexOf(oneContentImage.location) >= 0) {
+        this.articleResources.push(oneContentImage);
       }
     }
 
@@ -216,20 +267,20 @@ export class ArticleNewComponent implements OnInit {
     // 1、更新 Category 表 articleCount 字段
     this.articleCategory.articleCount = this.articleCategory.articleCount + 1;
     this.categoryService.updateNode(this.articleCategory)
-      .subscribe(result => console.log('Category 更新完成'));
+      .subscribe();
 
     // 2、更新 Tag 表 articleCount 字段，并添加 文章-标签 绑定到 ArticleTag 表
-    if (this.articleTags !== null && this.articleTags.length !== 0) {
+    if (this.articleTags.length !== 0) {
       for (const tag of this.tagList) {
         const index = this.articleTags.indexOf(tag.name);
         if (index >= 0) {
           // 已存在的标签，更新 articleCount
           tag.articleCount = tag.articleCount + 1;
           this.tagService.updateTag(tag)
-            .subscribe(result => console.log('更新了已存在的标签：' + result));
+            .subscribe();
           // 添加 文章-标签 绑定到 ArticleTag 表
           this.tagService.addArticleBind(new ArticleTag(article.id, tag.name))
-            .subscribe(result => console.log('已添加文章-标签绑定' + result));
+            .subscribe();
           // 清掉变量 this.articleTags 中处理过的值
           this.articleTags.splice(index, 1);
         }
@@ -239,17 +290,20 @@ export class ArticleNewComponent implements OnInit {
         for (const tagName of this.articleTags) {
           // 向 Tag 表添加新标签
           this.tagService.addNewTag(new Tag(tagName, 1))
-            .subscribe(result => console.log('添加了新标签' + result));
+            .subscribe();
           // 添加 文章-标签 绑定到 ArticleTag 表
           this.tagService.addArticleBind(new ArticleTag(article.id, tagName))
-            .subscribe(result => console.log('已添加文章-标签绑定' + result));
+            .subscribe();
         }
       }
     }
 
     // 3、更新 Resource 表 referenceCount 字段
-
-
+    for (const resource of this.articleResources) {
+      resource.referenceCount = 1;
+      this.resourceService.updateResource(resource)
+        .subscribe();
+    }
   }
 
   onCancelPushArticle() {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ResponseService } from '../common/response.service';
 import { Observable } from 'rxjs';
 import { Resource } from '../domain/resource';
@@ -24,9 +24,19 @@ export class ResourceService {
       .pipe(catchError(this.responseService.handleError<Resource[]>('resourceService.getResources()', null)));
   }
 
-  deleteResource(filePath: string): Observable<Resource[]> {
+  updateResource(resource: Resource): Observable<Resource> {
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<Resource>(BackEndApi.resources, resource, headers)
+      .pipe(catchError(this.responseService.handleError<Resource>('resourceService.updateResource()', null)));
+  }
+
+  deleteResource(location: string): Observable<Resource[]> {
     const params = new HttpParams()
-      .append('filePath', filePath);
+      .append('location', location);
     return this.http.delete<Resource[]>(BackEndApi.resources + '?' + params)
       .pipe(catchError(this.responseService.handleError<Resource[]>('resourceService.deleteResource()', null)));
   }

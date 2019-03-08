@@ -32,52 +32,58 @@
       <li nz-submenu [(nzOpen)]="openMap.article" (nzOpenChange)="openHandler('article')">
         <span title><i nz-icon type="snippets"></i><span class="nav-text">文章</span></span>
         <ul>
-          <li nz-menu-item routerLink="/article/all" [nzSelected]="selectMap.article_all"><i nz-icon type="copy"></i>所有文章
+          <li nz-menu-item routerLink="/article/all" [nzSelected]="selectMap.article_all">
+            <i nz-icon type="copy"></i>所有文章
           </li>
-          <li nz-menu-item routerLink="/article/new" [nzSelected]="selectMap.article_new"><i nz-icon type="edit"></i>写文章
+          <li nz-menu-item routerLink="/article/new" [nzSelected]="selectMap.article_new">
+            <i nz-icon type="edit"></i>写文章
           </li>
         </ul>
       </li>
       <li nz-submenu [(nzOpen)]="openMap.navigation" (nzOpenChange)="openHandler('navigation')">
         <span title><i nz-icon type="link"></i><span class="nav-text">导航</span></span>
         <ul>
-          <li nz-menu-item routerLink="/navigation/category" [nzSelected]="selectMap.navigation_category"><i nz-icon
-                                                                                                             type="align-left"></i>分类目录
+          <li nz-menu-item routerLink="/navigation/category" [nzSelected]="selectMap.navigation_category">
+            <i nz-icon type="align-left"></i>分类目录
           </li>
-          <li nz-menu-item routerLink="/navigation/tag" [nzSelected]="selectMap.navigation_tag"><i nz-icon
-                                                                                                   type="tags"></i>标签
+          <li nz-menu-item routerLink="/navigation/tag" [nzSelected]="selectMap.navigation_tag">
+            <i nz-icon type="tags"></i>标签
           </li>
         </ul>
       </li>
       <li nz-submenu [(nzOpen)]="openMap.resource" (nzOpenChange)="openHandler('resource')">
         <span title><i nz-icon type="picture"></i><span class="nav-text">资源</span></span>
         <ul>
-          <li nz-menu-item routerLink="/resource/all" [nzSelected]="selectMap.resource_all"><i nz-icon
-                                                                                               type="appstore"></i>所有资源
+          <li nz-menu-item routerLink="/resource/all" [nzSelected]="selectMap.resource_all">
+            <i nz-icon type="appstore"></i>所有资源
           </li>
-          <li nz-menu-item routerLink="/resource/upload" [nzSelected]="selectMap.resource_upload"><i nz-icon
-                                                                                                     type="cloud-upload"></i>上传
+          <li nz-menu-item routerLink="/resource/upload" [nzSelected]="selectMap.resource_upload">
+            <i nz-icon type="cloud-upload"></i>上传
           </li>
         </ul>
       </li>
       <li nz-submenu [(nzOpen)]="openMap.user" (nzOpenChange)="openHandler('user')">
         <span title><i nz-icon type="user"></i><span class="nav-text">用户</span></span>
         <ul>
-          <li nz-menu-item routerLink="/user/all" [nzSelected]="selectMap.user_all"><i nz-icon type="team"></i>所有用户</li>
-          <li nz-menu-item routerLink="/user/create" [nzSelected]="selectMap.user_create"><i nz-icon
-                                                                                             type="user-add"></i>添加用户
+          <li nz-menu-item routerLink="/user/all" [nzSelected]="selectMap.user_all">
+            <i nz-icon type="team"></i>所有用户
           </li>
-          <li nz-menu-item routerLink="/user/me" [nzSelected]="selectMap.user_me"><i nz-icon type="profile"></i>我的资料
+          <li nz-menu-item routerLink="/user/create" [nzSelected]="selectMap.user_create">
+            <i nz-icon type="user-add"></i>添加用户
+          </li>
+          <li nz-menu-item routerLink="/user/me" [nzSelected]="selectMap.user_me">
+            <i nz-icon type="profile"></i>我的资料
           </li>
         </ul>
       </li>
       <li nz-submenu [(nzOpen)]="openMap.setting" (nzOpenChange)="openHandler('setting')">
         <span title><i nz-icon type="setting"></i><span class="nav-text">设置</span></span>
         <ul>
-          <li nz-menu-item routerLink="/setting/common" [nzSelected]="selectMap.setting_common"><i nz-icon
-                                                                                                   type="global"></i>常规
+          <li nz-menu-item routerLink="/setting/common" [nzSelected]="selectMap.setting_common">
+            <i nz-icon type="global"></i>常规
           </li>
-          <li nz-menu-item routerLink="/setting/edit" [nzSelected]="selectMap.setting_edit"><i nz-icon type="form"></i>撰写
+          <li nz-menu-item routerLink="/setting/edit" [nzSelected]="selectMap.setting_edit">
+            <i nz-icon type="form"></i>撰写
           </li>
         </ul>
       </li>

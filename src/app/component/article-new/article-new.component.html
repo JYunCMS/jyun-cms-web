@@ -35,7 +35,7 @@
     <h3>所属分类：</h3>
     <nz-tree-select
       style="width: 100%;"
-      [nzDropdownStyle]="{ 'max-height': '150px' }"
+      [nzDropdownStyle]="{ 'max-height': '250px' }"
       [nzNodes]="categoryNodes"
       nzShowSearch="true"
       nzPlaceHolder="无"
@@ -43,7 +43,9 @@
       nzShowLine="true"
       [(ngModel)]="articleCategoryUrlAlias">
     </nz-tree-select>
-    <p class="explain-text">请选择末端叶子节点分类目录，以保持站点文章分级结构清晰。<br/>如需为特定分类节点添加页面，请到 导航->分类目录 下进行操作。</p>
+    <p class="explain-text">请选择末端叶子节点分类目录，以保持站点文章分级结构清晰；
+      <br/>如需为特定分类节点添加页面，请到 导航->分类目录 下进行操作。
+    </p>
     <h3>标签：</h3>
     <nz-select
       nzMode="tags"
@@ -53,7 +55,8 @@
       <nz-option *ngFor="let tag of tagList" [nzLabel]="tag.name" [nzValue]="tag.name">
       </nz-option>
     </nz-select>
-    <p class="explain-text">（可选）不同于分类，标签表明文章具有某种属性，可选多个。</p>
+    <p class="explain-text">（可选）不同于分类，标签表明文章具有某种属性，可添加多个；
+      <br/>注：点击选择已存在的标签，也可直接输入并回车添加新的标签。</p>
     <h3>摘要：</h3>
     <textarea nz-input placeholder="请输入文章摘要"
               [(ngModel)]="articleAbstracts" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
