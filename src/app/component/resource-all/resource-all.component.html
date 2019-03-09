@@ -9,6 +9,8 @@
   </nz-select>
   &nbsp;
   <button nz-button nzType="primary" nzSize="small" (click)="getByConditions()">筛选</button>
+  &nbsp;&nbsp;&nbsp;
+  <span style="font-size: small;"><i nz-icon type="exclamation-circle"></i> 引用数为“0”的资源可以被删除，以节省服务器磁盘空间</span>
 </div>
 <div style="margin-top: 10px;">
   <nz-table #basicTable [nzData]="displayData">
@@ -32,8 +34,8 @@
           <nz-tag [nzColor]="'blue'">{{resource.referenceCount}}</nz-tag>
         </td>
         <td>
-          <a href="{{backEndHostAddress}}/{{resource.location}}" target="_blank">{{backEndHostAddress}}
-            /{{resource.location}}</a>
+          <a href="{{backEndHostAddress}}/{{resource.location}}" target="_blank">
+            {{backEndHostAddress}}/{{resource.location}}</a>
         </td>
         <td>{{resource.createdAt}}</td>
         <td>

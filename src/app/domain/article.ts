@@ -10,13 +10,14 @@ export class Article extends BaseEntity {
   content: string;
   category: Category;
   tags: string[];
-  resources: Resource[];
+  images: Resource[];
+  accessories: Resource[];
   status: string;
   beDelete: boolean;
 
   constructor(id: number, title: string, authorId: string, abstracts: string,
               content: string, category: Category, tags: string[],
-              resources: Resource[], status: string, beDelete: boolean) {
+              images: Resource[], accessories: Resource[], status: string, beDelete: boolean) {
     super();
     this.id = id;
     this.title = title;
@@ -25,7 +26,8 @@ export class Article extends BaseEntity {
     this.content = content;
     this.category = category;
     this.tags = tags;
-    this.resources = resources;
+    this.images = images;
+    this.accessories = accessories;
     this.status = status;
     this.beDelete = beDelete;
   }

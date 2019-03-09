@@ -30,6 +30,16 @@ export class ArticleService {
       })
     };
     return this.http.post<Article>(BackEndApi.articles, article, headers)
-      .pipe(catchError(this.responseService.handleError<Article>('articleService.getArticles()', null)));
+      .pipe(catchError(this.responseService.handleError<Article>('articleService.newArticle()', null)));
+  }
+
+  updateArticle(article: Article): Observable<Article> {
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<Article>(BackEndApi.articles, article, headers)
+      .pipe(catchError(this.responseService.handleError<Article>('articleService.updateArticle', null)));
   }
 }

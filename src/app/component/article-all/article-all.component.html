@@ -35,22 +35,114 @@
 <nz-table #basicTable [nzData]="articleList">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Address</th>
-      <th>Action</th>
+      <th>标题</th>
+      <th>作者</th>
+      <th>分类</th>
+      <th>标签</th>
+      <th>状态</th>
+      <th>最近修改</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let article of basicTable.data">
-      <td>{{article.title}}</td>
-      <td>{{article.status}}</td>
-      <td>{{article.tags}}</td>
       <td>
-        <a>Action 一 {{article.title}}</a>
+        <a (click)="previewArticle(article)" nz-tooltip nzPlacement="topLeft" nzTitle="点击预览">
+          <i nz-icon type="eye"></i> {{article.title}}
+        </a>
+      </td>
+      <td>{{article.authorId}}</td>
+      <td>{{article.category.title}}</td>
+      <td>{{article.tags}}</td>
+      <td>{{article.status}}</td>
+      <td>{{article.updatedAt}}</td>
+      <td>
+        <button nz-button nzSize="small" nzType="primary" (click)="editArticleOptions(article)">编辑</button>
         <nz-divider nzType="vertical"></nz-divider>
-        <a>Delete</a>
+        <button nz-button nzSize="small" nzType="danger" (click)="deleteArticle(article)">移动到回收站</button>
       </td>
     </tr>
   </tbody>
 </nz-table>
+<nz-drawer [nzClosable]="false" [nzVisible]="previewVisible" (nzOnClose)="previewArticleClose()"
+           nzPlacement="right" nzWidth="700px" nzTitle="文章预览">
+  <div align="center">
+    <h1>{{operatingArticle.title}}</h1>
+    <p>
+      作者：{{operatingArticle.authorId}}
+      <nz-divider nzType="vertical"></nz-divider>
+      创建于：{{operatingArticle.createdAt}}
+      <nz-divider nzType="vertical"></nz-divider>
+      最近更新：{{operatingArticle.updatedAt}}
+    </p>
+    <p *ngIf="operatingArticle.tags!=null">
+      <i nz-icon type="tags"></i> 标签：
+      <nz-tag [nzColor]="'blue'" *ngFor="let tag of operatingArticle.tags">{{tag}}</nz-tag>
+    </p>
+  </div>
+  <div [innerHTML]="htmlArticleContent"></div>
+  <br/>
+  <table *ngFor="let resource of operatingArticle.accessories">
+    <tr>
+      <td><span><i nz-icon type="link"></i> 附件：</span></td>
+      <td>
+        <a href="{{backEndHostAddress}}/{{resource.location}}" target="_blank">
+          <nz-tag><span style="font-size: larger;">{{resource.originalFilename}}</span></nz-tag>
+        </a>
+      </td>
+    </tr>
+  </table>
+</nz-drawer>
+<nz-drawer [nzOffsetX]="editArticleContentVisible ? 400 : 0"
+           [nzClosable]="false" [nzVisible]="editArticleOptionVisible" (nzOnClose)="editArticleOptionClose()"
+           nzPlacement="left" nzWidth="450px" nzTitle="编辑文章选项">
+  <!-- 第一层：编辑文章选项 -->
+  <div align="right">
+    <button nz-button nzType="default" (click)="editArticleContent()">
+      <i nz-icon type="left"></i> 去编辑正文
+    </button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <button nz-button nzType="primary" (click)="updateArticle()" [nzLoading]="isLoadingUpdateArticle">提交更新</button>
+  </div>
+  <h3>文章标题：</h3>
+  <input nz-input placeholder="请输入文章标题" [(ngModel)]="operatingArticle.title">
+  <p class="explain-text">在这里输入文章标题，左侧的文本编辑器只用来编辑正文。</p>
+  <h3>所属分类：</h3>
+  <nz-tree-select
+    style="width: 100%;"
+    [nzDropdownStyle]="{ 'max-height': '250px' }"
+    [nzNodes]="categoryNodes"
+    nzShowSearch="true"
+    nzPlaceHolder="无"
+    nzDefaultExpandAll="true"
+    nzShowLine="true"
+    [(ngModel)]="updateArticleCategoryUrlAlias">
+  </nz-tree-select>
+  <p class="explain-text">请选择末端叶子节点分类目录，以保持站点文章分级结构清晰；
+    <br/>如需为特定分类节点添加页面，请到 导航->分类目录 下进行操作。
+  </p>
+  <h3>标签：</h3>
+  <nz-select
+    nzMode="tags"
+    style="width: 100%;"
+    nzPlaceHolder="点选已有标签，或直接输入创建新的标签"
+    [(ngModel)]="operatingArticle.tags">
+    <nz-option *ngFor="let tag of tagList" [nzLabel]="tag.name" [nzValue]="tag.name">
+    </nz-option>
+  </nz-select>
+  <p class="explain-text">（可选）不同于分类，标签表明文章具有某种属性，可添加多个；
+    <br/>注：点击选择已存在的标签，也可直接输入并回车添加新的标签。</p>
+  <h3>摘要：</h3>
+  <textarea nz-input placeholder="请输入文章摘要"
+            [(ngModel)]="operatingArticle.abstracts" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+  <p class="explain-text">（可选）默认将截取正文开头内容作为摘要。</p>
+  <nz-drawer [nzClosable]="false" [nzVisible]="editArticleContentVisible" (nzOnClose)="editArticleContentClose()"
+             nzPlacement="left" nzWidth="700px" nzTitle="更新文章正文">
+    <!-- 第二层：编辑文章正文 -->
+    <editor
+      style="z-index: 100;"
+      [init]="tinyMceSettings"
+      [(ngModel)]="operatingArticle.content">
+    </editor>
+  </nz-drawer>
+</nz-drawer>

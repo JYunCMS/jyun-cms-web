@@ -19,15 +19,13 @@
         <tr>
           <th nzShowSort nzSortKey="name" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">名称</th>
           <th nzShowSort nzSortKey="articleCount" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">文章总数</th>
-          <th nzShowSort nzSortKey="createdAt" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">日期</th>
+          <th nzShowSort nzSortKey="createdAt" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">创建日期</th>
           <th>操作</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let tag of smallTable.data">
-          <td>
-            <strong style="color: #1890ff;">{{tag.name}}</strong>
-          </td>
+          <td style="color: #1890ff;">{{tag.name}}</td>
           <td>
             <nz-tag [nzColor]="'blue'">{{tag.articleCount}}</nz-tag>
           </td>

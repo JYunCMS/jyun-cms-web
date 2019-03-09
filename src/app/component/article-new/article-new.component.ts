@@ -11,7 +11,6 @@ import { Article } from '../../domain/article';
 import { Resource } from '../../domain/resource';
 import { ArticleService } from '../../service/article.service';
 import { Router } from '@angular/router';
-import { ArticleTag } from '../../domain/article-tag';
 import { ResourceService } from '../../service/resource.service';
 
 @Component({
@@ -42,8 +41,9 @@ export class ArticleNewComponent implements OnInit {
   articleAbstracts = null;
   articleUploadAccessoryList: any[] = [];
   articleContentImageList: Resource[] = [];
-  articleResources: Resource[] = [];
-  articleContent = '';
+  articleImages: Resource[] = [];
+  articleAccessories: Resource[] = [];
+  articleContent = '请在这里编辑文章正文内容……<br/><br/>注意：除非特殊需要，请不要在这里重复添加标题！';
   articleCheckRelease = false;
 
   // 配置字段
@@ -52,7 +52,6 @@ export class ArticleNewComponent implements OnInit {
     content_css: '/assets/tinymce/skins/content/default/content.min.css',
     language: 'zh_CN',
     min_height: 730,
-    // placeholder: '在这里编辑文章正文内容……（注意：除非特殊需要，请不要在这里手动添加标题）',
     plugins: [
       'autolink link image paste lists charmap print preview hr anchor pagebreak searchreplace',
       'wordcount visualblocks visualchars code codesample fullscreen insertdatetime media',
@@ -169,15 +168,14 @@ export class ArticleNewComponent implements OnInit {
     this.isLoadingSaveArticleAsDraft = true;
     if (this.checkAndHandleInputFiled()) {
       const article: Article = new Article(null, this.articleTitle, 'testAdmin', this.articleAbstracts, this.articleContent,
-        this.articleCategory, this.articleTags, this.articleResources, '草稿', false);
+        this.articleCategory, this.articleTags, this.articleImages, this.articleAccessories, '草稿', false);
       this.articleService.newArticle(article)
         .subscribe(result => {
-          this.updateAfterSaveArticleOfOtherData(result);
           setTimeout(() => {
             this.isLoadingSaveArticleAsDraft = false;
-            this.nzMsgService.success('文章【' + this.articleTitle + '】上传成功！');
+            this.nzMsgService.success('文章【' + result.title + '】上传成功！');
             this.router.navigate(['article', 'all']);
-          }, 1000);
+          }, 500);
         });
     }
 
@@ -199,13 +197,12 @@ export class ArticleNewComponent implements OnInit {
     this.isLoadingPushArticle = true;
     if (this.checkAndHandleInputFiled()) {
       const article: Article = new Article(null, this.articleTitle, 'testAdmin', this.articleAbstracts, this.articleContent,
-        this.articleCategory, this.articleTags, this.articleResources, articleStatus, false);
+        this.articleCategory, this.articleTags, this.articleImages, this.articleAccessories, articleStatus, false);
       this.articleService.newArticle(article)
         .subscribe(result => {
-          this.updateAfterSaveArticleOfOtherData(result);
           setTimeout(() => {
             this.isLoadingPushArticle = false;
-            this.nzMsgService.success('文章【' + this.articleTitle + '】上传成功！');
+            this.nzMsgService.success('文章【' + result.title + '】上传成功！');
             this.router.navigate(['article', 'all']);
           }, 1000);
         });
@@ -215,7 +212,7 @@ export class ArticleNewComponent implements OnInit {
   }
 
   private checkAndHandleInputFiled(): boolean {
-    // 想后端提交文章前
+    // 向后端提交文章前
     // 1、检查标题是否为空
     if (this.articleTitle == null || this.articleTitle === '') {
       AppComponent.self.warningMessage = '请输入文章标题！';
@@ -247,63 +244,19 @@ export class ArticleNewComponent implements OnInit {
       }
     }
 
-    // 4、装填上传附件列表字段到 this.articleResources
-    for (const oneUploadResponse of this.articleUploadAccessoryList) {
-      this.articleResources.push(oneUploadResponse.response);
-    }
-
-    // 5、装填上传图片列表字段到 this.articleResources
+    // 4、装填上传图片列表字段到 this.articleImages
     for (const oneContentImage of this.articleContentImageList) {
       if (this.articleContent.indexOf(oneContentImage.location) >= 0) {
-        this.articleResources.push(oneContentImage);
+        this.articleImages.push(oneContentImage);
       }
+    }
+
+    // 5、装填上传附件列表字段到 this.articleAccessories
+    for (const oneUploadResponse of this.articleUploadAccessoryList) {
+      this.articleAccessories.push(oneUploadResponse.response);
     }
 
     return true;
-  }
-
-  private updateAfterSaveArticleOfOtherData(article: Article) {
-    // 文章保存成功后……
-    // 1、更新 Category 表 articleCount 字段
-    this.articleCategory.articleCount = this.articleCategory.articleCount + 1;
-    this.categoryService.updateNode(this.articleCategory)
-      .subscribe();
-
-    // 2、更新 Tag 表 articleCount 字段，并添加 文章-标签 绑定到 ArticleTag 表
-    if (this.articleTags.length !== 0) {
-      for (const tag of this.tagList) {
-        const index = this.articleTags.indexOf(tag.name);
-        if (index >= 0) {
-          // 已存在的标签，更新 articleCount
-          tag.articleCount = tag.articleCount + 1;
-          this.tagService.updateTag(tag)
-            .subscribe();
-          // 添加 文章-标签 绑定到 ArticleTag 表
-          this.tagService.addArticleBind(new ArticleTag(article.id, tag.name))
-            .subscribe();
-          // 清掉变量 this.articleTags 中处理过的值
-          this.articleTags.splice(index, 1);
-        }
-      }
-      // 选择的标签，处理剩下的中，如果有不存在的新标签加入
-      if (this.articleTags.length !== 0) {
-        for (const tagName of this.articleTags) {
-          // 向 Tag 表添加新标签
-          this.tagService.addNewTag(new Tag(tagName, 1))
-            .subscribe();
-          // 添加 文章-标签 绑定到 ArticleTag 表
-          this.tagService.addArticleBind(new ArticleTag(article.id, tagName))
-            .subscribe();
-        }
-      }
-    }
-
-    // 3、更新 Resource 表 referenceCount 字段
-    for (const resource of this.articleResources) {
-      resource.referenceCount = 1;
-      this.resourceService.updateResource(resource)
-        .subscribe();
-    }
   }
 
   onCancelPushArticle() {
