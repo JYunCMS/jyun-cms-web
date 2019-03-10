@@ -44,6 +44,13 @@ export class ArticleService {
       .pipe(catchError(this.responseService.handleError<Article>('articleService.updateArticle', null)));
   }
 
+  deleteArticle(articleId: number): Observable<Article> {
+    const params = new HttpParams()
+      .append('articleId', articleId.toString());
+    return this.http.delete<Article>(BackEndApi.articles + '?' + params)
+      .pipe(catchError(this.responseService.handleError<Article>('articleService.deleteArticle', null)));
+  }
+
   getFilterConditions(): Observable<ArticleFilterConditions> {
     return this.http.get<ArticleFilterConditions>(BackEndApi.articlesFilterConditions)
       .pipe(catchError(this.responseService.handleError<ArticleFilterConditions>('articleService.getFilterConditions()', null)));
@@ -67,5 +74,17 @@ export class ArticleService {
       .append('selectedTag', selectedTag);
     return this.http.get<Article[]>(BackEndApi.articlesByConditions + '?' + params)
       .pipe(catchError(this.responseService.handleError<Article[]>('articleService.getArticlesByConditions()', null)));
+  }
+
+  moveToRecycleBin(beDelete: boolean, article: Article): Observable<Article> {
+    const params = new HttpParams()
+      .append('beDelete', beDelete ? 'true' : 'false');
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<Article>(BackEndApi.articlesMoveToRecycleBin + '?' + params, article, headers)
+      .pipe(catchError(this.responseService.handleError<Article>('articleService.movoToRecycleBin()', null)));
   }
 }

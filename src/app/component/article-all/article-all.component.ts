@@ -104,6 +104,10 @@ export class ArticleAllComponent implements OnInit {
 
   ngOnInit() {
     this.utilService.initLeftSiderStatus('article', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.initArticleListAndSoOn();
+  }
+
+  private initArticleListAndSoOn() {
     this.articleService.getArticles()
       .subscribe(result => this.articleList = result);
     this.articleService.getFilterConditions()
@@ -112,6 +116,12 @@ export class ArticleAllComponent implements OnInit {
         this.initCategoryNodes(this.categoryNodes, result.categoryList);
         localStorage.setItem(this.localStorageKeyForCategoriesResponse, JSON.stringify(result.categoryList));
       });
+
+    this.status = null;
+    this.selectedDate = null;
+    this.selectedCategory = null;
+    this.selectedTag = null;
+    this.currentBeInRecycleBin = false;
   }
 
   private initCategoryNodes(categoryNodes: NzTreeNode[], categories: Category[]) {
@@ -215,7 +225,7 @@ export class ArticleAllComponent implements OnInit {
             this.isLoadingUpdateArticle = false;
             this.editArticleOptionVisible = false;
             this.nzMsgService.success('文章【' + result.title + '】更新成功！');
-            this.ngOnInit();
+            this.initArticleListAndSoOn();
           }, 500);
         });
     } else {
@@ -263,14 +273,6 @@ export class ArticleAllComponent implements OnInit {
     return true;
   }
 
-  moveToRecycleBin(article: Article) {
-
-  }
-
-  deleteArticle(article: Article) {
-
-  }
-
   getArticlesByStatus() {
     // 如果点选回收站，则变更标志，以此更新列表操作按钮
     this.currentBeInRecycleBin = this.status === '回收站';
@@ -298,5 +300,32 @@ export class ArticleAllComponent implements OnInit {
       this.articleService.getArticlesByConditions(this.status, this.selectedDate, this.selectedCategory, this.selectedTag)
         .subscribe(result => this.articleList = result);
     }
+  }
+
+  moveToRecycleBin(article: Article) {
+    this.articleService.moveToRecycleBin(true, article)
+      .subscribe(() => {
+        this.initArticleListAndSoOn();
+      });
+  }
+
+  restoreFromRecycleBin(article: Article) {
+    this.articleService.moveToRecycleBin(false, article)
+      .subscribe(() => {
+        this.initArticleListAndSoOn();
+      });
+  }
+
+  deleteArticle(article: Article) {
+    this.modalService.confirm({
+      nzTitle: '<i><b>严重警告：</b></i>',
+      nzContent: '文章【' + article.title + '】将被彻底删除<br/>这个操作不可恢复<br/><br/><b>确认继续吗？</b>',
+      nzOnOk: () => {
+        this.articleService.deleteArticle(article.id)
+          .subscribe(() => {
+            this.initArticleListAndSoOn();
+          });
+      }
+    });
   }
 }

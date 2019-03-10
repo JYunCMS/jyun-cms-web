@@ -24,4 +24,5 @@ export class BackEndApi {
   static articlesFilterConditions = BackEndApi.articles + '/filter-conditions';
   static articlesByStatus = BackEndApi.articles + '/by-status';
   static articlesByConditions = BackEndApi.articles + '/by-conditions';
+  static articlesMoveToRecycleBin = BackEndApi.articles + '/move-to-recycle-bin';
 }
