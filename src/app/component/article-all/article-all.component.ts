@@ -6,11 +6,11 @@ import { ArticleService } from '../../service/article.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BackEndApi } from '../../back-end-api';
 import { NzMessageService, NzModalService, NzTreeNode } from 'ng-zorro-antd';
-import { Tag } from '../../domain/tag';
 import { CategoryService } from '../../service/category.service';
 import { TagService } from '../../service/tag.service';
 import { Category } from '../../domain/category';
 import { Resource } from '../../domain/resource';
+import { ArticleFilterConditions } from '../../domain/response/article-filter-conditions';
 
 @Component({
   selector: 'app-article-all',
@@ -26,15 +26,17 @@ export class ArticleAllComponent implements OnInit {
 
   isLoadingUpdateArticle = false;
 
-  scope: string; // 文章显示范围（全部、已发布……）
-  date: number; // 文章时间筛选条件
-  category: string; // 文章分类筛选条件
-  tag: string; // 文章标签筛选条件
+  status: string = null; // 文章状态（全部、已发布、待审核、草稿、回收站）
+  selectedDate: string = null; // 文章时间筛选条件
+  selectedCategory: string = null; // 文章分类筛选条件
+  selectedTag: string = null; // 文章标签筛选条件
+  currentBeInRecycleBin = false;
+  dateSelectIsOpen = false;
 
   // 初始化数据
   categoryNodes: NzTreeNode[] = [];
-  tagList: Tag[] = [];
   articleList: Article[] = [];
+  articleFilterConditions: ArticleFilterConditions = null;
 
   // 待用数据
   operatingArticle: Article = new Article(null, null, null, null, null, null, null, null, null, null, null);
@@ -104,13 +106,12 @@ export class ArticleAllComponent implements OnInit {
     this.utilService.initLeftSiderStatus('article', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
     this.articleService.getArticles()
       .subscribe(result => this.articleList = result);
-    this.categoryService.getNodes()
+    this.articleService.getFilterConditions()
       .subscribe(result => {
-        this.initCategoryNodes(this.categoryNodes, result);
-        localStorage.setItem(this.localStorageKeyForCategoriesResponse, JSON.stringify(result));
+        this.articleFilterConditions = result;
+        this.initCategoryNodes(this.categoryNodes, result.categoryList);
+        localStorage.setItem(this.localStorageKeyForCategoriesResponse, JSON.stringify(result.categoryList));
       });
-    this.tagService.getTags()
-      .subscribe(result => this.tagList = result);
   }
 
   private initCategoryNodes(categoryNodes: NzTreeNode[], categories: Category[]) {
@@ -262,7 +263,40 @@ export class ArticleAllComponent implements OnInit {
     return true;
   }
 
+  moveToRecycleBin(article: Article) {
+
+  }
+
   deleteArticle(article: Article) {
 
+  }
+
+  getArticlesByStatus() {
+    // 如果点选回收站，则变更标志，以此更新列表操作按钮
+    this.currentBeInRecycleBin = this.status === '回收站';
+
+    // 清空日期分类等高级筛选条件选项
+    this.selectedDate = null;
+    this.selectedCategory = null;
+    this.selectedTag = null;
+
+    // 发送请求更新文章列表
+    this.articleService.getArticlesByStatus(this.status)
+      .subscribe(result => this.articleList = result);
+  }
+
+  getArticlesByConditions() {
+    if (this.selectedDate == null) {
+      this.modalService.confirm({
+        nzTitle: '<i><b>警告：</b></i>',
+        nzContent: '为避免筛选查询时间过久，减轻服务器压力<br/>请至少选择一个【时间】范围<br/><br/><b>去选择时间范围？</b>',
+        nzOnOk: () => {
+          this.dateSelectIsOpen = true;
+        }
+      });
+    } else {
+      this.articleService.getArticlesByConditions(this.status, this.selectedDate, this.selectedCategory, this.selectedTag)
+        .subscribe(result => this.articleList = result);
+    }
   }
 }

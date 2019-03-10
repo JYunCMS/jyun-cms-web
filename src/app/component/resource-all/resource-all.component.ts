@@ -5,7 +5,7 @@ import { Resource } from '../../domain/resource';
 import { ResourceService } from '../../service/resource.service';
 import { BackEndApi } from '../../back-end-api';
 import { NzModalService } from 'ng-zorro-antd';
-import { FilterConditions } from '../../domain/response/filter-conditions';
+import { ResourceFilterConditions } from '../../domain/response/resource-filter-conditions';
 
 @Component({
   selector: 'app-resource-all',
@@ -21,7 +21,7 @@ export class ResourceAllComponent implements OnInit {
   selectedType: string = null;
 
   resources: Resource[] = [];
-  filterConditions: FilterConditions = null;
+  filterConditions: ResourceFilterConditions = null;
   sortName: string = null;
   sortValue: string = null;
   displayData = [...this.resources];

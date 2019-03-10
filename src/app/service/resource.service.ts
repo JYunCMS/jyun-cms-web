@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Resource } from '../domain/resource';
 import { BackEndApi } from '../back-end-api';
 import { catchError } from 'rxjs/operators';
-import { FilterConditions } from '../domain/response/filter-conditions';
+import { ResourceFilterConditions } from '../domain/response/resource-filter-conditions';
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +41,9 @@ export class ResourceService {
       .pipe(catchError(this.responseService.handleError<Resource[]>('resourceService.deleteResource()', null)));
   }
 
-  getFilterConditions(): Observable<FilterConditions> {
-    return this.http.get<FilterConditions>(BackEndApi.resourcesFilterConditions)
-      .pipe(catchError(this.responseService.handleError<FilterConditions>('resourceService.getTypes()', null)));
+  getFilterConditions(): Observable<ResourceFilterConditions> {
+    return this.http.get<ResourceFilterConditions>(BackEndApi.resourcesFilterConditions)
+      .pipe(catchError(this.responseService.handleError<ResourceFilterConditions>('resourceService.getTypes()', null)));
   }
 
   getByConditions(date: string, type: string): Observable<Resource[]> {

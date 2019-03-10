@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ResponseService } from '../common/response.service';
 import { Observable } from 'rxjs';
 import { Article } from '../domain/article';
 import { BackEndApi } from '../back-end-api';
 import { catchError } from 'rxjs/operators';
+import { ArticleFilterConditions } from '../domain/response/article-filter-conditions';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +42,30 @@ export class ArticleService {
     };
     return this.http.put<Article>(BackEndApi.articles, article, headers)
       .pipe(catchError(this.responseService.handleError<Article>('articleService.updateArticle', null)));
+  }
+
+  getFilterConditions(): Observable<ArticleFilterConditions> {
+    return this.http.get<ArticleFilterConditions>(BackEndApi.articlesFilterConditions)
+      .pipe(catchError(this.responseService.handleError<ArticleFilterConditions>('articleService.getFilterConditions()', null)));
+  }
+
+  getArticlesByStatus(status: string): Observable<Article[]> {
+    const params = new HttpParams()
+      .append('status', status);
+    return this.http.get<Article[]>(BackEndApi.articlesByStatus + '?' + params)
+      .pipe(catchError(this.responseService.handleError<Article[]>('articleService.getArticlesByStatus()', null)));
+  }
+
+  getArticlesByConditions(status: string,
+                          selectedDate: string,
+                          selectedCategory: string,
+                          selectedTag: string): Observable<Article[]> {
+    const params = new HttpParams()
+      .append('status', status)
+      .append('selectedDate', selectedDate)
+      .append('selectedCategory', selectedCategory)
+      .append('selectedTag', selectedTag);
+    return this.http.get<Article[]>(BackEndApi.articlesByConditions + '?' + params)
+      .pipe(catchError(this.responseService.handleError<Article[]>('articleService.getArticlesByConditions()', null)));
   }
 }

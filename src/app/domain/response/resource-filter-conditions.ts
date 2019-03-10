@@ -1,4 +1,4 @@
-export class FilterConditions {
+export class ResourceFilterConditions {
   dateList: string[];
   typeList: string[];
 }

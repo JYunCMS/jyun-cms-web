@@ -21,4 +21,7 @@ export class BackEndApi {
 
   // RESTful API (/articles/*)
   static articles = BackEndApi.hostAddress + '/articles';
+  static articlesFilterConditions = BackEndApi.articles + '/filter-conditions';
+  static articlesByStatus = BackEndApi.articles + '/by-status';
+  static articlesByConditions = BackEndApi.articles + '/by-conditions';
 }

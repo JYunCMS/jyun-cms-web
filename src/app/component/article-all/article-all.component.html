@@ -1,148 +1,184 @@
 <h1>所有文章</h1>
-<nz-radio-group [(ngModel)]="scope">
-  <label nz-radio-button nzValue="all">全部
-    <nz-badge [nzCount]="109" [nzOverflowCount]="9999" [nzStyle]="{ backgroundColor: '#52c41a' }"></nz-badge>
-  </label>
-  <label nz-radio-button nzValue="release">已发布
-    <nz-badge [nzCount]="89" [nzOverflowCount]="9999" [nzStyle]="{ backgroundColor: '#52c41a' }"></nz-badge>
-  </label>
-  <label nz-radio-button nzValue="pending-review-">待审核
-    <nz-badge [nzCount]="4" [nzOverflowCount]="9999" [nzStyle]="{ backgroundColor: '#1890ff' }"></nz-badge>
-  </label>
-  <label nz-radio-button nzValue="draft">草稿
-    <nz-badge [nzCount]="20" [nzOverflowCount]="9999" [nzStyle]="{ backgroundColor: '#1890ff' }"></nz-badge>
-  </label>
-  <label nz-radio-button nzValue="recycle-bin">回收站
-    <nz-badge [nzCount]="36" [nzOverflowCount]="9999"></nz-badge>
-  </label>
-</nz-radio-group>
-<div>
-  <nz-select style="width: 120px;" [(ngModel)]="date" nzAllowClear nzPlaceHolder="全部日期">
-    <nz-option nzValue="music" nzLabel="2019年一月"></nz-option>
-    <nz-option nzValue="photo" nzLabel="2019年二月"></nz-option>
-  </nz-select>
-  <nz-select style="width: 180px;" [(ngModel)]="category" nzAllowClear nzPlaceHolder="所有分类目录">
-    <nz-option nzValue="music" nzLabel="音乐"></nz-option>
-    <nz-option nzValue="photo" nzLabel="摄影"></nz-option>
-  </nz-select>
-  <nz-select style="width: 120px;" nzShowSearch nzAllowClear nzPlaceHolder="全部标签" [(ngModel)]="tag">
-    <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-    <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-    <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
-  </nz-select>
-  <button nz-button nzType="primary">筛选</button>
-</div>
-<nz-table #basicTable [nzData]="articleList">
-  <thead>
-    <tr>
-      <th>标题</th>
-      <th>作者</th>
-      <th>分类</th>
-      <th>标签</th>
-      <th>状态</th>
-      <th>最近修改</th>
-      <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let article of basicTable.data">
-      <td>
-        <a (click)="previewArticle(article)" nz-tooltip nzPlacement="topLeft" nzTitle="点击预览">
-          <i nz-icon type="eye"></i> {{article.title}}
-        </a>
-      </td>
-      <td>{{article.authorId}}</td>
-      <td>{{article.category.title}}</td>
-      <td>{{article.tags}}</td>
-      <td>{{article.status}}</td>
-      <td>{{article.updatedAt}}</td>
-      <td>
-        <button nz-button nzSize="small" nzType="primary" (click)="editArticleOptions(article)">编辑</button>
-        <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button nzSize="small" nzType="danger" (click)="deleteArticle(article)">移动到回收站</button>
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
-<nz-drawer [nzClosable]="false" [nzVisible]="previewVisible" (nzOnClose)="previewArticleClose()"
-           nzPlacement="right" nzWidth="700px" nzTitle="文章预览">
-  <div align="center">
-    <h1>{{operatingArticle.title}}</h1>
-    <p>
-      作者：{{operatingArticle.authorId}}
-      <nz-divider nzType="vertical"></nz-divider>
-      创建于：{{operatingArticle.createdAt}}
-      <nz-divider nzType="vertical"></nz-divider>
-      最近更新：{{operatingArticle.updatedAt}}
-    </p>
-    <p *ngIf="operatingArticle.tags!=null">
-      <i nz-icon type="tags"></i> 标签：
-      <nz-tag [nzColor]="'blue'" *ngFor="let tag of operatingArticle.tags">{{tag}}</nz-tag>
-    </p>
-  </div>
-  <div [innerHTML]="htmlArticleContent"></div>
-  <br/>
-  <table *ngFor="let resource of operatingArticle.accessories">
-    <tr>
-      <td><span><i nz-icon type="link"></i> 附件：</span></td>
-      <td>
-        <a href="{{backEndHostAddress}}/{{resource.location}}" target="_blank">
-          <nz-tag><span style="font-size: larger;">{{resource.originalFilename}}</span></nz-tag>
-        </a>
-      </td>
-    </tr>
-  </table>
-</nz-drawer>
-<nz-drawer [nzOffsetX]="editArticleContentVisible ? 400 : 0"
-           [nzClosable]="false" [nzVisible]="editArticleOptionVisible" (nzOnClose)="editArticleOptionClose()"
-           nzPlacement="left" nzWidth="450px" nzTitle="编辑文章选项">
-  <!-- 第一层：编辑文章选项 -->
-  <div align="right">
-    <button nz-button nzType="default" (click)="editArticleContent()">
-      <i nz-icon type="left"></i> 去编辑正文
-    </button>
+<div *ngIf="articleFilterConditions!=null">
+  <nz-radio-group [(ngModel)]="status" nzSize="small">
+    <span nz-radio-button nzValue="全部" (click)="getArticlesByStatus()">
+      <nz-badge [nzCount]="articleFilterConditions.allExcludeRecycleBinCount" [nzOverflowCount]="9999"
+                [nzStyle]="{ backgroundColor: '#f5f5f5', color: 'black', boxShadow: '0 0 0 1px #d9d9d9 inset' }">
+        &nbsp;&nbsp;&nbsp;全部&nbsp;&nbsp;&nbsp;&nbsp;
+      </nz-badge>
+    </span>
+    <span nz-radio-button nzValue="已发布" (click)="getArticlesByStatus()">
+      <nz-badge [nzCount]="articleFilterConditions.releaseCount" [nzOverflowCount]="9999"
+                [nzStyle]="{ backgroundColor: '#52c41a' }">
+        &nbsp;&nbsp;&nbsp;已发布&nbsp;&nbsp;&nbsp;&nbsp;
+      </nz-badge>
+    </span>
+    <span nz-radio-button nzValue="待审核" (click)="getArticlesByStatus()">
+      <nz-badge [nzCount]="articleFilterConditions.pendingReviewCount" [nzOverflowCount]="9999"
+                [nzStyle]="{ backgroundColor: '#efde3d' }">
+        &nbsp;&nbsp;&nbsp;待审核&nbsp;&nbsp;&nbsp;
+      </nz-badge>
+    </span>
+    <span nz-radio-button nzValue="草稿" (click)="getArticlesByStatus()">
+      <nz-badge [nzCount]="articleFilterConditions.draftCount" [nzOverflowCount]="9999"
+                [nzStyle]="{ backgroundColor: '#ff0000' }">
+        &nbsp;&nbsp;&nbsp;草稿&nbsp;&nbsp;&nbsp;
+      </nz-badge>
+    </span>
     <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button nzType="primary" (click)="updateArticle()" [nzLoading]="isLoadingUpdateArticle">提交更新</button>
+    <span nz-radio-button nzValue="回收站" (click)="getArticlesByStatus()">
+      <nz-badge [nzCount]="articleFilterConditions.recycleBinCount" [nzOverflowCount]="9999"
+                [nzStyle]="{ backgroundColor: '#f5f5f5', color: '#ff0000', boxShadow: '0 0 0 1px #d9d9d9 inset' }">
+        &nbsp;&nbsp;&nbsp;回收站&nbsp;&nbsp;&nbsp;
+      </nz-badge>
+    </span>
+  </nz-radio-group>
+  <div style="margin-top: 7px; margin-bottom: 10px;">
+    <nz-select style="width: 120px;" [(ngModel)]="selectedDate" nzSize="small"
+               nzAllowClear nzPlaceHolder="全部日期" [(nzOpen)]="dateSelectIsOpen">
+      <nz-option *ngFor="let date of articleFilterConditions.dateList"
+                 [nzValue]="date" [nzLabel]="date"></nz-option>
+    </nz-select>
+    &nbsp;
+    <nz-tree-select
+      style="width: 200px;"
+      nzSize="small"
+      [nzDropdownStyle]="{ 'max-height': '250px' }"
+      [nzNodes]="categoryNodes"
+      nzShowSearch="true"
+      nzPlaceHolder="所有分类目录"
+      nzDefaultExpandAll="true"
+      nzShowLine="true"
+      [(ngModel)]="selectedCategory">
+    </nz-tree-select>
+    &nbsp;
+    <nz-select style="width: 120px;" [(ngModel)]="selectedTag" nzSize="small"
+               nzShowSearch nzAllowClear nzPlaceHolder="全部标签">
+      <nz-option *ngFor="let tag of articleFilterConditions.tagList"
+                 [nzValue]="tag.name" [nzLabel]="tag.name"></nz-option>
+    </nz-select>
+    &nbsp;
+    <button nz-button nzType="primary" nzSize="small" (click)="getArticlesByConditions()">筛选</button>
   </div>
-  <h3>文章标题：</h3>
-  <input nz-input placeholder="请输入文章标题" [(ngModel)]="operatingArticle.title">
-  <p class="explain-text">在这里输入文章标题，左侧的文本编辑器只用来编辑正文。</p>
-  <h3>所属分类：</h3>
-  <nz-tree-select
-    style="width: 100%;"
-    [nzDropdownStyle]="{ 'max-height': '250px' }"
-    [nzNodes]="categoryNodes"
-    nzShowSearch="true"
-    nzPlaceHolder="无"
-    nzDefaultExpandAll="true"
-    nzShowLine="true"
-    [(ngModel)]="updateArticleCategoryUrlAlias">
-  </nz-tree-select>
-  <p class="explain-text">请选择末端叶子节点分类目录，以保持站点文章分级结构清晰；
-    <br/>如需为特定分类节点添加页面，请到 导航->分类目录 下进行操作。
-  </p>
-  <h3>标签：</h3>
-  <nz-select
-    nzMode="tags"
-    style="width: 100%;"
-    nzPlaceHolder="点选已有标签，或直接输入创建新的标签"
-    [(ngModel)]="operatingArticle.tags">
-    <nz-option *ngFor="let tag of tagList" [nzLabel]="tag.name" [nzValue]="tag.name">
-    </nz-option>
-  </nz-select>
-  <p class="explain-text">（可选）不同于分类，标签表明文章具有某种属性，可添加多个；
-    <br/>注：点击选择已存在的标签，也可直接输入并回车添加新的标签。</p>
-  <h3>摘要：</h3>
-  <textarea nz-input placeholder="请输入文章摘要"
-            [(ngModel)]="operatingArticle.abstracts" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
-  <p class="explain-text">（可选）默认将截取正文开头内容作为摘要。</p>
-  <nz-drawer [nzClosable]="false" [nzVisible]="editArticleContentVisible" (nzOnClose)="editArticleContentClose()"
-             nzPlacement="left" nzWidth="700px" nzTitle="更新文章正文">
-    <!-- 第二层：编辑文章正文 -->
-    <editor
-      style="z-index: 100;"
-      [init]="tinyMceSettings"
-      [(ngModel)]="operatingArticle.content">
-    </editor>
+  <nz-table #basicTable [nzData]="articleList">
+    <thead>
+      <tr>
+        <th>标题</th>
+        <th>作者</th>
+        <th>分类</th>
+        <th>标签</th>
+        <th>状态</th>
+        <th>最近修改</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let article of basicTable.data">
+        <td>
+          <a (click)="previewArticle(article)" nz-tooltip nzPlacement="topLeft" nzTitle="点击预览">
+            <i nz-icon type="eye"></i> {{article.title}}
+          </a>
+        </td>
+        <td>{{article.authorId}}</td>
+        <td>{{article.category.title}}</td>
+        <td>{{article.tags}}</td>
+        <td>{{article.status}}</td>
+        <td>{{article.updatedAt}}</td>
+        <td>
+          <div *ngIf="!currentBeInRecycleBin">
+            <button nz-button nzSize="small" nzType="primary" (click)="editArticleOptions(article)">编辑</button>
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzSize="small" nzType="danger" (click)="moveToRecycleBin(article)">移动到回收站</button>
+          </div>
+          <div *ngIf="currentBeInRecycleBin">
+            <button nz-button nzSize="small" nzType="primary" (click)="editArticleOptions(article)">还原</button>
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzSize="small" nzType="danger" (click)="deleteArticle(article)">彻底删除</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-drawer [nzClosable]="false" [nzVisible]="previewVisible" (nzOnClose)="previewArticleClose()"
+             nzPlacement="right" nzWidth="700px" nzTitle="文章预览">
+    <div align="center">
+      <h1>{{operatingArticle.title}}</h1>
+      <p>
+        作者：{{operatingArticle.authorId}}
+        <nz-divider nzType="vertical"></nz-divider>
+        创建于：{{operatingArticle.createdAt}}
+        <nz-divider nzType="vertical"></nz-divider>
+        最近更新：{{operatingArticle.updatedAt}}
+      </p>
+      <p *ngIf="operatingArticle.tags!=null">
+        <i nz-icon type="tags"></i> 标签：
+        <nz-tag [nzColor]="'blue'" *ngFor="let tag of operatingArticle.tags">{{tag}}</nz-tag>
+      </p>
+    </div>
+    <div [innerHTML]="htmlArticleContent"></div>
+    <br/>
+    <table *ngFor="let resource of operatingArticle.accessories">
+      <tr>
+        <td><span><i nz-icon type="link"></i> 附件：</span></td>
+        <td>
+          <a href="{{backEndHostAddress}}/{{resource.location}}" target="_blank">
+            <nz-tag><span style="font-size: larger;">{{resource.originalFilename}}</span></nz-tag>
+          </a>
+        </td>
+      </tr>
+    </table>
   </nz-drawer>
-</nz-drawer>
+  <nz-drawer [nzOffsetX]="editArticleContentVisible ? 400 : 0"
+             [nzClosable]="false" [nzVisible]="editArticleOptionVisible" (nzOnClose)="editArticleOptionClose()"
+             nzPlacement="left" nzWidth="450px" nzTitle="编辑文章选项">
+    <!-- 第一层：编辑文章选项 -->
+    <div align="right">
+      <button nz-button nzType="default" (click)="editArticleContent()">
+        <i nz-icon type="left"></i> 去编辑正文
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button nzType="primary" (click)="updateArticle()" [nzLoading]="isLoadingUpdateArticle">提交更新</button>
+    </div>
+    <h3>文章标题：</h3>
+    <input nz-input placeholder="请输入文章标题" [(ngModel)]="operatingArticle.title">
+    <p class="explain-text">在这里输入文章标题，左侧的文本编辑器只用来编辑正文。</p>
+    <h3>所属分类：</h3>
+    <nz-tree-select
+      style="width: 100%;"
+      [nzDropdownStyle]="{ 'max-height': '250px' }"
+      [nzNodes]="categoryNodes"
+      nzShowSearch="true"
+      nzPlaceHolder="无"
+      nzDefaultExpandAll="true"
+      nzShowLine="true"
+      [(ngModel)]="updateArticleCategoryUrlAlias">
+    </nz-tree-select>
+    <p class="explain-text">请选择末端叶子节点分类目录，以保持站点文章分级结构清晰；
+      <br/>如需为特定分类节点添加页面，请到 导航->分类目录 下进行操作。
+    </p>
+    <h3>标签：</h3>
+    <nz-select
+      nzMode="tags"
+      style="width: 100%;"
+      nzPlaceHolder="点选已有标签，或直接输入创建新的标签"
+      [(ngModel)]="operatingArticle.tags">
+      <nz-option *ngFor="let tag of articleFilterConditions.tagList" [nzLabel]="tag.name" [nzValue]="tag.name">
+      </nz-option>
+    </nz-select>
+    <p class="explain-text">（可选）不同于分类，标签表明文章具有某种属性，可添加多个；
+      <br/>注：点击选择已存在的标签，也可直接输入并回车添加新的标签。</p>
+    <h3>摘要：</h3>
+    <textarea nz-input placeholder="请输入文章摘要"
+              [(ngModel)]="operatingArticle.abstracts" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+    <p class="explain-text">（可选）默认将截取正文开头内容作为摘要。</p>
+    <nz-drawer [nzClosable]="false" [nzVisible]="editArticleContentVisible" (nzOnClose)="editArticleContentClose()"
+               nzPlacement="left" nzWidth="700px" nzTitle="更新文章正文">
+      <!-- 第二层：编辑文章正文 -->
+      <editor
+        style="z-index: 100;"
+        [init]="tinyMceSettings"
+        [(ngModel)]="operatingArticle.content">
+      </editor>
+    </nz-drawer>
+  </nz-drawer>
+</div>
