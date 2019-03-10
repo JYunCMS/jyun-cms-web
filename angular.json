@@ -35,6 +35,7 @@
               "src/assets/tinymce/tinymce.min.js",
               "src/assets/tinymce/langs/zh_CN.js",
               "src/assets/tinymce/themes/silver/theme.min.js",
+              "src/assets/tinymce/themes/mobile/theme.min.js",
               "src/assets/tinymce/plugins/autolink/plugin.min.js",
               "src/assets/tinymce/plugins/link/plugin.min.js",
               "src/assets/tinymce/plugins/image/plugin.min.js",
