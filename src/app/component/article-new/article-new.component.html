@@ -11,7 +11,7 @@
     <nz-modal [(nzVisible)]="isVisibleForSaveArticle" nzTitle="发布文章"
               (nzOnCancel)="onCancelPushArticle()"
               (nzOnOk)="pushArticle()">
-      <p>文章将交由管理员进行审核</p><br/>
+      <p><strong>文章将交由管理员进行审核</strong></p><br/>
       <label nz-checkbox [(ngModel)]="articleCheckRelease">我是管理员，直接发布？</label>
     </nz-modal>
   </div>

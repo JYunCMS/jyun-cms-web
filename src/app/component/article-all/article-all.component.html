@@ -82,7 +82,23 @@
         <td>{{article.authorId}}</td>
         <td>{{article.category.title}}</td>
         <td>{{article.tags}}</td>
-        <td>{{article.status}}</td>
+        <td>
+          <button nz-button nzType="default" nzSize="small"
+                  (click)="updateStatusShow(article)" [disabled]="article.status==='已发布'"
+                  nz-tooltip nzPlacement="top" nzTitle="点击更新文章状态">
+            {{article.status}}
+          </button>
+        </td>
+        <nz-modal [(nzVisible)]="isVisibleForUpdateStatus" nzTitle="更新文章状态"
+                  (nzOnCancel)="updateStatusClose()"
+                  (nzOnOk)="updateStatus()">
+          <p><strong>请选择文章状态</strong></p><br/>
+          <nz-radio-group [(ngModel)]="operatingArticle.status">
+            <label nz-radio nzValue="已发布">已发布</label>
+            <label nz-radio nzValue="待审核">待审核</label>
+            <label nz-radio nzValue="草稿">草稿</label>
+          </nz-radio-group>
+        </nz-modal>
         <td>{{article.updatedAt}}</td>
         <td>
           <div *ngIf="!currentBeInRecycleBin">

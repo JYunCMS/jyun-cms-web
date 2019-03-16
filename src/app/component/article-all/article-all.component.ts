@@ -25,12 +25,14 @@ export class ArticleAllComponent implements OnInit {
   backEndHostAddress: string = BackEndApi.hostAddress;
 
   isLoadingUpdateArticle = false;
+  isVisibleForUpdateStatus = false;
 
   status: string = null; // 文章状态（全部、已发布、待审核、草稿、回收站）
   selectedDate: string = null; // 文章时间筛选条件
   selectedCategory: string = null; // 文章分类筛选条件
   selectedTag: string = null; // 文章标签筛选条件
-  currentBeInRecycleBin = false;
+  currentBeInRecycleBin = false; // 当前是否在回收站下
+  tempOldArticleStatus: string = null; // 暂存文章旧的发布状态，用于恢复
 
   // 初始化数据
   categoryNodes: NzTreeNode[] = [];
@@ -316,5 +318,45 @@ export class ArticleAllComponent implements OnInit {
           });
       }
     });
+  }
+
+  updateStatus() {
+    if (this.operatingArticle.status === '已发布') {
+      // 用户权限检测，无权限则进行拦截
+      //////////////////////
+      /////////////////////////
+      /////////////////////////
+      /////////////////////////
+      /////////////////////////
+      /////////////////////////
+      /////////////////////////
+      /////////////////////////
+
+
+    }
+
+    if (this.operatingArticle.status === this.tempOldArticleStatus) {
+      // 并没有选择新的文章状态
+      this.isVisibleForUpdateStatus = false;
+      return;
+    }
+
+    this.articleService.updateArticle(this.operatingArticle)
+      .subscribe(() => {
+        this.isVisibleForUpdateStatus = false;
+        this.articleService.getFilterConditions()
+          .subscribe(result => this.articleFilterConditions = result);
+      });
+  }
+
+  updateStatusShow(article: Article) {
+    this.isVisibleForUpdateStatus = true;
+    this.operatingArticle = article;
+    this.tempOldArticleStatus = article.status;
+  }
+
+  updateStatusClose() {
+    this.isVisibleForUpdateStatus = false;
+    this.operatingArticle.status = this.tempOldArticleStatus;
   }
 }
