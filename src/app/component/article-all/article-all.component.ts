@@ -31,7 +31,6 @@ export class ArticleAllComponent implements OnInit {
   selectedCategory: string = null; // 文章分类筛选条件
   selectedTag: string = null; // 文章标签筛选条件
   currentBeInRecycleBin = false;
-  dateSelectIsOpen = false;
 
   // 初始化数据
   categoryNodes: NzTreeNode[] = [];
@@ -288,18 +287,8 @@ export class ArticleAllComponent implements OnInit {
   }
 
   getArticlesByConditions() {
-    if (this.selectedDate == null) {
-      this.modalService.confirm({
-        nzTitle: '<i><b>警告：</b></i>',
-        nzContent: '为避免筛选查询时间过久，减轻服务器压力<br/>请至少选择一个【时间】范围<br/><br/><b>去选择时间范围？</b>',
-        nzOnOk: () => {
-          this.dateSelectIsOpen = true;
-        }
-      });
-    } else {
-      this.articleService.getArticlesByConditions(this.status, this.selectedDate, this.selectedCategory, this.selectedTag)
-        .subscribe(result => this.articleList = result);
-    }
+    this.articleService.getArticlesByConditions(this.status, this.selectedDate, this.selectedCategory, this.selectedTag)
+      .subscribe(result => this.articleList = result);
   }
 
   moveToRecycleBin(article: Article) {

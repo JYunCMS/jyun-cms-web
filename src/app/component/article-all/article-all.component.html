@@ -35,7 +35,7 @@
   </nz-radio-group>
   <div style="margin-top: 7px; margin-bottom: 10px;">
     <nz-select style="width: 120px;" [(ngModel)]="selectedDate" nzSize="small"
-               nzAllowClear nzPlaceHolder="全部日期" [(nzOpen)]="dateSelectIsOpen">
+               nzAllowClear nzPlaceHolder="全部日期">
       <nz-option *ngFor="let date of articleFilterConditions.dateList"
                  [nzValue]="date" [nzLabel]="date"></nz-option>
     </nz-select>
