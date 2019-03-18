@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from '../../common/util.service';
+import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-user-all',
@@ -86,7 +87,8 @@ export class UserAllComponent implements OnInit {
   ];
 
   constructor(
-    private utilService: UtilService
+    private utilService: SiderMenuService,
+    private userService: UserService
   ) {
   }
 

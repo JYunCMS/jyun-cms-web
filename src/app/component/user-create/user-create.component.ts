@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from '../../common/util.service';
+import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 
 @Component({
@@ -17,7 +17,7 @@ export class UserCreateComponent implements OnInit {
   selectedValue: string;
 
   constructor(
-    private utilService: UtilService
+    private utilService: SiderMenuService
   ) {
   }
 

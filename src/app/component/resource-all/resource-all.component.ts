@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from '../../common/util.service';
+import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { Resource } from '../../domain/resource';
 import { ResourceService } from '../../service/resource.service';
-import { BackEndApi } from '../../back-end-api';
+import { BackEndApi } from '../../config/back-end-api';
 import { NzModalService } from 'ng-zorro-antd';
 import { ResourceFilterConditions } from '../../domain/response/resource-filter-conditions';
 
@@ -27,7 +27,7 @@ export class ResourceAllComponent implements OnInit {
   displayData = [...this.resources];
 
   constructor(
-    private utilService: UtilService,
+    private utilService: SiderMenuService,
     private resourceService: ResourceService,
     private modalService: NzModalService
   ) {

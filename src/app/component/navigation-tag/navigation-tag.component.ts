@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from '../../common/util.service';
+import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { TagService } from '../../service/tag.service';
 import { Tag } from '../../domain/tag';
@@ -20,7 +20,7 @@ export class NavigationTagComponent implements OnInit {
   displayData = [...this.tags];
 
   constructor(
-    private utilService: UtilService,
+    private utilService: SiderMenuService,
     private tagService: TagService
   ) {
   }

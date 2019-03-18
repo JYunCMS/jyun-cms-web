@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ResponseService } from '../common/response.service';
+import { ResponseService } from '../util/response.service';
 import { Observable } from 'rxjs';
 import { Resource } from '../domain/resource';
-import { BackEndApi } from '../back-end-api';
+import { BackEndApi } from '../config/back-end-api';
 import { catchError } from 'rxjs/operators';
 import { ResourceFilterConditions } from '../domain/response/resource-filter-conditions';
 

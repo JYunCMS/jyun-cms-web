@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from '../../common/util.service';
+import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { Article } from '../../domain/article';
 import { ArticleService } from '../../service/article.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { BackEndApi } from '../../back-end-api';
+import { BackEndApi } from '../../config/back-end-api';
 import { NzMessageService, NzModalService, NzTreeNode } from 'ng-zorro-antd';
 import { CategoryService } from '../../service/category.service';
 import { TagService } from '../../service/tag.service';
 import { Category } from '../../domain/category';
 import { Resource } from '../../domain/resource';
 import { ArticleFilterConditions } from '../../domain/response/article-filter-conditions';
+import { LocalStorageKey } from '../../config/local-storage-key';
 
 @Component({
   selector: 'app-article-all',
@@ -19,8 +20,6 @@ import { ArticleFilterConditions } from '../../domain/response/article-filter-co
 })
 
 export class ArticleAllComponent implements OnInit {
-
-  private localStorageKeyForCategoriesResponse = 'jyun-category-list';
 
   backEndHostAddress: string = BackEndApi.hostAddress;
 
@@ -93,7 +92,7 @@ export class ArticleAllComponent implements OnInit {
   };
 
   constructor(
-    private utilService: UtilService,
+    private utilService: SiderMenuService,
     private articleService: ArticleService,
     private sanitizer: DomSanitizer,
     private categoryService: CategoryService,
@@ -115,7 +114,7 @@ export class ArticleAllComponent implements OnInit {
       .subscribe(result => {
         this.articleFilterConditions = result;
         this.initCategoryNodes(this.categoryNodes, result.categoryList);
-        localStorage.setItem(this.localStorageKeyForCategoriesResponse, JSON.stringify(result.categoryList));
+        localStorage.setItem(LocalStorageKey.categoryList, JSON.stringify(result.categoryList));
       });
 
     this.status = null;
@@ -251,7 +250,7 @@ export class ArticleAllComponent implements OnInit {
     }
 
     // 3、检查选择的分类是否是叶子分类
-    const categories: Category[] = JSON.parse(localStorage.getItem(this.localStorageKeyForCategoriesResponse));
+    const categories: Category[] = JSON.parse(localStorage.getItem(LocalStorageKey.categoryList));
     for (const category of categories) {
       if (category.urlAlias === this.updateArticleCategoryUrlAlias) {
         if (!category.beLeaf) {

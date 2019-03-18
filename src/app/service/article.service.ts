@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { ResponseService } from '../common/response.service';
+import { ResponseService } from '../util/response.service';
 import { Observable } from 'rxjs';
 import { Article } from '../domain/article';
-import { BackEndApi } from '../back-end-api';
+import { BackEndApi } from '../config/back-end-api';
 import { catchError } from 'rxjs/operators';
 import { ArticleFilterConditions } from '../domain/response/article-filter-conditions';
 

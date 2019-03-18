@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from '../../common/util.service';
+import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { NzMessageService } from 'ng-zorro-antd';
-import { BackEndApi } from '../../back-end-api';
+import { BackEndApi } from '../../config/back-end-api';
 
 @Component({
   selector: 'app-resource-upload',
@@ -15,7 +15,7 @@ export class ResourceUploadComponent implements OnInit {
   uploadAddress: string = BackEndApi.resources;
 
   constructor(
-    private utilService: UtilService,
+    private utilService: SiderMenuService,
     private nzMsgService: NzMessageService
   ) {
   }

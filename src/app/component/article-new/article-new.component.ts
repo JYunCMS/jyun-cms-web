@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from '../../common/util.service';
+import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
-import { BackEndApi } from '../../back-end-api';
+import { BackEndApi } from '../../config/back-end-api';
 import { CategoryService } from '../../service/category.service';
 import { NzMessageService, NzTreeNode } from 'ng-zorro-antd';
 import { Category } from '../../domain/category';
@@ -12,6 +12,7 @@ import { Resource } from '../../domain/resource';
 import { ArticleService } from '../../service/article.service';
 import { Router } from '@angular/router';
 import { ResourceService } from '../../service/resource.service';
+import { LocalStorageKey } from '../../config/local-storage-key';
 
 @Component({
   selector: 'app-article-new',
@@ -20,8 +21,6 @@ import { ResourceService } from '../../service/resource.service';
 })
 
 export class ArticleNewComponent implements OnInit {
-
-  private localStorageKeyForCategoriesResponse = 'jyun-category-list';
 
   uploadAddress: string = BackEndApi.resources;
 
@@ -91,7 +90,7 @@ export class ArticleNewComponent implements OnInit {
   };
 
   constructor(
-    private utilService: UtilService,
+    private utilService: SiderMenuService,
     private categoryService: CategoryService,
     private tagService: TagService,
     private articleService: ArticleService,
@@ -106,7 +105,7 @@ export class ArticleNewComponent implements OnInit {
     this.categoryService.getNodes()
       .subscribe(result => {
         this.initCategoryNodes(this.categoryNodes, result);
-        localStorage.setItem(this.localStorageKeyForCategoriesResponse, JSON.stringify(result));
+        localStorage.setItem(LocalStorageKey.categoryList, JSON.stringify(result));
       });
     this.tagService.getTags()
       .subscribe(result => this.tagList = result);
@@ -237,7 +236,7 @@ export class ArticleNewComponent implements OnInit {
     }
 
     // 3、检查选择的分类是否是叶子分类
-    const categories: Category[] = JSON.parse(localStorage.getItem(this.localStorageKeyForCategoriesResponse));
+    const categories: Category[] = JSON.parse(localStorage.getItem(LocalStorageKey.categoryList));
     for (const category of categories) {
       if (category.urlAlias === this.articleCategoryUrlAlias) {
         if (!category.beLeaf) {

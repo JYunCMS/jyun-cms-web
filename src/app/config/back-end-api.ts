@@ -24,4 +24,7 @@ export class BackEndApi {
   static articlesByStatus = BackEndApi.articles + '/by-status';
   static articlesByConditions = BackEndApi.articles + '/by-conditions';
   static articlesMoveToRecycleBin = BackEndApi.articles + '/move-to-recycle-bin';
+
+  // RESTful API (/users/*)
+  static users = BackEndApi.hostAddress + '/users';
 }

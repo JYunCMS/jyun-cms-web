@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilService } from '../common/util.service';
+import { SiderMenuService } from '../util/sider-menu.service';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
   };
 
   constructor(
-    private utilService: UtilService
+    private utilService: SiderMenuService
   ) {
   }
 

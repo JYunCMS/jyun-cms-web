@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService, NzTreeNode } from 'ng-zorro-antd';
-import { UtilService } from '../../common/util.service';
+import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { Category } from '../../domain/category';
 import { CategoryService } from '../../service/category.service';
@@ -20,7 +20,7 @@ export class NavigationCategoryComponent implements OnInit {
   parentNodeUrlAlias: string;
 
   constructor(
-    private utilService: UtilService,
+    private utilService: SiderMenuService,
     private categoryService: CategoryService,
     private modalService: NzModalService
   ) {

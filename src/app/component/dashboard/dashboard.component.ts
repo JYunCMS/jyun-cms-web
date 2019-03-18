@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from '../app.component';
-import { UtilService } from '../../common/util.service';
+import { SiderMenuService } from '../../util/sider-menu.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +10,7 @@ import { UtilService } from '../../common/util.service';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private utilService: UtilService
+    private utilService: SiderMenuService
   ) {
   }
 
