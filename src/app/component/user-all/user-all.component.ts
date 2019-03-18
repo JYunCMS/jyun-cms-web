@@ -87,12 +87,12 @@ export class UserAllComponent implements OnInit {
   ];
 
   constructor(
-    private utilService: SiderMenuService,
+    private siderMenuService: SiderMenuService,
     private userService: UserService
   ) {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('user', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('user', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 }

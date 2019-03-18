@@ -11,11 +11,11 @@ import { AppComponent } from '../app.component';
 export class SettingEditComponent implements OnInit {
 
   constructor(
-    private utilService: SiderMenuService
+    private siderMenuService: SiderMenuService
   ) {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('setting', 'edit', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('setting', 'edit', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 }

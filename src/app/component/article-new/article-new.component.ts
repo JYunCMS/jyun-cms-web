@@ -90,7 +90,7 @@ export class ArticleNewComponent implements OnInit {
   };
 
   constructor(
-    private utilService: SiderMenuService,
+    private siderMenuService: SiderMenuService,
     private categoryService: CategoryService,
     private tagService: TagService,
     private articleService: ArticleService,
@@ -101,7 +101,7 @@ export class ArticleNewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('article', 'new', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('article', 'new', AppComponent.self.openMap, AppComponent.self.selectMap);
     this.categoryService.getNodes()
       .subscribe(result => {
         this.initCategoryNodes(this.categoryNodes, result);

@@ -15,13 +15,13 @@ export class ResourceUploadComponent implements OnInit {
   uploadAddress: string = BackEndApi.resources;
 
   constructor(
-    private utilService: SiderMenuService,
+    private siderMenuService: SiderMenuService,
     private nzMsgService: NzMessageService
   ) {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('resource', 'upload', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('resource', 'upload', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 
   handleChange({file}): void {

@@ -27,14 +27,14 @@ export class ResourceAllComponent implements OnInit {
   displayData = [...this.resources];
 
   constructor(
-    private utilService: SiderMenuService,
+    private siderMenuService: SiderMenuService,
     private resourceService: ResourceService,
     private modalService: NzModalService
   ) {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('resource', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('resource', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
     this.resourceService.getResources()
       .subscribe(result => this.initResources(result));
   }

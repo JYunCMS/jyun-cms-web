@@ -20,13 +20,13 @@ export class NavigationTagComponent implements OnInit {
   displayData = [...this.tags];
 
   constructor(
-    private utilService: SiderMenuService,
+    private siderMenuService: SiderMenuService,
     private tagService: TagService
   ) {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('navigation', 'tag', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('navigation', 'tag', AppComponent.self.openMap, AppComponent.self.selectMap);
     this.tagService.getTags()
       .subscribe(result => this.initTags(result));
   }

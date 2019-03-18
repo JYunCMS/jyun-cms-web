@@ -16,12 +16,12 @@ export class UserMeComponent implements OnInit {
   passwordAgain: string;
 
   constructor(
-    private utilService: SiderMenuService
+    private siderMenuService: SiderMenuService
   ) {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('user', 'me', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('user', 'me', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 
   updateUserMe() {

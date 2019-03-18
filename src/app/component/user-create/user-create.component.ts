@@ -17,12 +17,12 @@ export class UserCreateComponent implements OnInit {
   selectedValue: string;
 
   constructor(
-    private utilService: SiderMenuService
+    private siderMenuService: SiderMenuService
   ) {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('user', 'create', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('user', 'create', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 
   addNewUser(): void {

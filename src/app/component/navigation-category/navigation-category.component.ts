@@ -20,14 +20,14 @@ export class NavigationCategoryComponent implements OnInit {
   parentNodeUrlAlias: string;
 
   constructor(
-    private utilService: SiderMenuService,
+    private siderMenuService: SiderMenuService,
     private categoryService: CategoryService,
     private modalService: NzModalService
   ) {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('navigation', 'category', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('navigation', 'category', AppComponent.self.openMap, AppComponent.self.selectMap);
     this.categoryService.getNodes()
       .subscribe(result => this.initNodes(this.nodes, result));
   }

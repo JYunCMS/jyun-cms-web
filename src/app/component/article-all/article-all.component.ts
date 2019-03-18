@@ -92,7 +92,7 @@ export class ArticleAllComponent implements OnInit {
   };
 
   constructor(
-    private utilService: SiderMenuService,
+    private siderMenuService: SiderMenuService,
     private articleService: ArticleService,
     private sanitizer: DomSanitizer,
     private categoryService: CategoryService,
@@ -103,7 +103,7 @@ export class ArticleAllComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('article', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('article', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
     this.initArticleListAndSoOn();
   }
 

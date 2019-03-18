@@ -10,11 +10,11 @@ import { SiderMenuService } from '../../util/sider-menu.service';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private utilService: SiderMenuService
+    private siderMenuService: SiderMenuService
   ) {
   }
 
   ngOnInit() {
-    this.utilService.initLeftSiderStatus('', 'dashboard', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('', 'dashboard', AppComponent.self.openMap, AppComponent.self.selectMap);
   }
 }

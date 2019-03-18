@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
   };
 
   constructor(
-    private utilService: SiderMenuService
+    private siderMenuService: SiderMenuService
   ) {
   }
 
@@ -49,6 +49,6 @@ export class AppComponent implements OnInit {
   }
 
   openHandler(value: string): void {
-    this.utilService.openSiderMenuHandler(value, this.openMap);
+    this.siderMenuService.openSiderMenuHandler(value, this.openMap);
   }
 }
