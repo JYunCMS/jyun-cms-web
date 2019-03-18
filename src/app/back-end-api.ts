@@ -12,7 +12,6 @@ export class BackEndApi {
 
   // RESTful API (/tags/*)
   static tags = BackEndApi.hostAddress + '/tags';
-  static tagsArticleBind = BackEndApi.tags + '/article-bind';
 
   // RESTful API (/resources/*)
   static resources = BackEndApi.hostAddress + '/resources';
