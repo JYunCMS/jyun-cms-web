@@ -44,11 +44,11 @@ export class ArticleService {
       .pipe(catchError(this.responseService.handleError<Article>('articleService.updateArticle', null)));
   }
 
-  deleteArticle(articleId: number): Observable<Article> {
+  deleteArticle(articleId: number): Observable<void> {
     const params = new HttpParams()
       .append('articleId', articleId.toString());
-    return this.http.delete<Article>(BackEndApi.articles + '?' + params)
-      .pipe(catchError(this.responseService.handleError<Article>('articleService.deleteArticle', null)));
+    return this.http.delete<void>(BackEndApi.articles + '?' + params)
+      .pipe(catchError(this.responseService.handleError<void>('articleService.deleteArticle', null)));
   }
 
   getFilterConditions(): Observable<ArticleFilterConditions> {
