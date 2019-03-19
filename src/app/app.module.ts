@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { AppRoutingModule } from './app-routing.module';
+import { HomeComponent } from './component/home/home.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { ArticleAllComponent } from './component/article-all/article-all.component';
 import { ArticleNewComponent } from './component/article-new/article-new.component';
@@ -28,6 +29,7 @@ registerLocaleData(zh);
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
     DashboardComponent,
     ArticleAllComponent,
     ArticleNewComponent,

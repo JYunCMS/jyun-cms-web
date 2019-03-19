@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './component/home/home.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { ArticleAllComponent } from './component/article-all/article-all.component';
 import { ArticleNewComponent } from './component/article-new/article-new.component';
@@ -14,7 +15,7 @@ import { SettingCommonComponent } from './component/setting-common/setting-commo
 import { SettingEditComponent } from './component/setting-edit/setting-edit.component';
 
 const routes: Routes = [
-  {path: '', component: DashboardComponent},
+  {path: '', component: HomeComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'article/all', component: ArticleAllComponent},
   {path: 'article/new', component: ArticleNewComponent},

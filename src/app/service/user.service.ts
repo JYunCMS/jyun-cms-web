@@ -7,7 +7,6 @@ import { BackEndApi } from '../config/back-end-api';
 import { catchError } from 'rxjs/operators';
 import { LocalStorageKey } from '../config/local-storage-key';
 import { UpdateUserInfo } from '../domain/request/update-user-info';
-import { LoginUserInfo } from '../domain/response/login-user-info';
 
 @Injectable({
   providedIn: 'root'
@@ -64,15 +63,5 @@ export class UserService {
       .append('username', username);
     return this.http.delete<void>(BackEndApi.users + '?' + params, headers)
       .pipe(catchError(this.responseService.handleError<void>('userService.deleteUser()', null)));
-  }
-
-  login(user: User): Observable<LoginUserInfo> {
-    const headers = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<LoginUserInfo>(BackEndApi.users, user, headers)
-      .pipe(catchError(this.responseService.handleError<LoginUserInfo>('userService.login()', null)));
   }
 }

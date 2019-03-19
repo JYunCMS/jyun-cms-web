@@ -13,7 +13,6 @@ export class ResponseService {
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
       // 将错误信息打印到控制台
       console.log(`The error comes from: ${operation}`);
       console.log(error);

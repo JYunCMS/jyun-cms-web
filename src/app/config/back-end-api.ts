@@ -27,4 +27,5 @@ export class BackEndApi {
 
   // RESTful API (/users/*)
   static users = BackEndApi.hostAddress + '/users';
+  static usersLogin = BackEndApi.users + '/login';
 }
