@@ -6,6 +6,7 @@ import { Article } from '../domain/article';
 import { BackEndApi } from '../config/back-end-api';
 import { catchError } from 'rxjs/operators';
 import { ArticleFilterConditions } from '../domain/response/article-filter-conditions';
+import { LocalStorageKey } from '../config/local-storage-key';
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +21,22 @@ export class ArticleService {
   }
 
   getArticles(): Observable<Article[]> {
-    return this.http.get<Article[]>(BackEndApi.articles)
+    const headers = {
+      headers: new HttpHeaders({
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
+    return this.http.get<Article[]>(BackEndApi.articles, headers)
       .pipe(catchError(this.responseService.handleError<Article[]>('articleService.getArticles()', null)));
   }
 
   newArticle(article: Article): Observable<Article> {
     const headers = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
       })
     };
     return this.http.post<Article>(BackEndApi.articles, article, headers)
@@ -37,7 +46,9 @@ export class ArticleService {
   updateArticle(article: Article): Observable<Article> {
     const headers = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
       })
     };
     return this.http.put<Article>(BackEndApi.articles, article, headers)
@@ -45,21 +56,39 @@ export class ArticleService {
   }
 
   deleteArticle(articleId: number): Observable<void> {
+    const headers = {
+      headers: new HttpHeaders({
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
     const params = new HttpParams()
       .append('articleId', articleId.toString());
-    return this.http.delete<void>(BackEndApi.articles + '?' + params)
+    return this.http.delete<void>(BackEndApi.articles + '?' + params, headers)
       .pipe(catchError(this.responseService.handleError<void>('articleService.deleteArticle', null)));
   }
 
   getFilterConditions(): Observable<ArticleFilterConditions> {
-    return this.http.get<ArticleFilterConditions>(BackEndApi.articlesFilterConditions)
+    const headers = {
+      headers: new HttpHeaders({
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
+    return this.http.get<ArticleFilterConditions>(BackEndApi.articlesFilterConditions, headers)
       .pipe(catchError(this.responseService.handleError<ArticleFilterConditions>('articleService.getFilterConditions()', null)));
   }
 
   getArticlesByStatus(status: string): Observable<Article[]> {
+    const headers = {
+      headers: new HttpHeaders({
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
     const params = new HttpParams()
       .append('status', status);
-    return this.http.get<Article[]>(BackEndApi.articlesByStatus + '?' + params)
+    return this.http.get<Article[]>(BackEndApi.articlesByStatus + '?' + params, headers)
       .pipe(catchError(this.responseService.handleError<Article[]>('articleService.getArticlesByStatus()', null)));
   }
 
@@ -67,23 +96,31 @@ export class ArticleService {
                           selectedDate: string,
                           selectedCategory: string,
                           selectedTag: string): Observable<Article[]> {
+    const headers = {
+      headers: new HttpHeaders({
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
     const params = new HttpParams()
       .append('status', status)
       .append('selectedDate', selectedDate)
       .append('selectedCategory', selectedCategory)
       .append('selectedTag', selectedTag);
-    return this.http.get<Article[]>(BackEndApi.articlesByConditions + '?' + params)
+    return this.http.get<Article[]>(BackEndApi.articlesByConditions + '?' + params, headers)
       .pipe(catchError(this.responseService.handleError<Article[]>('articleService.getArticlesByConditions()', null)));
   }
 
   moveToRecycleBin(beDelete: boolean, article: Article): Observable<Article> {
-    const params = new HttpParams()
-      .append('beDelete', beDelete ? 'true' : 'false');
     const headers = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
       })
     };
+    const params = new HttpParams()
+      .append('beDelete', beDelete ? 'true' : 'false');
     return this.http.put<Article>(BackEndApi.articlesMoveToRecycleBin + '?' + params, article, headers)
       .pipe(catchError(this.responseService.handleError<Article>('articleService.movoToRecycleBin()', null)));
   }
