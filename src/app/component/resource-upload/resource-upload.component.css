@@ -1,7 +1,0 @@
-:host ::ng-deep nz-upload {
-  display: block;
-}
-
-:host ::ng-deep .ant-upload.ant-upload-drag {
-  height: 180px;
-}

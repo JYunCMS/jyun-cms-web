@@ -8,12 +8,12 @@ import { NzModalService } from 'ng-zorro-antd';
 import { ResourceFilterConditions } from '../../domain/response/resource-filter-conditions';
 
 @Component({
-  selector: 'app-resource-all',
-  templateUrl: './resource-all.component.html',
-  styleUrls: ['./resource-all.component.css']
+  selector: 'app-article-resource',
+  templateUrl: './article-resource.component.html',
+  styleUrls: ['./article-resource.component.css']
 })
 
-export class ResourceAllComponent implements OnInit {
+export class ArticleResourceComponent implements OnInit {
 
   backEndHostAddress: string = BackEndApi.hostAddress;
 
@@ -34,7 +34,7 @@ export class ResourceAllComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.siderMenuService.initLeftSiderStatus('resource', 'all', AppComponent.self.openMap, AppComponent.self.selectMap);
+    this.siderMenuService.initLeftSiderStatus('article', 'resource', AppComponent.self.openMap, AppComponent.self.selectMap);
     this.resourceService.getResources()
       .subscribe(result => this.initResources(result));
   }

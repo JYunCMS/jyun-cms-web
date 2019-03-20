@@ -38,20 +38,21 @@
               <span style="color: #1890ff;">{{node.title}}</span>
             </div>
             <div nz-col nzSpan="9">
-              <span nz-tooltip nzPlacement="right" nzTitle="别名 (URL)">({{node.key}})</span>
+              <span nz-tooltip nzPlacement="top" nzTitle="别名 (URL)">({{node.key}})</span>
             </div>
             <div nz-col nzSpan="2">
-              <span nz-tooltip nzPlacement="right" nzTitle="文章总数" *ngIf="node.isLeaf">
+              <span nz-tooltip nzPlacement="top" nzTitle="文章统计" *ngIf="node.isLeaf">
                 <nz-tag [nzColor]="'blue'">{{node.origin.articleCount}}</nz-tag>
               </span>
             </div>
             <div nz-col nzSpan="7">
-              <button nz-button nzSize="small" nzType="primary">编辑</button>
+              <nz-badge nzDot [nzShowDot]="!(node.origin.customPage==null||node.origin.customPage==='')">
+                <button nz-button nzSize="small" nzType="default" (click)="showUpdateNode(node)">介绍页</button>
+              </nz-badge>
               <nz-divider nzType="vertical"></nz-divider>
-              <button nz-button nzSize="small" nzType="danger" (click)="showDeleteConfirm(node)">删除
-              </button>
+              <button nz-button nzSize="small" nzType="danger" (click)="showDeleteConfirm(node)">删除</button>
               <nz-divider nzType="vertical"></nz-divider>
-              <nz-button-group nzSize="small" nz-tooltip nzPlacement="right" nzTitle="排序">
+              <nz-button-group nzSize="small" nz-tooltip nzPlacement="top" nzTitle="排序">
                 <button nz-button nzType="default" (click)="moveUpNode(node)">
                   <i nz-icon type="up"></i>
                 </button>
@@ -66,3 +67,22 @@
     </nz-tree>
   </div>
 </div>
+<nz-drawer [nzClosable]="false" [nzVisible]="updateCategoryVisible" (nzOnClose)="closeUpdateNode()"
+  nzPlacement="left" nzWidth="700px" nzTitle="编辑分类节点介绍页">
+  <div align="right">
+    <button nz-button nzType="danger" (click)="cleanCustomPage()" [nzLoading]="isLoadingCleanCustomPage">
+      <i nz-icon type="exclamation"></i>删除介绍页
+    </button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <button nz-button nzType="primary" (click)="updateNode()" [nzLoading]="isLoadingUpdateCategory">
+      提交更新
+    </button>
+  </div>
+  <h3>分类名称：</h3>
+  <input nz-input placeholder="分类名称" [(ngModel)]="operatingTitle">
+  <editor
+    style="z-index: 100; margin-top: 10px;"
+    [init]="tinyMceSettings"
+    [(ngModel)]="operatingCustomPage">
+  </editor>
+</nz-drawer>

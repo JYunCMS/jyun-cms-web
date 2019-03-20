@@ -34,7 +34,6 @@ export class AppComponent implements OnInit {
   openMap = {
     article: false,
     navigation: false,
-    resource: false,
     user: false,
     setting: false
   };
@@ -43,10 +42,9 @@ export class AppComponent implements OnInit {
     dashboard: false,
     article_all: false,
     article_new: false,
+    article_resource: false,
     navigation_category: false,
     navigation_tag: false,
-    resource_all: false,
-    resource_upload: false,
     user_all: false,
     user_create: false,
     user_me: false,

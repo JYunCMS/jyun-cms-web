@@ -1,4 +1,4 @@
-<h1>所有资源</h1>
+<h1>所有媒体资源</h1>
 <div *ngIf="filterConditions != null">
   <nz-select style="width: 120px;" nzSize="small" [(ngModel)]="selectedDate" nzAllowClear nzPlaceHolder="全部日期">
     <nz-option nzValue="{{date}}" nzLabel="{{date}}" *ngFor="let date of filterConditions.dateList"></nz-option>

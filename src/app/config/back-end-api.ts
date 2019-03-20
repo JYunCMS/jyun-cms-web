@@ -3,6 +3,12 @@ export class BackEndApi {
   // Back End Host Address
   static hostAddress = 'http://localhost:8080';
 
+  // RESTful API (/hello)
+  static hello = BackEndApi.hostAddress + '/hello';
+
+  // RESTful API (/upload)
+  static upload = BackEndApi.hostAddress + '/upload';
+
   // RESTful API (/categories/*)
   static categories = BackEndApi.hostAddress + '/categories';
   static categoriesCategory = BackEndApi.categories + '/category?';

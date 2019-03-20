@@ -66,7 +66,7 @@ export class ArticleAllComponent implements OnInit {
     images_upload_handler: (blobInfo, success, failure) => {
       const xhr = new XMLHttpRequest();
       xhr.withCredentials = false;
-      xhr.open('POST', BackEndApi.resources);
+      xhr.open('POST', BackEndApi.upload);
       xhr.onload = () => {
         let json;
         if (xhr.status !== 200) {

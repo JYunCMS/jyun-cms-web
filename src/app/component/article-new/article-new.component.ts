@@ -22,7 +22,7 @@ import { LocalStorageKey } from '../../config/local-storage-key';
 
 export class ArticleNewComponent implements OnInit {
 
-  uploadAddress: string = BackEndApi.resources;
+  uploadAddress: string = BackEndApi.upload;
 
   isVisibleForSaveArticle = false;
   isLoadingSaveArticleAsDraft = false;
@@ -64,7 +64,7 @@ export class ArticleNewComponent implements OnInit {
     images_upload_handler: (blobInfo, success, failure) => {
       const xhr = new XMLHttpRequest();
       xhr.withCredentials = false;
-      xhr.open('POST', BackEndApi.resources);
+      xhr.open('POST', BackEndApi.upload);
       xhr.onload = () => {
         let json;
         if (xhr.status !== 200) {

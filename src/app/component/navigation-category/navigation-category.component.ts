@@ -4,6 +4,8 @@ import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { Category } from '../../domain/category';
 import { CategoryService } from '../../service/category.service';
+import { BackEndApi } from '../../config/back-end-api';
+import { Resource } from '../../domain/resource';
 
 @Component({
   selector: 'app-navigation-category',
@@ -18,6 +20,59 @@ export class NavigationCategoryComponent implements OnInit {
   title: string;
   urlAlias: string;
   parentNodeUrlAlias: string;
+
+  updateCategoryVisible = false;
+  isLoadingCleanCustomPage = false;
+  isLoadingUpdateCategory = false;
+
+  operatingUrlAlias: string = null;
+  operatingTitle: string = null;
+  operatingCustomPage: string = null;
+  articleContentNewImageList: Resource[] = [];
+
+  // 配置字段
+  tinyMceSettings = {
+    skin_url: '/assets/tinymce/skins/ui/oxide',
+    content_css: '/assets/tinymce/skins/content/default/content.min.css',
+    language: 'zh_CN',
+    min_height: 730,
+    plugins: [
+      'autolink link image paste lists charmap print preview hr anchor pagebreak searchreplace',
+      'wordcount visualblocks visualchars code codesample fullscreen insertdatetime media',
+      'nonbreaking table directionality emoticons help'
+    ],
+    toolbar: ['undo redo | styleselect | bold italic underline strikethrough',
+      '| alignleft aligncenter alignright alignjustify',
+      '| bullist numlist outdent indent | link image media',
+      '| forecolor backcolor emoticons | print preview fullscreen'
+    ],
+    images_upload_handler: (blobInfo, success, failure) => {
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = false;
+      xhr.open('POST', BackEndApi.upload);
+      xhr.onload = () => {
+        let json;
+        if (xhr.status !== 200) {
+          failure('HTTP Error: ' + xhr.status);
+          return;
+        }
+        json = JSON.parse(xhr.responseText);
+        if (!json || typeof json.location !== 'string') {
+          failure('Invalid JSON: ' + xhr.responseText);
+          return;
+        }
+        success(BackEndApi.hostAddress + '/' + json.location);
+        this.articleContentNewImageList.push(json);
+      };
+      const formData = new FormData();
+      formData.append('file', blobInfo.blob());
+      xhr.send(formData);
+    },
+    paste_data_images: true,
+    paste_enable_default_filters: false,
+    default_link_target: '_blank',
+    emoticons_database_url: '/assets/tinymce/plugins/emoticons/js/emojis.min.js'
+  };
 
   constructor(
     private siderMenuService: SiderMenuService,
@@ -93,7 +148,11 @@ export class NavigationCategoryComponent implements OnInit {
       // 先更新父节点为非叶子节点 beLeaf = false
       const parentCategory: Category = new Category(this.parentNodeUrlAlias, null, false, null, null, null, null, null, null);
       this.categoryService.updateNode(parentCategory)
-        .subscribe(result => this.handleUpdateNode(result));
+        .subscribe(result => {
+          if (result !== null) {
+            this.initNodes(this.nodes, result);
+          }
+        });
 
       // 确定当前添加节点层级 nodeLevel
       this.categoryService.getCategory(this.parentNodeUrlAlias)
@@ -152,16 +211,47 @@ export class NavigationCategoryComponent implements OnInit {
     }
   }
 
-  updateNode(urlAlias: string, title: string, customPage: string): void {
-    const category: Category = new Category(urlAlias, title, null, null, null, null, null, null, customPage);
+  updateNode(): void {
+    const category: Category = new Category(this.operatingUrlAlias, this.operatingTitle, null, null, null, null,
+      null, null, this.operatingCustomPage);
     this.categoryService.updateNode(category)
-      .subscribe(result => this.handleUpdateNode(result));
+      .subscribe(result => {
+        if (result !== null) {
+          this.initNodes(this.nodes, result);
+          this.updateCategoryVisible = false;
+        }
+      });
   }
 
-  private handleUpdateNode(categories: Category[]) {
-    if (categories !== null) {
-      this.initNodes(this.nodes, categories);
-    }
+  cleanCustomPage() {
+    this.operatingCustomPage = '';
+    this.operatingTitle = null;
+    this.updateNode();
+  }
+
+  showUpdateNode(node: NzTreeNode) {
+    this.operatingUrlAlias = node.key;
+    this.operatingTitle = node.title;
+    this.operatingCustomPage = node.origin.customPage;
+    this.updateCategoryVisible = true;
+  }
+
+  closeUpdateNode() {
+    this.modalService.confirm({
+      nzTitle: '<i><b>离开编辑页面？</b></i>',
+      nzContent: '修改的内容将不被保存<br/><br/><b>确认继续吗？</b>',
+      nzOnOk: () => {
+        this.updateCategoryVisible = false;
+        this.operatingUrlAlias = null;
+        this.operatingTitle = null;
+        this.operatingCustomPage = null;
+      }
+    });
+  }
+
+  deleteNode(node: NzTreeNode): void {
+    this.categoryService.deleteNode(node.key)
+      .subscribe(categories => this.initNodes(this.nodes, categories));
   }
 
   showDeleteConfirm(node: NzTreeNode): void {
@@ -180,11 +270,6 @@ export class NavigationCategoryComponent implements OnInit {
         nzOnOk: () => this.deleteNode(node)
       });
     }
-  }
-
-  private deleteNode(node: NzTreeNode): void {
-    this.categoryService.deleteNode(node.key)
-      .subscribe(categories => this.initNodes(this.nodes, categories));
   }
 
   moveUpNode(node: NzTreeNode): void {

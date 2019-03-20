@@ -107,6 +107,8 @@
             <button nz-button nzSize="small" nzType="danger" (click)="moveToRecycleBin(article)">移动到回收站</button>
           </div>
           <div *ngIf="currentBeInRecycleBin">
+            <button nz-button nzSize="small" nzType="primary" (click)="editArticleOptions(article)">编辑</button>
+            <nz-divider nzType="vertical"></nz-divider>
             <button nz-button nzSize="small" nzType="primary" (click)="restoreFromRecycleBin(article)">还原</button>
             <nz-divider nzType="vertical"></nz-divider>
             <button nz-button nzSize="small" nzType="danger" (click)="deleteArticle(article)">彻底删除</button>
