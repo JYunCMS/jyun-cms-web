@@ -6,7 +6,7 @@ import { User } from '../domain/user';
 import { BackEndApi } from '../config/back-end-api';
 import { catchError } from 'rxjs/operators';
 import { LocalStorageKey } from '../config/local-storage-key';
-import { UpdateUserInfo } from '../domain/request/update-user-info';
+import { UpdatePasswordInfo } from '../domain/request/update-password-info';
 
 @Injectable({
   providedIn: 'root'
@@ -30,29 +30,31 @@ export class UserService {
       .pipe(catchError(this.responseService.handleError<User[]>('userService.getUserList()', null)));
   }
 
-  addNewUser(user: User): Observable<User> {
+  addNewUser(user: User): Observable<User[]> {
     const headers = {
       headers: new HttpHeaders({
+        'Content-Type': 'application/json',
         Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
         From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
       })
     };
-    return this.http.post<User>(BackEndApi.users, user, headers)
-      .pipe(catchError(this.responseService.handleError<User>('userService.addNewUser()', null)));
+    return this.http.post<User[]>(BackEndApi.users, user, headers)
+      .pipe(catchError(this.responseService.handleError<User[]>('userService.addNewUser()', null)));
   }
 
-  updateUser(updateUserInfo: UpdateUserInfo): Observable<User> {
+  updateUser(user: User): Observable<User[]> {
     const headers = {
       headers: new HttpHeaders({
+        'Content-Type': 'application/json',
         Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
         From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
       })
     };
-    return this.http.put<User>(BackEndApi.users, updateUserInfo, headers)
-      .pipe(catchError(this.responseService.handleError<User>('userService.updateUser', null)));
+    return this.http.put<User[]>(BackEndApi.users, user, headers)
+      .pipe(catchError(this.responseService.handleError<User[]>('userService.updateUser', null)));
   }
 
-  deleteUser(username: string): Observable<void> {
+  deleteUser(username: string): Observable<User[]> {
     const headers = {
       headers: new HttpHeaders({
         Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
@@ -61,7 +63,43 @@ export class UserService {
     };
     const params = new HttpParams()
       .append('username', username);
-    return this.http.delete<void>(BackEndApi.users + '?' + params, headers)
-      .pipe(catchError(this.responseService.handleError<void>('userService.deleteUser()', null)));
+    return this.http.delete<User[]>(BackEndApi.users + '?' + params, headers)
+      .pipe(catchError(this.responseService.handleError<User[]>('userService.deleteUser()', null)));
+  }
+
+  updateSelfInfo(user: User): Observable<User> {
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
+    return this.http.put<User>(BackEndApi.usersSelfInfo, user, headers)
+      .pipe(catchError(this.responseService.handleError<User>('userService.updateSelfInfo()', null)));
+  }
+
+  updateSelfPassword(updatePasswordInfo: UpdatePasswordInfo): Observable<User> {
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
+    return this.http.put<User>(BackEndApi.usersSelfPassword, updatePasswordInfo, headers)
+      .pipe(catchError(this.responseService.handleError<User>('userService.updateSelfPassword()', null)));
+  }
+
+  resetPassword(user: User): Observable<User> {
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
+    return this.http.put<User>(BackEndApi.usersResetPassword, user, headers)
+      .pipe(catchError(this.responseService.handleError<User>('userService.resetPassword()', null)));
   }
 }

@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
+import { User } from '../../domain/user';
+import { UserRole } from '../../config/user-role';
+import { UserService } from '../../service/user.service';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-create',
@@ -10,14 +15,16 @@ import { AppComponent } from '../app.component';
 
 export class UserCreateComponent implements OnInit {
 
-  username: string;
-  email: string;
-  password: string;
-  passwordAgain: string;
-  selectedValue: string;
+  user: User = new User(null, '123456', null, null);
+  roleList = UserRole.roleList;
+  isLoadingAddNewUser = false;
 
   constructor(
-    private siderMenuService: SiderMenuService
+    private siderMenuService: SiderMenuService,
+    private userService: UserService,
+    private nzMsgService: NzMessageService,
+    private router: Router,
+    private modalService: NzModalService
   ) {
   }
 
@@ -26,6 +33,26 @@ export class UserCreateComponent implements OnInit {
   }
 
   addNewUser(): void {
-    console.log(this.username);
+    if (this.user.username == null || this.user.username === '') {
+      this.nzMsgService.warning('用户名不能为空！');
+      return;
+    }
+    if (this.user.role == null || this.user.role === '') {
+      this.nzMsgService.warning('用户角色不能为空！');
+      return;
+    }
+    this.isLoadingAddNewUser = true;
+    this.userService.addNewUser(this.user)
+      .subscribe(result => {
+        if (result != null) {
+          this.modalService.confirm({
+            nzTitle: '<i><b>提醒</b></i>',
+            nzContent: '用户 <strong>' + this.user.username + '</strong> 创建成功！<br/>' +
+              '初始密码为：<strong>123456</strong>',
+          });
+          this.router.navigate(['user', 'all']);
+        }
+        this.isLoadingAddNewUser = false;
+      });
   }
 }

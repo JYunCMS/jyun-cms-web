@@ -1,21 +1,38 @@
 <h1>我的资料</h1>
-<p>更新我的个人资料。</p>
-<table style="line-height: 40px;">
-  <tr>
-    <td style="width: 150px;">用户名</td>
-    <td style="width: 250px;"><input nz-input placeholder="用户名" [(ngModel)]="username"></td>
-  </tr>
-  <tr>
-    <td style="width: 150px;">电子邮件</td>
-    <td style="width: 250px;"><input nz-input placeholder="电子邮件" [(ngModel)]="email"></td>
-  </tr>
-  <tr>
-    <td style="width: 150px;">密码</td>
-    <td style="width: 250px;"><input nz-input placeholder="密码" [(ngModel)]="password"></td>
-  </tr>
-  <tr>
-    <td style="width: 150px;">确认密码</td>
-    <td style="width: 250px;"><input nz-input placeholder="确认密码" [(ngModel)]="passwordAgain"></td>
-  </tr>
-</table>
-<button nz-button nzType="primary" (click)="updateUserMe()" style="margin-top: 10px;">更新我的个人资料</button>
+<ul nz-menu [nzMode]="'horizontal'" style="margin-bottom: 20px;">
+  <li nz-menu-item (click)="inUpdateSelfInfoPage=true" [nzSelected]="inUpdateSelfInfoPage">
+    <i nz-icon type="profile"></i>更新信息
+  </li>
+  <li nz-menu-item (click)="inUpdateSelfInfoPage=false" [nzSelected]="!inUpdateSelfInfoPage">
+    <i nz-icon type="lock"></i>更新密码
+  </li>
+</ul>
+<div nz-row>
+  <div nz-col nzSpan="10" *ngIf="inUpdateSelfInfoPage">
+    <h3>用户名：</h3>
+    <input nz-input disabled [(ngModel)]="user.username">
+    <p class="explain-text">不可更改。</p>
+    <h3>昵称：</h3>
+    <input nz-input placeholder="请输入昵称" [(ngModel)]="user.nickname">
+    <p class="explain-text">（可选）推荐使用真实姓名，登录后将优先显示昵称。</p>
+    <h3>用户角色：</h3>
+    <nz-select style="width: 100%;" [(ngModel)]="user.role">
+      <nz-option *ngFor="let role of roleList" [nzValue]=role [nzLabel]=role></nz-option>
+    </nz-select>
+    <p class="explain-text">不能选择比当前用户角色等级更高的角色。</p>
+    <button nz-button nzType="primary" (click)="updateSelfInfo()" [nzLoading]="isLoadingUpdateSelfInfo">更新我的信息</button>
+  </div>
+  <div nz-col nzSpan="10" *ngIf="!inUpdateSelfInfoPage">
+    <h3>原密码：</h3>
+    <input nz-input type="password" placeholder="请输入原密码" [(ngModel)]="oldPassword">
+    <p class="explain-text">风险操作，请输入原密码。</p>
+    <h3>新密码：</h3>
+    <input nz-input type="password" placeholder="请输入新密码" [(ngModel)]="newPassword">
+    <p class="explain-text">要求 6-20 位常规 ASCII 字符。</p>
+    <h3>再一次：</h3>
+    <input nz-input type="password" placeholder="请再输入依次新密码" [(ngModel)]="newPasswordAgain">
+    <p></p>
+    <button nz-button nzType="primary" (click)="updateSelfPassword()" [nzLoading]="isLoadingUpdateSelfPassword">更新我的密码
+    </button>
+  </div>
+</div>

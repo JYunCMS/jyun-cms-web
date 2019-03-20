@@ -1,23 +1,44 @@
 <h1>用户</h1>
-<nz-table #basicTable [nzData]="dataSet">
+<nz-table #basicTable [nzData]="userList">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Address</th>
-      <th>Action</th>
+      <th>用户名</th>
+      <th>昵称</th>
+      <th>角色</th>
+      <th>创建日期</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{data.name}}</td>
-      <td>{{data.age}}</td>
-      <td>{{data.address}}</td>
+    <tr *ngFor="let user of basicTable.data">
+      <td>{{user.username}}</td>
+      <td>{{user.nickname}}</td>
+      <td>{{user.role}}</td>
+      <td>{{user.createdAt}}</td>
       <td>
-        <a>Action 一 {{data.name}}</a>
+        <button nz-button nzSize="small" nzType="primary" (click)="updateUserShow(user)">编辑</button>
         <nz-divider nzType="vertical"></nz-divider>
-        <a>Delete</a>
+        <button nz-button nzSize="small" nzType="danger" (click)="deleteUser(user)">删除</button>
       </td>
     </tr>
   </tbody>
 </nz-table>
+<nz-drawer [nzClosable]="false" [nzVisible]="updateUserVisible" (nzOnClose)="updateUserClose()"
+           nzPlacement="left" nzWidth="450px" nzTitle="更新用户信息">
+  <div align="right">
+    <button nz-button nzType="danger" (click)="resetPassword()"><i nz-icon type="exclamation"></i>重置密码</button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <button nz-button nzType="primary" (click)="updateUser()" [nzLoading]="isLoadingUpdateUser">提交更新</button>
+  </div>
+  <h3>用户名：</h3>
+  <input nz-input disabled [(ngModel)]="operatingUser.username">
+  <p class="explain-text">不可更改。</p>
+  <h3>昵称：</h3>
+  <input nz-input placeholder="请输入昵称" [(ngModel)]="operatingUser.nickname">
+  <p class="explain-text">（可选）推荐使用真实姓名，登录后将优先显示昵称。</p>
+  <h3>用户角色：</h3>
+  <nz-select style="width: 100%;" [(ngModel)]="operatingUser.role">
+    <nz-option *ngFor="let role of roleList" [nzValue]=role [nzLabel]=role></nz-option>
+  </nz-select>
+  <p class="explain-text">不能选择比当前用户角色等级更高的角色。</p>
+</nz-drawer>
