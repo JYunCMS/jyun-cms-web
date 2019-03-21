@@ -65,7 +65,6 @@ export class HomeComponent implements OnInit {
           if (loginUserInfo.status === true) {
             this.nzMsgService.success(loginUserInfo.message);
             this.showInitSystemView = false;
-            console.log(LocalStorageKey.alreadyInitSystem);
             localStorage.setItem(LocalStorageKey.alreadyInitSystem, 'true');
           } else {
             this.nzMsgService.warning(loginUserInfo.message);
