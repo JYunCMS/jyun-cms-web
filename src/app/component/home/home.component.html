@@ -2,3 +2,19 @@
 <p>
   home works!
 </p>
+<nz-modal [(nzVisible)]="showInitSystemView"
+          nzTitle="首次使用 JYunCMS"
+          [nzCancelText]=null
+          [nzClosable]=false
+          [nzKeyboard]=false
+          [nzMaskClosable]=false
+          (nzOnOk)="initSystem()">
+  <h3>创建超级管理员账户：</h3>
+  <nz-input-group nzAddOnBefore="用&emsp;户&emsp;名" style="margin-bottom: 10px;">
+    <input type="text" nz-input disabled value="admin">
+  </nz-input-group>
+  <nz-input-group nzAddOnBefore="密&emsp;&emsp;&emsp;码">
+    <input type="password" nz-input placeholder="配置超级管理员密码" [(ngModel)]="adminPassword" (keyup.enter)="initSystem()">
+  </nz-input-group>
+  <p class="explain-text"><i nz-icon type="exclamation-circle"></i> 要求 6-20 位常规 ASCII 字符。</p>
+</nz-modal>
