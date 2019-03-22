@@ -128,19 +128,19 @@
         <nz-divider nzType="vertical"></nz-divider>
         最近更新：{{operatingArticle.updatedAt}}
       </p>
-      <p *ngIf="operatingArticle.tags!=null">
+      <p *ngIf="operatingArticle.tags.length>0">
         <i nz-icon type="tags"></i> 标签：
         <nz-tag [nzColor]="'blue'" *ngFor="let tag of operatingArticle.tags">{{tag}}</nz-tag>
       </p>
     </div>
-    <div [innerHTML]="htmlArticleContent"></div>
+    <div [innerHTML]="htmlArticleContent" style="margin-top: 30px;"></div>
     <br/>
     <table *ngFor="let resource of operatingArticle.accessories">
       <tr>
-        <td><span><i nz-icon type="link"></i> 附件：</span></td>
+        <td><strong><i nz-icon type="link"></i> 附件：</strong></td>
         <td>
           <a href="{{backEndHostAddress}}/{{resource.location}}" target="_blank">
-            <nz-tag><span style="font-size: larger;">{{resource.originalFilename}}</span></nz-tag>
+            <nz-tag><span style="font-size: larger; color: #1890ff;">{{resource.originalFilename}}</span></nz-tag>
           </a>
         </td>
       </tr>

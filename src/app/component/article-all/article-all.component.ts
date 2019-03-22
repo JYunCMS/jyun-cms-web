@@ -39,7 +39,7 @@ export class ArticleAllComponent implements OnInit {
   articleFilterConditions: ArticleFilterConditions = null;
 
   // 待用数据
-  operatingArticle: Article = new Article(null, null, null, null, null, null, null, null, null, null, null);
+  operatingArticle: Article = new Article(null, null, null, null, null, null, [], [], [], null, null);
   updateArticleCategoryUrlAlias: string = null;
   articleContentNewImageList: Resource[] = [];
   htmlArticleContent: any;
