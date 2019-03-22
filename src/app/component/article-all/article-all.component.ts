@@ -320,18 +320,10 @@ export class ArticleAllComponent implements OnInit {
   }
 
   updateStatus() {
-    if (this.operatingArticle.status === '已发布') {
-      // 用户权限检测，无权限则进行拦截
-      //////////////////////
-      /////////////////////////
-      /////////////////////////
-      /////////////////////////
-      /////////////////////////
-      /////////////////////////
-      /////////////////////////
-      /////////////////////////
-
-
+    if (this.operatingArticle.status === '已发布' && JSON.parse(localStorage.getItem(LocalStorageKey.currentLoginUser)).role === '撰稿人') {
+      // 用户角色为撰稿人，无权发布文章
+      this.nzMsgService.error('撰稿人没有发布文章的权限，请选择【待审核】并联系管理员处理！');
+      return;
     }
 
     if (this.operatingArticle.status === this.tempOldArticleStatus) {
