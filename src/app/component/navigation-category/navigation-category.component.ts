@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NzModalService, NzTreeNode } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService, NzTreeNode } from 'ng-zorro-antd';
 import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { Category } from '../../domain/category';
@@ -17,9 +17,9 @@ export class NavigationCategoryComponent implements OnInit {
 
   nodes: NzTreeNode[] = [];
 
-  title: string;
-  urlAlias: string;
-  parentNodeUrlAlias: string;
+  title = '';
+  urlAlias = '';
+  parentNodeUrlAlias = '';
 
   updateCategoryVisible = false;
   isLoadingCleanCustomPage = false;
@@ -77,7 +77,8 @@ export class NavigationCategoryComponent implements OnInit {
   constructor(
     private siderMenuService: SiderMenuService,
     private categoryService: CategoryService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private nzMsgService: NzMessageService
   ) {
   }
 
@@ -140,13 +141,22 @@ export class NavigationCategoryComponent implements OnInit {
   }
 
   addNewNode(): void {
-    const category: Category = new Category(this.urlAlias, this.title, true, 0, this.parentNodeUrlAlias, null, 0, 0, null);
+    if (this.title == null || this.title === '') {
+      this.nzMsgService.warning('【分类名称】不能为空！');
+      return;
+    }
+    if (this.urlAlias == null || this.urlAlias === '') {
+      this.nzMsgService.warning('【分类 URL 别名】不能为空！');
+      return;
+    }
+
+    const category: Category = new Category(this.urlAlias, this.title, true, 0, this.parentNodeUrlAlias, null, 0, 0, null, []);
 
     // 添加的节点是否为根节点
     if (this.parentNodeUrlAlias !== undefined && this.parentNodeUrlAlias !== null) {
       // 如果添加的是非根节点
       // 先更新父节点为非叶子节点 beLeaf = false
-      const parentCategory: Category = new Category(this.parentNodeUrlAlias, null, false, null, null, null, null, null, null);
+      const parentCategory: Category = new Category(this.parentNodeUrlAlias, null, false, null, null, null, null, null, null, []);
       this.categoryService.updateNode(parentCategory)
         .subscribe(result => {
           if (result !== null) {
@@ -169,7 +179,7 @@ export class NavigationCategoryComponent implements OnInit {
                 .subscribe(() => {
                   // 更新父节点的子节点计数 childrenCount++
                   const parentCategory2: Category = new Category(parentNode.urlAlias, null, null, null, null, null,
-                    parentNode.childrenCount + 1, null, null);
+                    parentNode.childrenCount + 1, null, null, []);
                   this.categoryService.updateNode(parentCategory2)
                     .subscribe(result => this.handleAddNode(result));
                 });
@@ -203,7 +213,7 @@ export class NavigationCategoryComponent implements OnInit {
   }
 
   private handleAddNode(categories: Category[]) {
-    if (categories !== null) {
+    if (categories != null) {
       this.initNodes(this.nodes, categories);
       this.urlAlias = null;
       this.title = null;
@@ -213,7 +223,7 @@ export class NavigationCategoryComponent implements OnInit {
 
   updateNode(): void {
     const category: Category = new Category(this.operatingUrlAlias, this.operatingTitle, null, null, null, null,
-      null, null, this.operatingCustomPage);
+      null, null, this.operatingCustomPage, this.articleContentNewImageList);
     this.categoryService.updateNode(category)
       .subscribe(result => {
         if (result !== null) {
@@ -233,6 +243,7 @@ export class NavigationCategoryComponent implements OnInit {
     this.operatingUrlAlias = node.key;
     this.operatingTitle = node.title;
     this.operatingCustomPage = node.origin.customPage;
+
     this.updateCategoryVisible = true;
   }
 
@@ -242,9 +253,11 @@ export class NavigationCategoryComponent implements OnInit {
       nzContent: '修改的内容将不被保存<br/><br/><b>确认继续吗？</b>',
       nzOnOk: () => {
         this.updateCategoryVisible = false;
+
         this.operatingUrlAlias = null;
         this.operatingTitle = null;
         this.operatingCustomPage = null;
+        this.articleContentNewImageList = [];
       }
     });
   }

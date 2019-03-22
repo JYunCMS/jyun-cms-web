@@ -6,5 +6,5 @@ export class Resource extends BaseEntity {
   storageFilename: string;
   fileType: string;
   fileSize: string;
-  referenceCount: number;
+  beReference: boolean;
 }

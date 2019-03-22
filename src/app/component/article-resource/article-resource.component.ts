@@ -63,17 +63,16 @@ export class ArticleResourceComponent implements OnInit {
   }
 
   showDeleteConfirm(resource: Resource): void {
-    if (resource.referenceCount === 0 || resource.referenceCount == null) {
+    if (resource.beReference) {
       this.modalService.confirm({
-        nzTitle: '<i><b>警告：</b></i>',
-        nzContent: '资源 ' + resource.originalFilename + ' 将被从服务器删除<br/><br/><b>确认继续吗？</b>',
+        nzTitle: '<i><b>严重警告：</b></i>',
+        nzContent: '资源：' + resource.originalFilename + '<br/><strong>正在被文章引用</strong><br/>继续删除，涉及文章将受影响<br/><br/><b>确认继续吗？</b>',
         nzOnOk: () => this.deleteResource(resource)
       });
     } else {
       this.modalService.confirm({
-        nzTitle: '<i><b>严重警告：</b></i>',
-        nzContent: '资源 ' + resource.originalFilename + '<br/>被 ' + resource.referenceCount +
-          ' 篇文章引用<br/>继续删除，涉及文章将受影响<br/><br/><b>确认继续吗？</b>',
+        nzTitle: '<i><b>警告：</b></i>',
+        nzContent: '资源：' + resource.originalFilename + '<br/>将被从服务器删除<br/><br/><b>确认继续吗？</b>',
         nzOnOk: () => this.deleteResource(resource)
       });
     }

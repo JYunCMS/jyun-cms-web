@@ -10,7 +10,7 @@
   &nbsp;
   <button nz-button nzType="primary" nzSize="small" (click)="getByConditions()">筛选</button>
   &nbsp;&nbsp;&nbsp;
-  <span style="font-size: small;"><i nz-icon type="exclamation-circle"></i> 引用数为“0”的资源可以被删除，以节省服务器磁盘空间</span>
+  <span style="font-size: small;"><i nz-icon type="exclamation-circle"></i> 引用状态为“未被使用”的资源可以被删除，以节省服务器磁盘空间</span>
 </div>
 <div style="margin-top: 10px;">
   <nz-table #basicTable [nzData]="displayData">
@@ -19,9 +19,9 @@
         <th>文件名</th>
         <th>文件大小</th>
         <th>资源类型</th>
-        <th nzShowSort nzSortKey="referenceCount" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">引用数</th>
+        <th nzShowSort nzSortKey="beReference" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">引用状态</th>
         <th>资源永久地址</th>
-        <th nzShowSort nzSortKey="createdAt" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">创建日期</th>
+        <th nzShowSort nzSortKey="createdAt" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">上传日期</th>
         <th>操作</th>
       </tr>
     </thead>
@@ -31,7 +31,8 @@
         <td>{{resource.fileSize}}</td>
         <td>{{resource.fileType}}</td>
         <td>
-          <nz-tag [nzColor]="'blue'">{{resource.referenceCount}}</nz-tag>
+          <nz-tag [nzColor]="'green'" *ngIf="resource.beReference">使用中</nz-tag>
+          <nz-tag [nzColor]="'red'" *ngIf="!resource.beReference">未被使用</nz-tag>
         </td>
         <td>
           <a href="{{backEndHostAddress}}/{{resource.location}}" target="_blank">

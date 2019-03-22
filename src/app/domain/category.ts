@@ -1,4 +1,5 @@
 import { BaseEntity } from './-base-entity';
+import { Resource } from './resource';
 
 export class Category extends BaseEntity {
   urlAlias: string;
@@ -10,8 +11,10 @@ export class Category extends BaseEntity {
   childrenCount: number;
   articleCount: number;
   customPage: string;
+  customPageImages: Resource[];
 
-  constructor(urlAlias: string, title: string, beLeaf: boolean, nodeLevel: number, parentNodeUrlAlias: string, sequence: number, childrenCount: number, articleCount: number, customPage: string) {
+  constructor(urlAlias: string, title: string, beLeaf: boolean, nodeLevel: number, parentNodeUrlAlias: string, sequence: number,
+              childrenCount: number, articleCount: number, customPage: string, customPageImages: Resource[]) {
     super();
     this.urlAlias = urlAlias;
     this.title = title;
@@ -22,5 +25,6 @@ export class Category extends BaseEntity {
     this.childrenCount = childrenCount;
     this.articleCount = articleCount;
     this.customPage = customPage;
+    this.customPageImages = customPageImages;
   }
 }
