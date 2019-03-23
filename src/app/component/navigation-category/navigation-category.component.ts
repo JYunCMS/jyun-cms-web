@@ -17,9 +17,9 @@ export class NavigationCategoryComponent implements OnInit {
 
   nodes: NzTreeNode[] = [];
 
-  title = '';
-  urlAlias = '';
-  parentNodeUrlAlias = '';
+  title = null;
+  urlAlias = null;
+  parentNodeUrlAlias = null;
 
   updateCategoryVisible = false;
   isLoadingCleanCustomPage = false;
@@ -155,6 +155,7 @@ export class NavigationCategoryComponent implements OnInit {
     // 添加的节点是否为根节点
     if (this.parentNodeUrlAlias !== undefined && this.parentNodeUrlAlias !== null) {
       // 如果添加的是非根节点
+      console.log('非根节点');
       // 先更新父节点为非叶子节点 beLeaf = false
       const parentCategory: Category = new Category(this.parentNodeUrlAlias, null, false, null, null, null, null, null, null, []);
       this.categoryService.updateNode(parentCategory)
