@@ -1,3 +1,30 @@
-<p>
-  setting-common works!
-</p>
+<h1>常规设置</h1>
+<div style="max-width: 500px;">
+  <h3>站点标题：</h3>
+  <p class="explain-text"><i nz-icon type="exclamation-circle"></i> 通常用于浏览器标签栏显示。</p>
+  <label>
+    <input type="text" nz-input [(ngModel)]="siteTitle" style="width: 70%;"/>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button nz-button nzType="primary" (click)="setSiteTitle()" [nzLoading]="isLoadingSetSiteTitle">
+      <i nz-icon type="redo"></i> 更新
+    </button>
+  </label>
+  <p></p> <!-- 做间隔 -->
+  <h3>版全信息：</h3>
+  <p class="explain-text"><i nz-icon type="exclamation-circle"></i> 通常放于站点底部用于版权声明。</p>
+  <label>
+    <input type="text" nz-input [(ngModel)]="copyrightInfo" style="width: 70%;"/>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button nz-button nzType="primary" (click)="setCopyrightInfo()" [nzLoading]="isLoadingSetCopyrightInfo">
+      <i nz-icon type="redo"></i> 更新
+    </button>
+  </label>
+  <p></p> <!-- 做间隔 -->
+  <h3>备案信息：</h3>
+  <p class="explain-text"><i nz-icon type="exclamation-circle"></i> 通常放于站点底部用于展示备案信息。</p>
+  <label>
+    <input type="text" nz-input [(ngModel)]="websiteFilingInfo" style="width: 70%;"/>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button nz-button nzType="primary" (click)="setWebsiteFilingInfo()" [nzLoading]="isLoadingSetWebsiteFilingInfo">
+      <i nz-icon type="redo"></i> 更新
+    </button>
+  </label>
+  <p></p> <!-- 做间隔 -->
+</div>

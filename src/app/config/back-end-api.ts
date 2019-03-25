@@ -40,6 +40,9 @@ export class BackEndApi {
 
   // RESTful API (/options/*)
   static options = BackEndApi.hostAddress + '/options';
+  static optionsSiteTitle = BackEndApi.options + '/site-title';
+  static optionsCopyrightInfo = BackEndApi.options + '/copyright-info';
+  static optionsWebsiteFilingInfo = BackEndApi.options + '/website-filing-info';
   static optionsHomeCarouselImages = BackEndApi.options + '/home-carousel-images';
   static optionsFriendlyLinks = BackEndApi.options + '/friendly-links';
 }

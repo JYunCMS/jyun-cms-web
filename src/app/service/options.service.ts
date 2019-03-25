@@ -8,6 +8,9 @@ import { BackEndApi } from '../config/back-end-api';
 import { catchError } from 'rxjs/operators';
 import { HomeCarouselImages } from '../domain/options/home-carousel-images';
 import { FriendlyLinks } from '../domain/options/friendly-links';
+import { SiteTitle } from '../domain/options/site-title';
+import { CopyrightInfo } from '../domain/options/copyright-info';
+import { WebsiteFilingInfo } from '../domain/options/website-filing-info';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +32,42 @@ export class OptionsService {
     };
     return this.http.get<Options[]>(BackEndApi.options, headers)
       .pipe(catchError(this.responseService.handleError<Options[]>('optionsService.getOptions()', null)));
+  }
+
+  setSiteTitle(siteTitle: SiteTitle): Observable<SiteTitle> {
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
+    return this.http.post<SiteTitle>(BackEndApi.optionsSiteTitle, siteTitle, headers)
+      .pipe(catchError(this.responseService.handleError<SiteTitle>('optionsService.setSiteTitle()', null)));
+  }
+
+  setCopyrightInfo(copyrightInfo: CopyrightInfo): Observable<CopyrightInfo> {
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
+    return this.http.post<CopyrightInfo>(BackEndApi.optionsCopyrightInfo, copyrightInfo, headers)
+      .pipe(catchError(this.responseService.handleError<CopyrightInfo>('optionsService.setCopyrightInfo()', null)));
+  }
+
+  setWebsiteFilingInfo(websiteFilingInfo: WebsiteFilingInfo): Observable<WebsiteFilingInfo> {
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(LocalStorageKey.currentLoginUserToken),
+        From: localStorage.getItem(LocalStorageKey.currentLoginUsername)
+      })
+    };
+    return this.http.post<WebsiteFilingInfo>(BackEndApi.optionsWebsiteFilingInfo, websiteFilingInfo, headers)
+      .pipe(catchError(this.responseService.handleError<WebsiteFilingInfo>('optionsService.setWebsiteFilingInfo()', null)));
   }
 
   setHomeCarouselImages(homeCarouselImagesList: HomeCarouselImages[]): Observable<HomeCarouselImages[]> {
