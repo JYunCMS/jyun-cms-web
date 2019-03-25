@@ -41,4 +41,5 @@ export class BackEndApi {
   // RESTful API (/options/*)
   static options = BackEndApi.hostAddress + '/options';
   static optionsHomeCarouselImages = BackEndApi.options + '/home-carousel-images';
+  static optionsFriendlyLinks = BackEndApi.options + '/friendly-links';
 }

@@ -7,6 +7,7 @@ import { OptionsService } from '../../service/options.service';
 import { Options } from '../../domain/options';
 import { OptionsFields } from '../../config/options-fields';
 import { HomeCarouselImages } from '../../domain/options/home-carousel-images';
+import { FriendlyLinks } from '../../domain/options/friendly-links';
 
 @Component({
   selector: 'app-setting-edit',
@@ -18,6 +19,7 @@ export class SettingHomeComponent implements OnInit {
 
   uploadAddress: string = BackEndApi.upload;
 
+  // 轮播图相关
   showCarouselImages = false;
   isLoadingSetHomeCarouselImages = false;
   showUploadList = {
@@ -28,6 +30,10 @@ export class SettingHomeComponent implements OnInit {
   carouselImagesList = [];
   previewImage: string | undefined = '';
   previewVisible = false;
+
+  // 友情链接相关
+  isLoadingSetFriendlyLinks = false;
+  friendlyLinksList: FriendlyLinks[] = [];
 
   constructor(
     private siderMenuService: SiderMenuService,
@@ -55,6 +61,12 @@ export class SettingHomeComponent implements OnInit {
               status: 'done',
               url: BackEndApi.hostAddress + '/' + homeCarouselImages.imageLocation
             });
+          }
+          break;
+        case OptionsFields.FRIENDLY_LINKS:
+          // 友情链接
+          for (const friendlyLinks of option.value.content) {
+            this.friendlyLinksList.push(friendlyLinks);
           }
           break;
       }
@@ -86,6 +98,25 @@ export class SettingHomeComponent implements OnInit {
           this.nzMsgService.success('首页轮播图更新成功！');
         }
         this.isLoadingSetHomeCarouselImages = false;
+      });
+  }
+
+  addFriendlyLinksItem() {
+    this.friendlyLinksList.push(new FriendlyLinks(null, null));
+  }
+
+  removeFriendlyLinksItem(friendlyLinks: FriendlyLinks) {
+    this.friendlyLinksList.splice(this.friendlyLinksList.indexOf(friendlyLinks), 1);
+  }
+
+  setFriendlyLinks() {
+    this.isLoadingSetFriendlyLinks = true;
+    this.optionsService.setFriendlyLinks(this.friendlyLinksList)
+      .subscribe(result => {
+        if (result != null) {
+          this.nzMsgService.success('友情链接更新成功！');
+        }
+        this.isLoadingSetFriendlyLinks = false;
       });
   }
 }
