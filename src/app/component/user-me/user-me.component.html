@@ -7,8 +7,8 @@
     <i nz-icon type="lock"></i>更新密码
   </li>
 </ul>
-<div nz-row>
-  <div nz-col nzSpan="10" *ngIf="inUpdateSelfInfoPage">
+<div style="max-width: 500px;">
+  <div *ngIf="inUpdateSelfInfoPage">
     <h3>用户名：</h3>
     <input nz-input disabled [(ngModel)]="user.username">
     <p class="explain-text">不可更改。</p>
@@ -22,7 +22,7 @@
     <p class="explain-text">不能选择比当前用户角色等级更高的角色。</p>
     <button nz-button nzType="primary" (click)="updateSelfInfo()" [nzLoading]="isLoadingUpdateSelfInfo">更新我的信息</button>
   </div>
-  <div nz-col nzSpan="10" *ngIf="!inUpdateSelfInfoPage">
+  <div *ngIf="!inUpdateSelfInfoPage">
     <h3>原密码：</h3>
     <input nz-input type="password" placeholder="请输入原密码" [(ngModel)]="oldPassword">
     <p class="explain-text">风险操作，请输入原密码。</p>

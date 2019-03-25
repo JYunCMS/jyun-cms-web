@@ -11,7 +11,7 @@ import { UserAllComponent } from './component/user-all/user-all.component';
 import { UserCreateComponent } from './component/user-create/user-create.component';
 import { UserMeComponent } from './component/user-me/user-me.component';
 import { SettingCommonComponent } from './component/setting-common/setting-common.component';
-import { SettingEditComponent } from './component/setting-edit/setting-edit.component';
+import { SettingHomeComponent } from './component/setting-home/setting-home.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -25,7 +25,7 @@ const routes: Routes = [
   {path: 'user/create', component: UserCreateComponent},
   {path: 'user/me', component: UserMeComponent},
   {path: 'setting/common', component: SettingCommonComponent},
-  {path: 'setting/edit', component: SettingEditComponent}
+  {path: 'setting/home', component: SettingHomeComponent}
 ];
 
 @NgModule({

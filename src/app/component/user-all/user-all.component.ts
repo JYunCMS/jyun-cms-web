@@ -4,7 +4,7 @@ import { AppComponent } from '../app.component';
 import { UserService } from '../../service/user.service';
 import { User } from '../../domain/user';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { UserRole } from '../../config/user-role';
+import { UserRoleFields } from '../../config/user-role-fields';
 import { LocalStorageKey } from '../../config/local-storage-key';
 import { Router } from '@angular/router';
 
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 
 export class UserAllComponent implements OnInit {
 
-  roleList: string[] = UserRole.roleList;
+  roleList: string[] = UserRoleFields.roleList;
 
   userList: User[] = [];
   operatingUser: User = new User(null, null, null, null);

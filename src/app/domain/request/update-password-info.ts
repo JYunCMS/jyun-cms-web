@@ -1,6 +1,7 @@
 import { User } from '../user';
 
 export class UpdatePasswordInfo {
+
   oldPassword: string;
   user: User;
 

@@ -1,4 +1,5 @@
 export class ArticleTag {
+
   id: number;
   articleId: number;
   tagName: string;

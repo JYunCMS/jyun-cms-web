@@ -3,7 +3,7 @@ import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { User } from '../../domain/user';
 import { LocalStorageKey } from '../../config/local-storage-key';
-import { UserRole } from '../../config/user-role';
+import { UserRoleFields } from '../../config/user-role-fields';
 import { UserService } from '../../service/user.service';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { UpdatePasswordInfo } from '../../domain/request/update-password-info';
@@ -20,7 +20,7 @@ export class UserMeComponent implements OnInit {
   newPassword: string = null;
   newPasswordAgain: string = null;
   user: User = JSON.parse(localStorage.getItem(LocalStorageKey.currentLoginUser));
-  roleList = UserRole.roleList;
+  roleList = UserRoleFields.roleList;
 
   isLoadingUpdateSelfInfo = false;
   isLoadingUpdateSelfPassword = false;

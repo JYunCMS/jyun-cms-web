@@ -20,7 +20,7 @@ import { UserAllComponent } from './component/user-all/user-all.component';
 import { UserCreateComponent } from './component/user-create/user-create.component';
 import { UserMeComponent } from './component/user-me/user-me.component';
 import { SettingCommonComponent } from './component/setting-common/setting-common.component';
-import { SettingEditComponent } from './component/setting-edit/setting-edit.component';
+import { SettingHomeComponent } from './component/setting-home/setting-home.component';
 import { EditorModule } from '@tinymce/tinymce-angular';
 
 registerLocaleData(zh);
@@ -39,7 +39,7 @@ registerLocaleData(zh);
     UserCreateComponent,
     UserMeComponent,
     SettingCommonComponent,
-    SettingEditComponent
+    SettingHomeComponent
   ],
   imports: [
     BrowserModule,

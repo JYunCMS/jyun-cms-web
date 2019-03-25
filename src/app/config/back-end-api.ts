@@ -1,7 +1,7 @@
 export class BackEndApi {
 
   // Back End Host Address
-  static hostAddress = 'http://localhost:8080';
+  static hostAddress = 'http://localhost:8080'; // 不要写末尾的 “/”
 
   // RESTful API (/hello)
   static hello = BackEndApi.hostAddress + '/hello';
@@ -37,4 +37,8 @@ export class BackEndApi {
   static usersSelfInfo = BackEndApi.users + '/self-info';
   static usersSelfPassword = BackEndApi.users + '/self-password';
   static usersResetPassword = BackEndApi.users + '/reset-password';
+
+  // RESTful API (/options/*)
+  static options = BackEndApi.hostAddress + '/options';
+  static optionsHomeCarouselImages = BackEndApi.options + '/home-carousel-images';
 }

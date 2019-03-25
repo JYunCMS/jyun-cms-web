@@ -1,0 +1,32 @@
+<h1>设置首页</h1>
+<div style="max-width: 500px;">
+  <h3>轮播图：</h3>
+  <p class="explain-text">通常用于站点首页展示强调信息。</p>
+  <div class="clearfix" *ngIf="showCarouselImages">
+    <nz-upload
+      [nzAccept]="'image/*'"
+      [nzAction]="uploadAddress"
+      nzListType="picture-card"
+      [(nzFileList)]="carouselImagesList"
+      [nzShowUploadList]="showUploadList"
+      [nzPreview]="handlePreview">
+      <i nz-icon type="plus"></i>
+      <div class="ant-upload-text">点击上传</div>
+    </nz-upload>
+    <nz-modal
+      [nzVisible]="previewVisible"
+      [nzContent]="modalContent"
+      [nzFooter]="null"
+      (nzOnCancel)="previewVisible=false">
+      <ng-template #modalContent>
+        <img [src]="previewImage" [ngStyle]="{ width: '100%' }"/>
+      </ng-template>
+    </nz-modal>
+  </div>
+  <button nz-button nzType="primary" (click)="setHomeCarouselImages()" [nzLoading]="isLoadingSetHomeCarouselImages">
+    更新首页轮播图
+  </button>
+  <p></p><!-- 做间隔 -->
+  <h3>友情链接：</h3>
+  <p class="explain-text">通常用于站点底部放置友链或合作伙伴网址。</p>
+</div>

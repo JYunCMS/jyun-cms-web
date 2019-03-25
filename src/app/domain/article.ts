@@ -3,6 +3,7 @@ import { Category } from './category';
 import { Resource } from './resource';
 
 export class Article extends BaseEntity {
+
   id: number;
   title: string;
   authorId: string;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { User } from '../../domain/user';
-import { UserRole } from '../../config/user-role';
+import { UserRoleFields } from '../../config/user-role-fields';
 import { UserService } from '../../service/user.service';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class UserCreateComponent implements OnInit {
 
   user: User = new User(null, '123456', null, null);
-  roleList = UserRole.roleList;
+  roleList = UserRoleFields.roleList;
   isLoadingAddNewUser = false;
 
   constructor(
