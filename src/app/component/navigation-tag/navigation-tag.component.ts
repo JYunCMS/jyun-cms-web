@@ -3,6 +3,7 @@ import { SiderMenuService } from '../../util/sider-menu.service';
 import { AppComponent } from '../app.component';
 import { TagService } from '../../service/tag.service';
 import { Tag } from '../../domain/tag';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-navigation-tag',
@@ -21,7 +22,8 @@ export class NavigationTagComponent implements OnInit {
 
   constructor(
     private siderMenuService: SiderMenuService,
-    private tagService: TagService
+    private tagService: TagService,
+    private nzMsgService: NzMessageService
   ) {
   }
 
@@ -37,6 +39,11 @@ export class NavigationTagComponent implements OnInit {
   }
 
   addNewTag(): void {
+    if (this.newTagName == null || this.newTagName === '') {
+      this.nzMsgService.warning('【标签名称】不能为空！');
+      return;
+    }
+
     this.tagService.addNewTag(new Tag(this.newTagName, 0))
       .subscribe(result => {
         this.initTags(result);

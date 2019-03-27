@@ -17,8 +17,8 @@ export class NavigationCategoryComponent implements OnInit {
 
   nodes: NzTreeNode[] = [];
 
-  title = null;
-  urlAlias = null;
+  title = '';
+  urlAlias = '';
   parentNodeUrlAlias = null;
 
   updateCategoryVisible = false;
@@ -149,6 +149,10 @@ export class NavigationCategoryComponent implements OnInit {
       this.nzMsgService.warning('【分类 URL 别名】不能为空！');
       return;
     }
+    if (this.urlAlias.match('^[0-9a-zA-Z-]{1,}$') == null || this.urlAlias.match('^[0-9a-zA-Z-]{1,}$')[0].toString() !== this.urlAlias) {
+      this.nzMsgService.warning('【分类 URL 别名】格式有误，请注意输入要求！');
+      return;
+    }
 
     const category: Category = new Category(this.urlAlias, this.title, true, 0, this.parentNodeUrlAlias, null, 0, 0, null, []);
 
@@ -190,8 +194,9 @@ export class NavigationCategoryComponent implements OnInit {
                 if (parentNode.articleCount !== 0) {
                   // 其父节点分类下有文章
                   // 提示用户将其父级节点分类的文章转移到该子节点分类下
-                  AppComponent.self.warningMessage = '父节点【' + parentNode.title +
-                    '】分类下存在文章，它已经不是叶子节点！请到文章管理页将其分类设置为新的叶子节点分类，否则在某些模板下这些文章可能不会显示在列表中';
+                  this.nzMsgService.warning('父节点【' + parentNode.title + '】分类下存在文章，它已经不是叶子节点！<br/>' +
+                    '请到文章管理页将其分类设置为新的叶子节点分类，<br/>' +
+                    '否则在某些模板下这些文章可能不会显示在列表中！', {nzDuration: 10000});
                 }
               }
             });

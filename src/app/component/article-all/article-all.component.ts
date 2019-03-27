@@ -237,14 +237,14 @@ export class ArticleAllComponent implements OnInit {
     // 向后端提交文章前
     // 1、检查标题是否为空
     if (this.operatingArticle.title == null || this.operatingArticle.title === '') {
-      AppComponent.self.warningMessage = '请输入文章标题！';
+      this.nzMsgService.warning('请输入文章标题');
       this.isLoadingUpdateArticle = false;
       return false;
     }
 
     // 2、检查分类选项是否为空
     if (this.updateArticleCategoryUrlAlias == null || this.updateArticleCategoryUrlAlias === '') {
-      AppComponent.self.warningMessage = '请选择文章所属分类！';
+      this.nzMsgService.warning('请选择文章所属分类');
       this.isLoadingUpdateArticle = false;
       return false;
     }
@@ -254,7 +254,7 @@ export class ArticleAllComponent implements OnInit {
     for (const category of categories) {
       if (category.urlAlias === this.updateArticleCategoryUrlAlias) {
         if (!category.beLeaf) {
-          AppComponent.self.warningMessage = '请选择叶子节点分类目录！';
+          this.nzMsgService.warning('请选择叶子节点分类目录');
           this.isLoadingUpdateArticle = false;
           return false;
         } else {

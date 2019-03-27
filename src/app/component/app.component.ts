@@ -26,7 +26,6 @@ export class AppComponent implements OnInit {
   password = '';
 
   errorMessage: string;
-  warningMessage: string;
 
   isCollapsed = false;
   isLoadingLogin = false;
