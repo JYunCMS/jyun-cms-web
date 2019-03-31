@@ -1,0 +1,53 @@
+<h1>首页设置</h1>
+<div style="max-width: 500px;">
+  <h3>轮播图：</h3>
+  <p class="explain-text"><i nz-icon type="exclamation-circle"></i> 通常用于站点首页展示强调信息。</p>
+  <div class="clearfix" *ngIf="showCarouselImages">
+    <nz-upload
+      [nzAccept]="'image/*'"
+      [nzAction]="uploadAddress"
+      nzListType="picture-card"
+      [(nzFileList)]="carouselImagesList"
+      [nzShowUploadList]="showUploadList"
+      [nzPreview]="handlePreview">
+      <i nz-icon type="plus"></i>
+      <div class="ant-upload-text">点击上传</div>
+    </nz-upload>
+    <nz-modal
+      [nzVisible]="previewVisible"
+      [nzContent]="modalContent"
+      [nzFooter]="null"
+      (nzOnCancel)="previewVisible=false">
+      <ng-template #modalContent>
+        <img [src]="previewImage" [ngStyle]="{ width: '100%' }"/>
+      </ng-template>
+    </nz-modal>
+  </div>
+  <button nz-button nzType="primary" (click)="setHomeCarouselImages()" [nzLoading]="isLoadingSetHomeCarouselImages">
+    更新首页轮播图
+  </button>
+  <p></p><!-- 做间隔 -->
+  <h3>友情链接：</h3>
+  <p class="explain-text"><i nz-icon type="exclamation-circle"></i> 通常用于站点底部放置友链或合作伙伴网址。</p>
+  <nz-input-group *ngFor="let friendlyLinks of friendlyLinksList" style="margin-bottom: 10px;">
+    <div nz-col nzSpan="8">
+      <input type="text" nz-input [(ngModel)]="friendlyLinks.title"/>
+    </div>
+    <div nz-col nzSpan="14">
+      <input type="text" nz-input [(ngModel)]="friendlyLinks.link"/>
+    </div>
+    <div nz-col nzSpan="2">
+      <button nz-button nzType="default" nzShape="circle" (click)="removeFriendlyLinksItem(friendlyLinks)">
+        <i nz-icon type="minus-circle"></i>
+      </button>
+    </div>
+  </nz-input-group>
+  <nz-button-group>
+    <button nz-button nzType="primary" (click)="setFriendlyLinks()" [nzLoading]="isLoadingSetFriendlyLinks">
+      更新友情链接
+    </button>
+    <button nz-button (click)="addFriendlyLinksItem()">
+      <i nz-icon type="plus-circle"></i> 增加
+    </button>
+  </nz-button-group>
+</div>

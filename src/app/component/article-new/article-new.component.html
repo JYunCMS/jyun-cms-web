@@ -1,0 +1,76 @@
+<div nz-row>
+  <div nz-col nzSpan="14"><h1>写文章</h1></div>
+  <div nz-col nzSpan="10" align="right">
+    <button nz-button nzType="default" (click)="saveArticleAsDraft()" [nzLoading]="isLoadingSaveArticleAsDraft"
+            style="margin-top: 20px;">保存草稿
+    </button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <button nz-button nzType="primary" (click)="isVisibleForSaveArticle=true" [nzLoading]="isLoadingPushArticle"
+            style="margin-top: 20px;">发布
+    </button>
+    <nz-modal [(nzVisible)]="isVisibleForSaveArticle" nzTitle="发布文章"
+              (nzOnCancel)="onCancelPushArticle()"
+              (nzOnOk)="pushArticle()">
+      <p><strong>文章将交由管理员进行审核</strong></p><br/>
+      <label nz-checkbox [(ngModel)]="articleCheckRelease">我是管理员，直接发布？</label>
+    </nz-modal>
+  </div>
+</div>
+<div nz-row>
+  <div nz-col nzSpan="13">
+    <h2 style="text-align: center;" *ngIf="articleTitle != null && articleTitle != ''">
+      <strong>标题：</strong>{{articleTitle}}
+    </h2>
+    <editor
+      style="z-index: 100;"
+      [init]="tinyMceSettings"
+      [(ngModel)]="articleContent">
+    </editor>
+  </div>
+  <div nz-col nzSpan="1"></div>
+  <div nz-col nzSpan="10">
+    <h3>文章标题：</h3>
+    <input nz-input placeholder="请输入文章标题" [(ngModel)]="articleTitle">
+    <p class="explain-text">在这里输入文章标题，左侧的文本编辑器只用来编辑正文。</p>
+    <h3>所属分类：</h3>
+    <nz-tree-select
+      style="width: 100%;"
+      [nzDropdownStyle]="{ 'max-height': '250px' }"
+      [nzNodes]="categoryNodes"
+      nzShowSearch="true"
+      nzPlaceHolder="无"
+      nzDefaultExpandAll="true"
+      nzShowLine="true"
+      [(ngModel)]="articleCategoryUrlAlias">
+    </nz-tree-select>
+    <p class="explain-text">请选择末端叶子节点分类目录，以保持站点文章分级结构清晰；
+      <br/>如需为特定分类节点添加页面，请到 导航->分类目录 下进行操作。
+    </p>
+    <h3>标签：</h3>
+    <nz-select
+      nzMode="tags"
+      style="width: 100%;"
+      nzPlaceHolder="点选已有标签，或直接输入创建新的标签"
+      [(ngModel)]="articleTags">
+      <nz-option *ngFor="let tag of tagList" [nzLabel]="tag.name" [nzValue]="tag.name">
+      </nz-option>
+    </nz-select>
+    <p class="explain-text">（可选）不同于分类，标签表明文章具有某种属性，可添加多个；
+      <br/>注：点击选择已存在的标签，也可直接输入并回车添加新的标签。</p>
+    <h3>摘要：</h3>
+    <textarea nz-input placeholder="请输入文章摘要"
+              [(ngModel)]="articleAbstracts" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+    <p class="explain-text">（可选）默认将截取正文开头内容作为摘要。</p>
+    <h3>附件：</h3>
+    <nz-upload
+      [nzAction]="uploadAddress"
+      [nzMultiple]="true"
+      [nzSize]="10240"
+      [(nzFileList)]="articleUploadAccessoryList">
+      <button nz-button>
+        <i nz-icon type="upload"></i><span>点击选择附件文件</span>
+      </button>
+    </nz-upload>
+    <p class="explain-text">（可选）为文章添加附件，如：供用户下载的文档资料。</p>
+  </div>
+</div>

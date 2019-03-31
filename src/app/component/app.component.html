@@ -1,0 +1,143 @@
+<nz-layout style="height: 100%">
+  <nz-header style="background: #fff; padding: 0; position: fixed; height: 50px; width: 100%; z-index: 99;">
+    <div nz-row>
+      <div nz-col nzSpan="4">
+        <img alt="Logo" src="../../assets/img/JYunCMS-Logo.png"
+             style="margin-top: -10px; margin-left: 5px; height: 38px;">
+      </div>
+      <div nz-col nzSpan="20" style="text-align: right;">
+        <!-- 未登录时显示【登录框】 -->
+        <div *ngIf="!loginStatus">
+          <div style="display: inline-block; margin-right: 20px;">
+            <nz-input-group [nzPrefix]="prefixUserTemplate" [nzSuffix]="suffixUserTemplate">
+              <input type="text" nz-input placeholder="输入您的用户名" [(ngModel)]="username" (keyup.enter)="login()">
+              <ng-template #prefixUserTemplate><i nz-icon type="user"></i></ng-template>
+              <ng-template #suffixUserTemplate>
+                <i nz-icon type="close-circle" (click)="username = ''" *ngIf="username"></i>
+              </ng-template>
+            </nz-input-group>
+          </div>
+          <div style="display: inline-block; margin-right: 20px;">
+            <nz-input-group [nzPrefix]="prefixLockTemplate" [nzSuffix]="suffixLockTemplate">
+              <input type="password" nz-input placeholder="输入您的密码" [(ngModel)]="password" (keyup.enter)="login()">
+              <ng-template #prefixLockTemplate><i nz-icon type="lock"></i></ng-template>
+              <ng-template #suffixLockTemplate>
+                <i nz-icon type="close-circle" (click)="password = ''" *ngIf="password"></i>
+              </ng-template>
+            </nz-input-group>
+          </div>
+          <div style="display: inline-block; margin-right: 20px;">
+            <button nz-button nzType="primary" (click)="login()" [nzLoading]="isLoadingLogin"
+                    [disabled]="!(username&&password)">
+              <i nz-icon type="login"></i>登录
+            </button>
+          </div>
+        </div>
+        <!-- 已经登录时显示【用户信息】 -->
+        <div *ngIf="loginStatus">
+          <div style="display: inline-block; margin-right: 30px;">
+            <nz-dropdown nzPlacement="bottomRight">
+            <span nz-dropdown>
+              <strong style="font-size: larger">嗨，</strong>
+              <strong *ngIf="currentLoginUser.nickname" style="font-size: larger">{{currentLoginUser.nickname}}</strong>
+              <strong *ngIf="!currentLoginUser.nickname"
+                      style="font-size: larger">{{currentLoginUser.username}}</strong>
+              <span style="color: #aaaaaa;">&nbsp;[{{currentLoginUser.role}}]</span>
+              <i nz-icon type="down"></i>
+            </span>
+              <ul nz-menu>
+                <li nz-menu-item routerLink="/user/me"><i nz-icon type="profile"></i>我的资料</li>
+                <li nz-menu-divider></li>
+                <li nz-menu-item (click)="logout()" style="color: red;"><i nz-icon type="logout"></i>登出</li>
+              </ul>
+            </nz-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nz-alert
+      *ngIf="errorMessage != null"
+      nzMessage="Error"
+      nzDescription="{{errorMessage}}"
+      nzType="error"
+      nzShowIcon
+      nzCloseable
+      (nzOnClose)="errorMessage = null"
+      style="position: fixed; top: 30px; right: 40px; width: 400px;">
+    </nz-alert>
+  </nz-header>
+  <nz-sider *ngIf="loginStatus"
+            nzCollapsible [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]=null nzWidth="180" style="background-color: #fff">
+    <ul nz-menu [nzTheme]="'light'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" style="letter-spacing: 2px;">
+      <li style="margin-top: 50px; height: 1px; background-color: #e8e8e8;"></li>
+      <li nz-menu-item routerLink="/dashboard" [nzSelected]="selectMap.dashboard">
+        <span title><i nz-icon type="dashboard"></i><span class="nav-text">仪表盘</span></span>
+      </li>
+      <li nz-submenu [(nzOpen)]="openMap.article" (nzOpenChange)="openHandler('article')">
+        <span title><i nz-icon type="snippets"></i><span class="nav-text">文章</span></span>
+        <ul>
+          <li nz-menu-item routerLink="/article/all" [nzSelected]="selectMap.article_all">
+            <i nz-icon type="copy"></i>所有文章
+          </li>
+          <li nz-menu-item routerLink="/article/new" [nzSelected]="selectMap.article_new">
+            <i nz-icon type="edit"></i>写文章
+          </li>
+          <li nz-menu-item routerLink="/article/resource" [nzSelected]="selectMap.article_resource">
+            <i nz-icon type="picture"></i>媒体库
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu [(nzOpen)]="openMap.navigation" (nzOpenChange)="openHandler('navigation')">
+        <span title><i nz-icon type="link"></i><span class="nav-text">导航</span></span>
+        <ul>
+          <li nz-menu-item routerLink="/navigation/category" [nzSelected]="selectMap.navigation_category">
+            <i nz-icon type="align-left"></i>分类目录
+          </li>
+          <li nz-menu-item routerLink="/navigation/tag" [nzSelected]="selectMap.navigation_tag">
+            <i nz-icon type="tags"></i>标签
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu [(nzOpen)]="openMap.user" (nzOpenChange)="openHandler('user')">
+        <span title><i nz-icon type="user"></i><span class="nav-text">用户</span></span>
+        <ul>
+          <li nz-menu-item routerLink="/user/all" [nzSelected]="selectMap.user_all">
+            <i nz-icon type="team"></i>所有用户
+          </li>
+          <li nz-menu-item routerLink="/user/create" [nzSelected]="selectMap.user_create">
+            <i nz-icon type="user-add"></i>添加用户
+          </li>
+          <li nz-menu-item routerLink="/user/me" [nzSelected]="selectMap.user_me">
+            <i nz-icon type="profile"></i>我的资料
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu [(nzOpen)]="openMap.setting" (nzOpenChange)="openHandler('setting')">
+        <span title><i nz-icon type="setting"></i><span class="nav-text">设置</span></span>
+        <ul>
+          <li nz-menu-item routerLink="/setting/common" [nzSelected]="selectMap.setting_common">
+            <i nz-icon type="global"></i>常规
+          </li>
+          <li nz-menu-item routerLink="/setting/home" [nzSelected]="selectMap.setting_home">
+            <i nz-icon type="form"></i>首页
+          </li>
+        </ul>
+      </li>
+      <li nz-menu-item style="background-color: #fff" (click)="isCollapsed=!isCollapsed;">
+        <span title>
+          <i nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'"></i>
+          <span class="nav-text" style="font-size: small;">收起菜单</span>
+        </span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-content style="margin:0 16px;">
+      <div style="padding:24px; margin-top: 66px; background: #fff; min-height: 830px;">
+        <router-outlet></router-outlet>
+      </div>
+      <nz-footer style="text-align: center;">Copyright ©2019 By JYunCMS. All Rights Reserved</nz-footer>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

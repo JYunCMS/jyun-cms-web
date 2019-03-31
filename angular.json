@@ -20,13 +20,48 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/tinymce/tinymce.min.js",
+              "src/assets/tinymce/langs/zh_CN.js",
+              "src/assets/tinymce/themes/silver/theme.min.js",
+              "src/assets/tinymce/themes/mobile/theme.min.js",
+              "src/assets/tinymce/plugins/autolink/plugin.min.js",
+              "src/assets/tinymce/plugins/link/plugin.min.js",
+              "src/assets/tinymce/plugins/image/plugin.min.js",
+              "src/assets/tinymce/plugins/paste/plugin.min.js",
+              "src/assets/tinymce/plugins/lists/plugin.min.js",
+              "src/assets/tinymce/plugins/charmap/plugin.min.js",
+              "src/assets/tinymce/plugins/print/plugin.min.js",
+              "src/assets/tinymce/plugins/preview/plugin.min.js",
+              "src/assets/tinymce/plugins/hr/plugin.min.js",
+              "src/assets/tinymce/plugins/anchor/plugin.min.js",
+              "src/assets/tinymce/plugins/pagebreak/plugin.min.js",
+              "src/assets/tinymce/plugins/searchreplace/plugin.min.js",
+              "src/assets/tinymce/plugins/wordcount/plugin.min.js",
+              "src/assets/tinymce/plugins/visualblocks/plugin.min.js",
+              "src/assets/tinymce/plugins/visualchars/plugin.min.js",
+              "src/assets/tinymce/plugins/code/plugin.min.js",
+              "src/assets/tinymce/plugins/codesample/plugin.min.js",
+              "src/assets/tinymce/plugins/fullscreen/plugin.min.js",
+              "src/assets/tinymce/plugins/insertdatetime/plugin.min.js",
+              "src/assets/tinymce/plugins/media/plugin.min.js",
+              "src/assets/tinymce/plugins/nonbreaking/plugin.min.js",
+              "src/assets/tinymce/plugins/table/plugin.min.js",
+              "src/assets/tinymce/plugins/directionality/plugin.min.js",
+              "src/assets/tinymce/plugins/emoticons/plugin.min.js",
+              "src/assets/tinymce/plugins/help/plugin.min.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {

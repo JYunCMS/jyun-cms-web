@@ -1,0 +1,40 @@
+<h1>标签</h1>
+<div nz-row>
+  <div nz-col nzSpan="7">
+    <h2>
+      <strong>添加新标签</strong>
+    </h2>
+    <h3>名称：</h3>
+    <input nz-input placeholder="新的标签" [(ngModel)]="newTagName">
+    <p class="explain-text">这将是它在站点上显示的名字。</p>
+    <button nz-button nzType="primary" (click)="addNewTag()">添加新标签</button>
+  </div>
+  <div nz-col nzSpan="1"></div>
+  <div nz-col nzSpan="16">
+    <nz-table
+      #smallTable
+      nzSize="small"
+      [nzData]="displayData">
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
+        <tr>
+          <th nzShowSort nzSortKey="name" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">名称</th>
+          <th nzShowSort nzSortKey="articleCount" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">文章总数</th>
+          <th nzShowSort nzSortKey="createdAt" nz-tooltip nzPlacement="topLeft" nzTitle="点击排序">创建日期</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tag of smallTable.data">
+          <td style="color: #1890ff;">{{tag.name}}</td>
+          <td>
+            <nz-tag [nzColor]="'blue'">{{tag.articleCount}}</nz-tag>
+          </td>
+          <td>{{tag.createdAt}}</td>
+          <td>
+            <button nz-button nzSize="small" nzType="danger" (click)="deleteTag(tag.name)">删除</button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

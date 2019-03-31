@@ -1,0 +1,16 @@
+<h1>添加用户</h1>
+<p style="font-size: small;"><i nz-icon type="exclamation-circle"></i> 为站点添加新的用户，用以协助站点管理或文章发布等工作。</p>
+<div style="max-width: 500px;">
+  <h3>用户名：</h3>
+  <input type="text" nz-input placeholder="请输入用户名" [(ngModel)]="user.username">
+  <p class="explain-text">要求 5-20 位常规 ASCII 字符，将用作用户唯一标识，创建后不可更改。</p>
+  <h3>昵称：</h3>
+  <input nz-input placeholder="请输入昵称" [(ngModel)]="user.nickname">
+  <p class="explain-text">（可选）推荐使用真实姓名，登录后优先显示昵称。</p>
+  <h3>用户角色：</h3>
+  <nz-select style="width: 100%;" nzPlaceHolder="请选择用户角色" [(ngModel)]="user.role">
+    <nz-option *ngFor="let role of roleList" [nzValue]=role [nzLabel]=role></nz-option>
+  </nz-select>
+  <p class="explain-text">不能选择比当前用户角色等级更高的角色。</p>
+  <button nz-button nzType="primary" (click)="addNewUser()" [nzLoading]="isLoadingAddNewUser">创建新用户</button>
+</div>
