@@ -2,6 +2,8 @@
 
 > 更多项目介绍与指南，参见 [JYunCMS 手册](https://github.com/JYunCMS/jyun-cms-doc/blob/master/README.md)
 
+![jyun-cms-web-new-article](https://github.com/JYunCMS/jyun-cms-doc/raw/master/assets/img/jyun-cms-web-new-article.gif)
+
 ## 安装部署
 
 ### 运行环境
